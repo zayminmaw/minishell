@@ -27,7 +27,6 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 	@make -C ${LIBFT}
-	@make -C ${MLX}
 	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
 
 clean: 
