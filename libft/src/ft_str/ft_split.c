@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 19:21:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/08/30 18:21:25 by zmin             ###   ########.fr       */
+/*   Updated: 2025/10/28 19:36:21 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,26 @@ static char	*make_word(char const *s, char c)
 	return (word);
 }
 
+/*
+** Splits a string into an array of strings using a delimiter.
+** 
+** Parameters:
+**   s - The string to split (null-terminated)
+**   c - The delimiter character
+** 
+** Return:
+**   Returns a null-terminated array of strings,
+**   or NULL if allocation fails or s is NULL.
+** 
+** Edge cases:
+**   - Returns NULL if s is NULL
+**   - Returns NULL if allocation fails
+**   - Consecutive delimiters are treated as one
+**   - Array is null-terminated
+**   - Caller must free the array and all strings (use ft_strarr_free)
+**   - Helper function count_word counts number of words
+**   - Helper function make_word creates individual words
+*/
 char	**ft_split(char const *s, char c)
 {
 	int			i;

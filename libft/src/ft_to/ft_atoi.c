@@ -3,13 +3,29 @@
 /*                                                        :::      ::::::::   */
 /*   ft_atoi.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/28 21:24:57 by zmin              #+#    #+#             */
-/*   Updated: 2025/08/28 21:56:14 by zmin             ###   ########.fr       */
+/*   Updated: 2025/10/28 19:39:06 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+** Converts a string to an integer.
+** 
+** Parameters:
+**   nptr - The string to convert (null-terminated)
+** 
+** Return:
+**   Returns the converted integer value.
+** 
+** Edge cases:
+**   - Skips leading whitespace characters (9-13 and 32)
+**   - Handles optional '+' sign (but not if followed by '-')
+**   - Handles '-' sign for negative numbers
+**   - Stops conversion at first non-digit character
+**   - Does not check for overflow (undefined behavior for values > INT_MAX)
+*/
 int	ft_atoi(const char *nptr)
 {
 	int	i;

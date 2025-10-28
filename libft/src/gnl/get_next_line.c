@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/10 21:49:48 by zmin              #+#    #+#             */
-/*   Updated: 2025/09/10 21:49:50 by zmin             ###   ########.fr       */
+/*   Updated: 2025/10/28 19:39:45 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,25 @@
 static char	*gnl_load_buffer(int fd, char *left_c, char *buffer);
 static char	*gnl_fill_line(char *line_buff);
 
+/*
+** Reads a line from a file descriptor.
+** 
+** Parameters:
+**   fd - The file descriptor to read from
+** 
+** Return:
+**   Returns a string containing the next line (including newline),
+**   or NULL if EOF or error.
+** 
+** Edge cases:
+**   - Returns NULL if fd < 0 or BUFFER_SIZE <= 0
+**   - Supports multiple file descriptors (up to FD_OPEN_MAX)
+**   - Preserves leftover characters between calls using static array
+**   - Returns NULL on read error or EOF
+**   - Frees resources on error
+**   - Helper function gnl_load_buffer reads and accumulates data
+**   - Helper function gnl_fill_line extracts next line and updates leftover
+*/
 char	*get_next_line(int fd)
 {
 	static char	*left_c[FD_OPEN_MAX];

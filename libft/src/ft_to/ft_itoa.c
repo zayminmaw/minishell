@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <marvin@42.fr>                        +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:40:15 by zmin              #+#    #+#             */
-/*   Updated: 2025/08/30 15:57:55 by zmin             ###   ########.fr       */
+/*   Updated: 2025/10/28 19:39:16 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,24 @@ static int	int_len(long n)
 	return (count);
 }
 
+/*
+** Converts an integer to a string.
+** 
+** Parameters:
+**   n - The integer to convert
+** 
+** Return:
+**   Returns a newly allocated string representing the integer,
+**   or NULL if allocation fails.
+** 
+** Edge cases:
+**   - Handles negative numbers (adds '-' prefix)
+**   - Handles zero correctly
+**   - Handles INT_MIN (-2147483648) using long conversion
+**   - Returns NULL if malloc fails
+**   - Caller must free the returned string
+**   - Helper function int_len calculates required string length
+*/
 char	*ft_itoa(int n)
 {
 	char	*res;

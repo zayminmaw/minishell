@@ -6,10 +6,26 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/30 14:40:15 by zmin              #+#    #+#             */
-/*   Updated: 2025/09/14 21:50:51 by zmin             ###   ########.fr       */
+/*   Updated: 2025/10/28 19:39:02 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+/*
+** Converts a string to a long integer.
+** 
+** Parameters:
+**   nptr - The string to convert (null-terminated)
+** 
+** Return:
+**   Returns the converted long integer value.
+** 
+** Edge cases:
+**   - Skips leading whitespace characters (9-13 and 32)
+**   - Handles optional '+' sign (but not if followed by '-')
+**   - Handles '-' sign for negative numbers
+**   - Stops conversion at first non-digit character
+**   - Returns long type for larger range than ft_atoi
+*/
 long	ft_atol(const char *nptr)
 {
 	int		i;
