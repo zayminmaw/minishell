@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_isenvempty.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/18 13:46:25 by zmin              #+#    #+#             */
-/*   Updated: 2025/10/30 21:40:20 by zmin             ###   ########.fr       */
+/*   Created: 2025/10/30 21:10:43 by zmin              #+#    #+#             */
+/*   Updated: 2025/10/30 21:35:03 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
 #include "utils.h"
 
-int	main(int argc, char **argv, char **envp)
+// Return 1 if empty and 0 if not empty
+int	ft_isenvempty(char **env)
 {
-	(void)argv;
-	t_env *env;
+	int i;
 
-	g_status = 0;
-	if (ft_isenvempty(envp))
-		return (printf("Invalid env\n"), -1);
-	if (argc != 1)
-		return (printf("Invalid arguments\n"), -2);
-	env = malloc(sizeof(t_env));
-	
-	ft_strarr_free(env->envp);
-	free(env);
-	return (g_status);
+	i = 0;
+	while (env[i] != NULL)
+		i++;
+	return (i == 0);
 }

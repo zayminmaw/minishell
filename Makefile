@@ -12,8 +12,12 @@ OBJS_DIR	=	obj/
 PROMPT_DIR	=	prompt/
 PROMPT		=	prompt
 
+UTILS_DIR	=	utils/
+UTILS		=	ft_isenvempty
+
 ENTRY		=	main
 
+SRC_FILES	+=	$(addprefix $(UTILS_DIR), $(UTILS))
 SRC_FILES	+=	$(addprefix $(PROMPT_DIR), $(PROMPT))
 SRC_FILES	+=  $(ENTRY)
 
