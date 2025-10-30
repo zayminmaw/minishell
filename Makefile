@@ -9,12 +9,13 @@ CFLAGS		=	-Wall -Werror -Wextra -I ./includes
 SRCS_DIR	=	src/
 OBJS_DIR	=	obj/
 
-LOGICS      =	
+PROMPT_DIR	=	prompt/
+PROMPT		=	prompt
 
 ENTRY		=	main
 
+SRC_FILES	+=	$(addprefix $(PROMPT_DIR), $(PROMPT))
 SRC_FILES	+=  $(ENTRY)
-SRC_FILES	+=  $(LOGICS)
 
 SRCS 		= 	$(addprefix $(SRCS_DIR), $(addsuffix .c, $(SRC_FILES)))
 OBJS 		= 	$(addprefix $(OBJS_DIR), $(addsuffix .o, $(SRC_FILES)))
