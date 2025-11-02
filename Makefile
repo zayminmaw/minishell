@@ -13,7 +13,7 @@ PROMPT_DIR	=	prompt/
 PROMPT		=	prompt
 
 UTILS_DIR	=	utils/
-UTILS		=	ft_isenvempty ft_error
+UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops
 
 ENTRY		=	main
 

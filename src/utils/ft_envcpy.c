@@ -1,18 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   globals.h                                          :+:      :+:    :+:   */
+/*   ft_envcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/02 15:25:35 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 18:56:37 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/02 17:43:44 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/02 18:24:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBALS_H
-# define GLOBALS_H
+#include "utils.h"
 
-extern int	g_status;
+// copy env (2D) and return new memory allocated 2D string
+char	**ft_envcpy(char **envp)
+{
+	int		len;
+	char	**envp_cpy;
 
-#endif
+	len = 0;
+	while (envp[len])
+		len++;
+	envp_cpy = malloc(sizeof(char *) * (len + 1));
+	envp_cpy[len] = NULL;
+	len = 0;
+	while (envp[len])
+	{
+		envp_cpy[len] = ft_strdup(envp[len]);
+		len++;
+	}
+	return (envp_cpy);
+}
