@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:46:25 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 15:30:08 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/02 17:27:46 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ int	main(int argc, char **argv, char **envp)
 	if (argc != 1)
 		return (printf("Invalid arguments\n"), -2);
 	env = malloc(sizeof(t_env));
+	if (!env)
+		return (ft_process_error(MEM_ERR, 2), 2);
 	ft_strarr_free(env->envp);
 	free(env);
 	return (g_status);

@@ -6,12 +6,12 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 15:26:40 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/02 17:29:12 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
 #include "globals.h"
+#include "utils.h"
 
 void	ft_parse_error(t_parse_error err_type, int exit_err_no)
 {
@@ -52,7 +52,7 @@ void	ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 	else if (err_type == PERM_ERR)
 		printf("minishell: permission denied: %s\n", msg);
 	else if (err_type == CMD_ERR)
-		printf("minishell: command not found\n");
+		printf("minishell: command not found: %s\n", msg);
 	else if (err_type == ISDIR_ERR)
 		printf("minishell: is a directory: %s\n", msg);
 	else if (err_type == NOTDIR_ERR)
