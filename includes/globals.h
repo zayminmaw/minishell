@@ -1,24 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_isenvempty.c                                    :+:      :+:    :+:   */
+/*   globals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 21:10:43 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 15:15:11 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/02 15:25:35 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/02 15:31:39 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "utils.h"
+#ifndef GLOBALS_H
+# define GLOBALS_H
 
-// Return 1 if empty and 0 if not empty
-int	ft_isenvempty(char **env)
-{
-	int	i;
+int	g_status = 0;
 
-	i = 0;
-	while (env[i] != NULL)
-		i++;
-	return (i == 0);
-}
+#endif
