@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 20:15:12 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 21:26:08 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/03 22:28:20 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,11 @@
 # define PROMPT_H
 
 # include <readline/readline.h>
+# include <readline/history.h>
 # include <signal.h>
 # include <stdio.h>
 # include <sys/ioctl.h>
+# include "minishell.h"
 
 void	override_sig(void);
 void	prompt(t_env *env);

@@ -6,13 +6,13 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 21:25:46 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/03 22:32:20 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include "utils.h"
 #include "prompt.h"
+#include "utils.h"
 
 static char	*get_prompt(char **envp)
 {
@@ -41,14 +41,31 @@ static char	*get_prompt(char **envp)
 	return (prompt);
 }
 
+static void	post_read_actions(char *input)
+{
+	if (input[0])
+		add_history(input);
+	if (!ft_strncmp(input, "clear", 5))
+		printf("\033[H\033[2J");
+}
+
 void	prompt(t_env *env)
 {
-	char *input;
-	char *prompt;
+	char	*input;
+	char	*prompt;
 
 	prompt = get_prompt(env->envp);
 	while (1)
 	{
 		override_sig();
+		input = readline(prompt);
+		if (!input)
+		{
+			printf("exit\n");
+			break ;
+		}
+		post_read_actions(input);
+		free(input);
 	}
+	free(prompt);
 }
