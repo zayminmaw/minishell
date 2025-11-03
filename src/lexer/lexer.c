@@ -1,24 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prompt.h                                           :+:      :+:    :+:   */
+/*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 20:15:12 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 21:26:08 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/03 18:47:10 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PROMPT_H
-# define PROMPT_H
-
-# include <readline/readline.h>
-# include <signal.h>
-# include <stdio.h>
-# include <sys/ioctl.h>
-
-void	override_sig(void);
-void	prompt(t_env *env);
-
-#endif

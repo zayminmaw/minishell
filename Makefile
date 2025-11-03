@@ -10,7 +10,10 @@ SRCS_DIR	=	src/
 OBJS_DIR	=	obj/
 
 PROMPT_DIR	=	prompt/
-PROMPT		=	prompt
+PROMPT		=	prompt prompt_sig
+
+LEXER_DIR	=	lexer/
+LEXER		=	lexer
 
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops
@@ -19,6 +22,7 @@ ENTRY		=	main
 
 SRC_FILES	+=	$(addprefix $(UTILS_DIR), $(UTILS))
 SRC_FILES	+=	$(addprefix $(PROMPT_DIR), $(PROMPT))
+SRC_FILES	+=	$(addprefix $(LEXER_DIR), $(LEXER))
 SRC_FILES	+=  $(ENTRY)
 
 SRCS 		= 	$(addprefix $(SRCS_DIR), $(addsuffix .c, $(SRC_FILES)))
@@ -32,7 +36,7 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 	@make -C ${LIBFT}
-	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME)
+	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME) -lreadline
 
 clean: 
 	rm -rf ${OBJS_DIR}

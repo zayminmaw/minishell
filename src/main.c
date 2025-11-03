@@ -6,13 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:46:25 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 19:02:56 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/03 21:28:06 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globals.h"
 #include "minishell.h"
 #include "utils.h"
+#include "prompt.h"
 
 int	g_status = 0;
 
@@ -35,6 +36,7 @@ int	main(int argc, char **argv, char **envp)
 	env->homepath = getenv("HOME");
 	if (!env->homepath)
 		return (printf("Invalid home\n"), -1);
+	prompt(env);
 	ft_strarr_free(env->envp);
 	free(env);
 	return (g_status);
