@@ -6,7 +6,15 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 18:47:10 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 19:52:45 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "lexer.h"
+
+int	lexer(char *input, t_env *env)
+{
+	char	**token;
+
+	return (0);
+}

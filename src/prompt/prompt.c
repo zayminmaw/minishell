@@ -6,13 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/04 18:41:31 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 19:25:35 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "prompt.h"
 #include "utils.h"
+#include "lexer.h"
 
 static char	*get_prompt(char **envp)
 {
@@ -66,6 +67,14 @@ void	prompt(t_env *env)
 			break ;
 		}
 		post_read_actions(input);
+		if (ft_strlen(input))
+		{
+			if (lexer(input, env) == 4)
+			{
+				free(input);
+				break ;
+			}
+		}
 		free(input);
 	}
 	free(prompt);

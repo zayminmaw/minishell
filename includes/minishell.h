@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 15:26:17 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 20:10:25 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,36 @@ typedef struct s_env
 	char	**envp;
 	char	*homepath;
 }			t_env;
+
+// in_flag 0 = none, 1 = <, 2 = <<
+// out_flag 0 = none, 1 = >, 2 = >>
+typedef struct s_node
+{
+	t_ntype	ntype;
+	char	*exec_path;
+	char	**full_cmd;
+	int		in_flag;
+	int		out_flag;
+	char	*infile;
+	char	*outfile;
+	char	*delimiter;
+	int		inner_cmd_count;
+	int		outer_cmd_count;
+	t_env	*env;
+}			t_node;
+
+typedef enum e_ntype
+{
+	ALIEN,
+	CMD,
+	RUNIN_PARENT,
+	RUNIN_CHILD,
+	PIPE,
+	DOUBLE_AND,
+	DOUBLE_OR,
+	L_PAR,
+	R_PAR
+}			t_ntype;
 
 typedef enum e_parse_error
 {

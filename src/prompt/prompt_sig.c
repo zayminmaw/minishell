@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 21:05:17 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 21:25:03 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 19:52:29 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static void	show_new_line(int sig)
 
 void	override_sig(void)
 {
-	struct sigaction sa;
-	
+	struct sigaction	sa;
+
 	sa.sa_handler = &show_new_line;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;

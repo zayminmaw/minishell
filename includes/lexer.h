@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:49:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/04 18:39:13 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 19:23:21 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,5 +15,6 @@
 
 # include "minishell.h"
 
+int	lexer(char *input, t_env *env);
 
 #endif
