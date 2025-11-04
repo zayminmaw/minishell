@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/04 20:10:25 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 20:13:03 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,30 +17,30 @@
 
 typedef struct s_env
 {
-	int		px_len;
-	int		**fd;
-	char	**envp;
-	char	*homepath;
-}			t_env;
+	int			px_len;
+	int			**fd;
+	char		**envp;
+	char		*homepath;
+}				t_env;
 
 // in_flag 0 = none, 1 = <, 2 = <<
 // out_flag 0 = none, 1 = >, 2 = >>
 typedef struct s_node
 {
-	t_ntype	ntype;
-	char	*exec_path;
-	char	**full_cmd;
-	int		in_flag;
-	int		out_flag;
-	char	*infile;
-	char	*outfile;
-	char	*delimiter;
-	int		inner_cmd_count;
-	int		outer_cmd_count;
-	t_env	*env;
-}			t_node;
+	t_node_type	node_type;
+	char		*exec_path;
+	char		**full_cmd;
+	int			in_flag;
+	int			out_flag;
+	char		*infile;
+	char		*outfile;
+	char		*delimiter;
+	int			inner_cmd_count;
+	int			outer_cmd_count;
+	t_env		*env;
+}				t_node;
 
-typedef enum e_ntype
+typedef enum e_node_type
 {
 	ALIEN,
 	CMD,
@@ -51,13 +51,13 @@ typedef enum e_ntype
 	DOUBLE_OR,
 	L_PAR,
 	R_PAR
-}			t_ntype;
+}				t_node_type;
 
 typedef enum e_parse_error
 {
 	QUOTE_ERR,
 	SYN_ERR,
-}			t_parse_error;
+}				t_parse_error;
 
 typedef enum e_file_error
 {
@@ -66,7 +66,7 @@ typedef enum e_file_error
 	CMD_ERR,
 	ISDIR_ERR,
 	NOTDIR_ERR,
-}			t_file_error;
+}				t_file_error;
 
 typedef enum e_process_error
 {
@@ -74,12 +74,12 @@ typedef enum e_process_error
 	FORK_ERR,
 	PIPE_ERR,
 	MEM_ERR,
-}			t_process_error;
+}				t_process_error;
 
 typedef enum e_env_error
 {
 	HOMESET_ERR,
 	PWDSET_ERR,
-}			t_env_error;
+}				t_env_error;
 
 #endif
