@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 22:32:20 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/04 18:41:31 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ static char	*get_prompt(char **envp)
 	return (prompt);
 }
 
+// save history and csi for move to home and erase screen
 static void	post_read_actions(char *input)
 {
 	if (input[0])
