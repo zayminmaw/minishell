@@ -13,7 +13,7 @@ PROMPT_DIR	=	prompt/
 PROMPT		=	prompt prompt_sig
 
 LEXER_DIR	=	lexer/
-LEXER		=	lexer
+LEXER		=	lexer lexer_pad_str
 
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops

@@ -6,14 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/04 19:25:35 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/05 22:13:52 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "lexer.h"
 #include "minishell.h"
 #include "prompt.h"
 #include "utils.h"
-#include "lexer.h"
 
 static char	*get_prompt(char **envp)
 {
@@ -51,6 +51,17 @@ static void	post_read_actions(char *input)
 		printf("\033[H\033[2J");
 }
 
+int	interpret_and_run(char *input, t_env *env)
+{
+	char	**token;
+	t_node	*nodes;
+
+	(void)nodes;
+	if (lexer(input, env, &token))
+		return (1);
+	return (0);
+}
+
 void	prompt(t_env *env)
 {
 	char	*input;
@@ -69,7 +80,7 @@ void	prompt(t_env *env)
 		post_read_actions(input);
 		if (ft_strlen(input))
 		{
-			if (lexer(input, env) == 4)
+			if (interpret_and_run(input, env) == 3)
 			{
 				free(input);
 				break ;
