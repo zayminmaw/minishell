@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:37:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/07 21:01:13 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/07 21:14:16 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 
 static int	count_words(char *str)
 {
-	unsigned int	i;
-	unsigned int	flag;
-	int				count;
+	int	i;
+	int	flag;
+	int	count;
 
 	i = 0;
 	flag = 0;
@@ -39,7 +39,7 @@ static int	count_words(char *str)
 	return (count);
 }
 
-static void	escape_quote_and_interate(char const *str, char **q, int *i)
+static void	escape_quote_and_interate(char *str, char *q, int *i)
 {
 	while (str[*i] && (!ft_isspace(str[*i]) || *q))
 	{
@@ -47,11 +47,11 @@ static void	escape_quote_and_interate(char const *str, char **q, int *i)
 			*q = str[*i];
 		else if (*q && str[*i] == *q)
 			*q = 0;
-		i++;
+		(*i)++;
 	}
 }
 
-char	**lexer_tokenize(char const *str)
+char	**lexer_tokenize(char *str)
 {
 	char	**tokens;
 	int		i;
@@ -63,7 +63,7 @@ char	**lexer_tokenize(char const *str)
 		return (NULL);
 	tokens = malloc(sizeof(char *) * (count_words(str) + 1));
 	if (!tokens)
-		return (NULL);
+		return (ft_process_error(MEM_ERR, 2));
 	i = 0;
 	k = 0;
 	while (str[i])
