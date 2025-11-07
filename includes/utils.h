@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:11:06 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/04 21:58:52 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/07 18:43:26 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,8 @@ char	**ft_envcpy(char **envp);
 // ft_envops.c
 char	**ft_delvar(char **envp, char *target);
 char	**ft_addvar(char **envp, char *var);
+
+// ft_skipquotes.c
+void	ft_skipquotes(char const *str, int *i);
 
 #endif
