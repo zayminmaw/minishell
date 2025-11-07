@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/07 21:01:31 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/07 21:17:32 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,5 +20,8 @@ int	lexer(char *input, t_env *env, char ***token)
 	if (!input)
 		return (1);
 	*token = lexer_tokenize(input);
+	free(input);
+	if (!(*token))
+		return (2);
 	return (0);
 }
