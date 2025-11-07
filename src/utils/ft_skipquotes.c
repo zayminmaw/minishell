@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/07 18:42:04 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/07 18:45:47 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/07 21:00:47 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 // Skip values inside quotes (', ")
 void	ft_skipquotes(char const *str, int *i)
 {
-	char quote;
+	char	quote;
 
 	if (str[*i] == '\'' || str[*i] == '"')
 	{

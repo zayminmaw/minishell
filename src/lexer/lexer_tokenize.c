@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:37:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/07 20:12:59 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/07 21:01:13 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,4 +37,45 @@ static int	count_words(char *str)
 	if (flag)
 		count++;
 	return (count);
+}
+
+static void	escape_quote_and_interate(char const *str, char **q, int *i)
+{
+	while (str[*i] && (!ft_isspace(str[*i]) || *q))
+	{
+		if (!*q && (str[*i] == '\'' || str[*i] == '"'))
+			*q = str[*i];
+		else if (*q && str[*i] == *q)
+			*q = 0;
+		i++;
+	}
+}
+
+char	**lexer_tokenize(char const *str)
+{
+	char	**tokens;
+	int		i;
+	int		start;
+	int		k;
+	char	q;
+
+	if (!str)
+		return (NULL);
+	tokens = malloc(sizeof(char *) * (count_words(str) + 1));
+	if (!tokens)
+		return (NULL);
+	i = 0;
+	k = 0;
+	while (str[i])
+	{
+		while (str[i] && ft_isspace(str[i]))
+			i++;
+		start = i;
+		q = 0;
+		escape_quote_and_interate(str, &q, &i);
+		if (i > start)
+			tokens[k++] = ft_substr(str, start, i - start);
+	}
+	tokens[k] = NULL;
+	return (tokens);
 }
