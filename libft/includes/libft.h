@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/27 19:10:16 by zmin              #+#    #+#             */
-/*   Updated: 2025/10/02 20:27:09 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/12 21:05:32 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ void				ft_strarr_free(char **str_arr);
 char				*ft_strrchr(const char *s, int c);
 char				*ft_strchr(const char *s, int c);
 int					ft_strncmp(const char *s1, const char *s2, size_t n);
+char				ft_strcmp(char *s1, char *s2);
 void				*ft_memchr(const void *s, int c, size_t n);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
 char				*ft_strnstr(const char *big, const char *little,

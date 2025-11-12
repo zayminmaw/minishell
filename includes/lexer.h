@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:49:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/07 21:07:45 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/12 21:50:17 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@ char	*lexer_pad_str(char *input);
 
 // lexer_tokenize.c
 char	**lexer_tokenize(char *str);
+
+// lexer_expand_var.c
+char	*lexer_expand_var(char *token, char **envp);
 
 #endif

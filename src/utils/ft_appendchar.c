@@ -1,34 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_appendchar.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/12 22:04:41 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/12 21:41:49 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/12 21:47:14 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
 #include "utils.h"
 
-int	lexer(char *input, t_env *env, char ***tokens)
+char	*ft_appendchar(char *str, char c)
 {
-	int	i;
+	char	*res;
+	int		len;
 
-	input = lexer_pad_str(input);
-	if (!input)
-		return (1);
-	*tokens = lexer_tokenize(input);
-	free(input);
-	if (!(*tokens))
-		return (2);
-	i = 0;
-	while ((*tokens)[i])
-	{
-		(*tokens)[i] = lexer_expand_var((*tokens)[i], env->envp);
-		i++;
-	}
-	return (0);
+	len = ft_strlen(str);
+	res = malloc(sizeof(char) * len + 2);
+	if (!res)
+		return (NULL);
+	ft_strlcpy(res, str, len + 1);
+	res[len] = c;
+	res[len + 1] = '\0';
+	free(str);
+	return (res);
 }

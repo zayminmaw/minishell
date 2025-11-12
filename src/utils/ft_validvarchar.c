@@ -1,34 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_validvarchar.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/12 22:04:41 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/12 19:14:32 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/12 21:42:03 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
 #include "utils.h"
 
-int	lexer(char *input, t_env *env, char ***tokens)
+int	ft_validvarchar(char c)
 {
-	int	i;
-
-	input = lexer_pad_str(input);
-	if (!input)
-		return (1);
-	*tokens = lexer_tokenize(input);
-	free(input);
-	if (!(*tokens))
-		return (2);
-	i = 0;
-	while ((*tokens)[i])
-	{
-		(*tokens)[i] = lexer_expand_var((*tokens)[i], env->envp);
-		i++;
-	}
-	return (0);
+	return (ft_isalnum(c) || c == '_');
 }

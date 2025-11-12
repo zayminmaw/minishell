@@ -1,34 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/12 22:04:41 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/12 21:01:50 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/12 21:03:20 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "lexer.h"
-#include "utils.h"
+#include "libft.h"
 
-int	lexer(char *input, t_env *env, char ***tokens)
+char	ft_strcmp(char *s1, char *s2)
 {
-	int	i;
+	unsigned int	i;
 
-	input = lexer_pad_str(input);
-	if (!input)
-		return (1);
-	*tokens = lexer_tokenize(input);
-	free(input);
-	if (!(*tokens))
-		return (2);
 	i = 0;
-	while ((*tokens)[i])
-	{
-		(*tokens)[i] = lexer_expand_var((*tokens)[i], env->envp);
+	while (s1[i] == s2[i] && s1[i] && s2[i])
 		i++;
-	}
-	return (0);
+	return (s1[i] - s2[i]);
 }

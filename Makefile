@@ -13,10 +13,11 @@ PROMPT_DIR	=	prompt/
 PROMPT		=	prompt prompt_sig
 
 LEXER_DIR	=	lexer/
-LEXER		=	lexer lexer_pad_str lexer_tokenize
+LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var
 
 UTILS_DIR	=	utils/
-UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes
+UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
+				ft_validvarchar
 
 ENTRY		=	main
 
