@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 21:37:24 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/13 22:04:33 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,10 @@ int	lexer(char *input, t_env *env, char ***tokens)
 	if (!(*tokens))
 		return (2);
 	if (lexer_check_quote(*tokens))
-		return (ft_syntax_error(QUOTE_ERR, 1), ft_strarr_free(*tokens), 3);
+	{
+		ft_syntax_error(QUOTE_ERR, 1);
+		return (ft_strarr_free(*tokens), 3);
+	}
 	i = 0;
 	while ((*tokens)[i])
 	{
