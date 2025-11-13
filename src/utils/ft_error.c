@@ -6,14 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/04 21:58:43 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/13 21:30:22 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "globals.h"
 #include "utils.h"
 
-void	*ft_parse_error(t_parse_error err_type, int exit_err_no)
+void	*ft_syntax_error(t_parse_error err_type, int exit_err_no)
 {
 	g_status = exit_err_no;
 	if (err_type == QUOTE_ERR)

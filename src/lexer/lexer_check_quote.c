@@ -1,35 +1,39 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.c                                            :+:      :+:    :+:   */
+/*   lexer_check_quote.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 21:37:24 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/13 21:26:17 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/13 21:27:58 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
-#include "utils.h"
 
-int	lexer(char *input, t_env *env, char ***tokens)
+// If the quote is unmatch will return 1 and if match 0
+int	lexer_check_quote(char **tokens)
 {
-	int	i;
+	int		i;
+	int		j;
+	char	q;
 
-	input = lexer_pad_str(input);
-	if (!input)
-		return (1);
-	*tokens = lexer_tokenize(input);
-	free(input);
-	if (!(*tokens))
-		return (2);
-	if (lexer_check_quote(*tokens))
-		return (ft_syntax_error(QUOTE_ERR, 1), ft_strarr_free(*tokens), 3);
 	i = 0;
-	while ((*tokens)[i])
+	while (tokens[i])
 	{
-		(*tokens)[i] = lexer_expand_var((*tokens)[i], env->envp);
+		j = 0;
+		q = 0;
+		while (tokens[i][j])
+		{
+			if (!q && (tokens[i][j] == '\'' || tokens[i][j] == '"'))
+				q = tokens[i][j];
+			else if (q && tokens[i][j] == q)
+				q = 0;
+			j++;
+		}
+		if (q)
+			return (1);
 		i++;
 	}
 	return (0);
