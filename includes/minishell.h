@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/05 22:13:35 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:32:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ typedef enum e_node_type
 {
 	ALIEN,
 	CMD,
-	RUNIN_PARENT,
-	RUNIN_CHILD,
+	BUILDIN_PARENT,
+	BUILDIN_CHILD,
 	PIPE,
 	DOUBLE_AND,
 	DOUBLE_OR,

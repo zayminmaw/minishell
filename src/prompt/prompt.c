@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/07 21:14:54 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:53:38 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,12 +53,21 @@ static void	post_read_actions(char *input)
 
 int	interpret_and_run(char *input, t_env *env)
 {
-	char	**token;
+	int		i;
+	char	**tokens;
 	t_node	*nodes;
 
 	(void)nodes;
-	if (lexer(input, env, &token))
+	if (lexer(input, env, &tokens))
 		return (1);
+	i = 0;
+	while (tokens[i])
+	{
+		tokens[i] = ft_cleanquotes(tokens[i]);
+		if (!tokens[i])
+			return (ft_strarr_free(tokens), 2);
+		i++;
+	}
 	return (0);
 }
 

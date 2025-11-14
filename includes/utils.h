@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:11:06 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 21:30:38 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/14 19:17:27 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,5 +41,8 @@ int		ft_validvarchar(char c);
 
 // ft_appendchar.c
 char	*ft_appendchar(char *str, char c);
+
+// ft_cleanquotes.c
+char	*ft_cleanquotes(char *token);
 
 #endif
