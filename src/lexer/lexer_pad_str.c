@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:11:28 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/05 22:13:11 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/14 20:10:54 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,19 @@ static void	skip_quote(char *input, char *padded_str, int *i, int *j)
 
 static void	pad_string(char *input, char *padded_str, int *i, int *j)
 {
+	if ((input[*i] == '>' && input[*i + 1] == '>') || (input[*i] == '<'
+			&& input[*i + 1] == '<') || (input[*i] == '&' && input[*i
+			+ 1] == '&') || (input[*i] == '|' && input[*i + 1] == '|'))
+	{
+		if (*j > 0 && padded_str[*j - 1] != ' ')
+			padded_str[(*j)++] = ' ';
+		padded_str[(*j)++] = input[*i];
+		padded_str[(*j)++] = input[*i + 1];
+		*i += 2;
+		if (input[*i] && input[*i] != ' ')
+			padded_str[(*j)++] = ' ';
+		return ;
+	}
 	if (*j && padded_str[*j - 1] != ' ')
 		padded_str[(*j)++] = ' ';
 	padded_str[(*j)++] = input[(*i)++];

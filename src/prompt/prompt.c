@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/14 19:53:38 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/14 20:13:12 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,12 @@ int	interpret_and_run(char *input, t_env *env)
 			return (ft_strarr_free(tokens), 2);
 		i++;
 	}
+	// i = 0;
+	// while (tokens[i])
+	// {
+	// 	printf("%s\n", tokens[i]);
+	// 	i++;
+	// }
 	return (0);
 }
 
