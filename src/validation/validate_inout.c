@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:03:52 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 19:10:12 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/25 19:17:33 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 
 int	validate_inout(char **str)
 {
-	int saw_redir;
+	int	saw_redir;
 
 	saw_redir = 0;
 	while (*str)
@@ -29,7 +29,7 @@ int	validate_inout(char **str)
 		}
 		else
 			saw_redir = 0;
-		*str++;
+		str++;
 	}
 	return (0);
 }

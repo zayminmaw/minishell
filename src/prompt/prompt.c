@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/14 20:13:12 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/25 19:16:21 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "minishell.h"
 #include "prompt.h"
 #include "utils.h"
+#include "validation.h"
 
 static char	*get_prompt(char **envp)
 {
@@ -34,10 +35,10 @@ static char	*get_prompt(char **envp)
 	}
 	if (!username)
 	{
-		prompt = ft_strdup("minishell>");
+		prompt = ft_strdup("minishell> ");
 		return (prompt);
 	}
-	prompt = ft_strjoin(username, "@minishell>");
+	prompt = ft_strjoin(username, "@minishell> ");
 	free(username);
 	return (prompt);
 }
@@ -68,6 +69,8 @@ int	interpret_and_run(char *input, t_env *env)
 			return (ft_strarr_free(tokens), 2);
 		i++;
 	}
+	if (validate_inout(tokens))
+		return (ft_strarr_free(tokens), 3);
 	// i = 0;
 	// while (tokens[i])
 	// {
@@ -95,7 +98,7 @@ void	prompt(t_env *env)
 		post_read_actions(input);
 		if (ft_strlen(input))
 		{
-			if (interpret_and_run(input, env) == 3)
+			if (interpret_and_run(input, env) == 4)
 			{
 				free(input);
 				break ;

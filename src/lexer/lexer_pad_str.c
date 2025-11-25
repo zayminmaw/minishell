@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:11:28 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/14 20:10:54 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/25 19:17:49 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ static void	pad_string(char *input, char *padded_str, int *i, int *j)
 {
 	if ((input[*i] == '>' && input[*i + 1] == '>') || (input[*i] == '<'
 			&& input[*i + 1] == '<') || (input[*i] == '&' && input[*i
-			+ 1] == '&') || (input[*i] == '|' && input[*i + 1] == '|'))
+				+ 1] == '&') || (input[*i] == '|' && input[*i + 1] == '|'))
 	{
 		if (*j > 0 && padded_str[*j - 1] != ' ')
 			padded_str[(*j)++] = ' ';
