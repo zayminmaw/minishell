@@ -15,6 +15,9 @@ PROMPT		=	prompt prompt_sig
 LEXER_DIR	=	lexer/
 LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote
 
+VALIDATION_DIR	=	validation/
+VALIDATION		=	validate_inout
+
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
 				ft_validvarchar ft_cleanquotes
@@ -24,6 +27,7 @@ ENTRY		=	main
 SRC_FILES	+=	$(addprefix $(UTILS_DIR), $(UTILS))
 SRC_FILES	+=	$(addprefix $(PROMPT_DIR), $(PROMPT))
 SRC_FILES	+=	$(addprefix $(LEXER_DIR), $(LEXER))
+SRC_FILES	+=	$(addprefix $(VALIDATION_DIR), $(VALIDATION))
 SRC_FILES	+=  $(ENTRY)
 
 SRCS 		= 	$(addprefix $(SRCS_DIR), $(addsuffix .c, $(SRC_FILES)))
