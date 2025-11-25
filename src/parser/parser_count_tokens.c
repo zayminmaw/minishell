@@ -1,28 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_count_tokens.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 20:26:36 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/25 19:46:02 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/25 19:51:09 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
-t_node	*parser(char **tokens, t_env *env)
+int	parser_count_tokens(char **tokens)
 {
-	t_node	*nodes;
-	int		i;
+	int	i;
+	int	flag;
 
 	i = 0;
-	env->fd = NULL;
-	env->node_len = parser_count_tokens(tokens);
-	nodes = parser_init_nodes(env);
-	if (!nodes)
-		return (free(env), NULL);
-	return (nodes);
+	flag = 0;
+	while (*tokens)
+	{
+		if (ft_strncmp(*tokens, "|", 2) && ft_strncmp(*tokens, "||", 3)
+			&& ft_strncmp(*tokens, "&&", 3) && ft_strncmp(*tokens, "(", 2)
+			&& ft_strncmp(*tokens, ")", 2))
+		{
+			if (!flag)
+			{
+				flag = 1;
+				i++;
+			}
+		}
+		else
+		{
+			flag = 0;
+			i++;
+		}
+		tokens++;
+	}
+	return (i);
 }

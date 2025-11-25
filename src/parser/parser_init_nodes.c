@@ -1,28 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_init_nodes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 20:26:36 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/25 20:00:04 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/25 20:09:17 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
-t_node	*parser(char **tokens, t_env *env)
+t_node	*parser_init_nodes(t_env *env)
 {
 	t_node	*nodes;
 	int		i;
 
-	i = 0;
-	env->fd = NULL;
-	env->node_len = parser_count_tokens(tokens);
-	nodes = parser_init_nodes(env);
+	nodes = malloc(sizeof(t_node) * env->node_len);
 	if (!nodes)
-		return (free(env), NULL);
+		return (ft_process_error(MEM_ERR, 2));
+	i = 0;
+	while (i < env->node_len)
+	{
+		nodes[i].full_cmd = NULL;
+		nodes[i].exec_path = NULL;
+		nodes[i].infile = NULL;
+		nodes[i].outfile = NULL;
+		nodes[i].delimiter = NULL;
+		nodes[i].in_flag = 0;
+		nodes[i].out_flag = 0;
+		nodes[i].node_type = ALIEN;
+		nodes[i].env = env;
+		nodes[i].cmd_count = 0;
+		i++;
+	}
 	return (nodes);
 }

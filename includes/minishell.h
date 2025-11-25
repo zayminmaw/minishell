@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/14 19:32:28 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/25 20:08:21 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 
 typedef struct s_env
 {
-	int			px_len;
+	int			node_len;
 	int			**fd;
 	char		**envp;
 	char		*homepath;
@@ -48,8 +48,8 @@ typedef struct s_node
 	char		*infile;
 	char		*outfile;
 	char		*delimiter;
-	int			inner_cmd_count;
-	int			outer_cmd_count;
+	int			cmd_count;
+	int			real_cmd_count;
 	t_env		*env;
 }				t_node;
 
