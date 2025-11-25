@@ -19,7 +19,8 @@ VALIDATION_DIR	=	validation/
 VALIDATION		=	validate_inout
 
 PARSER_DIR	=	parser/
-PARSER		=	parser parser_count_tokens parser_init_nodes
+PARSER		=	parser parser_count_tokens parser_init_nodes parser_build_nodes \
+				parser_set_inout
 
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \

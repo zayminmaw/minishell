@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
+/*   parser_build_nodes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 20:37:09 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/25 20:32:40 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/25 21:23:55 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
-t_node	*parser(char **tokens, t_env *env)
+char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 {
-	t_node	*nodes;
-	int		i;
-
-	i = 0;
-	env->fd = NULL;
-	env->node_len = parser_count_tokens(tokens);
-	nodes = parser_init_nodes(env);
-	if (!nodes)
-		return (free(env), NULL);
-	while (i < env->node_len)
-	{
-		tokens = parser_build_nodes(&nodes[i], tokens, env->envp);
-		i++;
-	}
-	return (nodes);
+	tokens = parser_set_inout(node, tokens);
+	(void)envp;
+	return (tokens);
 }
