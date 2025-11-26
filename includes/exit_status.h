@@ -1,18 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   globals.h                                          :+:      :+:    :+:   */
+/*   exit_status.h                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/02 15:25:35 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 18:56:37 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/26 19:52:27 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/26 19:54:58 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GLOBALS_H
-# define GLOBALS_H
+#ifndef EXIT_STATUS_H
+# define EXIT_STATUS_H
 
-extern int	g_status;
+int		exit_status(int mode, int value);
+void	set_exit_status(int value);
+int	get_exit_status(void);
 
 #endif

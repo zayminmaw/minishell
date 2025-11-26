@@ -6,13 +6,13 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:10:07 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/12 21:56:23 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/26 19:56:58 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "globals.h"
 #include "lexer.h"
 #include "utils.h"
+#include "exit_status.h"
 
 static char	*join_and_free(char *s1, char *s2)
 {
@@ -32,7 +32,7 @@ static char	*get_var_value(char *var_name, char **envp)
 	if (!var_name || !*var_name)
 		return (ft_strdup(""));
 	if (!ft_strcmp(var_name, "?"))
-		return (ft_itoa(g_status));
+		return (ft_itoa(get_exit_status()));
 	i = 0;
 	len = ft_strlen(var_name);
 	while (envp[i])

@@ -6,22 +6,21 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:46:25 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/03 21:28:06 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/26 19:56:38 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "globals.h"
 #include "minishell.h"
 #include "utils.h"
 #include "prompt.h"
-
-int	g_status = 0;
+#include "exit_status.h"
 
 int	main(int argc, char **argv, char **envp)
 {
 	t_env	*env;
 
 	(void)argv;
+	set_exit_status(0);
 	if (ft_isenvempty(envp))
 		return (printf("Invalid env\n"), -1);
 	if (argc != 1)
@@ -39,5 +38,5 @@ int	main(int argc, char **argv, char **envp)
 	prompt(env);
 	ft_strarr_free(env->envp);
 	free(env);
-	return (g_status);
+	return (get_exit_status());
 }

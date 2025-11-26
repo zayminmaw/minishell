@@ -22,6 +22,9 @@ PARSER_DIR	=	parser/
 PARSER		=	parser parser_count_tokens parser_init_nodes parser_build_nodes \
 				parser_set_inout
 
+EXIT_DIR	=	exit_status/
+EXIT		=	exit_status
+
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
 				ft_validvarchar ft_cleanquotes
@@ -33,6 +36,7 @@ SRC_FILES	+=	$(addprefix $(PROMPT_DIR), $(PROMPT))
 SRC_FILES	+=	$(addprefix $(LEXER_DIR), $(LEXER))
 SRC_FILES	+=	$(addprefix $(VALIDATION_DIR), $(VALIDATION))
 SRC_FILES	+=	$(addprefix $(PARSER_DIR), $(PARSER))
+SRC_FILES	+=	$(addprefix $(EXIT_DIR), $(EXIT))
 SRC_FILES	+=  $(ENTRY)
 
 SRCS 		= 	$(addprefix $(SRCS_DIR), $(addsuffix .c, $(SRC_FILES)))

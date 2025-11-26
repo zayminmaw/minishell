@@ -6,16 +6,16 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 21:30:22 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/26 19:58:01 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "globals.h"
+#include "exit_status.h"
 #include "utils.h"
 
 void	*ft_syntax_error(t_parse_error err_type, int exit_err_no)
 {
-	g_status = exit_err_no;
+	set_exit_status(exit_err_no);
 	if (err_type == QUOTE_ERR)
 		printf("minishell: error while looking for matching quote\n");
 	else if (err_type == SYN_ERR)
@@ -25,7 +25,7 @@ void	*ft_syntax_error(t_parse_error err_type, int exit_err_no)
 
 void	*ft_env_error(t_env_error err_type, char *msg, int exit_err_no)
 {
-	g_status = exit_err_no;
+	set_exit_status(exit_err_no);
 	if (err_type == HOMESET_ERR)
 		printf("minishell: %s HOME not set\n", msg);
 	else if (err_type == PWDSET_ERR)
@@ -35,7 +35,7 @@ void	*ft_env_error(t_env_error err_type, char *msg, int exit_err_no)
 
 void	*ft_process_error(t_process_error err_type, int exit_err_no)
 {
-	g_status = exit_err_no;
+	set_exit_status(exit_err_no);
 	if (err_type == DUP_ERR)
 		printf("minishell: dup2 failed\n");
 	else if (err_type == FORK_ERR)
@@ -49,7 +49,7 @@ void	*ft_process_error(t_process_error err_type, int exit_err_no)
 
 void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 {
-	g_status = exit_err_no;
+	set_exit_status(exit_err_no);
 	if (err_type == DIR_ERR)
 		printf("minishell: no such file or directory: %s\n", msg);
 	else if (err_type == PERM_ERR)
