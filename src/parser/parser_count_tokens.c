@@ -6,13 +6,16 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:46:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 19:51:09 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/26 21:00:59 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
+// Count how many nodes (commands and operators) are in token list
+// Each command counts onace, no matter how many arguments it has
+// Each operator is also it's own node
 int	parser_count_tokens(char **tokens)
 {
 	int	i;
