@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 19:15:58 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 20:06:17 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 20:15:55 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static char	*construct_path(char **envp, char *token)
 	i = 0;
 	while (env_path[i])
 	{
-		path = ft_strjoin(env_path[i], "/");
+		path = ft_strjoin(env_path[i++], "/");
 		path_and_cmd = ft_strjoin(path, token);
 		free(path);
 		if (access(path_and_cmd, F_OK) == 0)
@@ -61,4 +61,5 @@ char	*parser_build_path(char **envp, char *token)
 		return (ft_strdup(token));
 	else if (count_slash(token) == 0)
 		return (construct_path(envp, token));
+	return (NULL);
 }
