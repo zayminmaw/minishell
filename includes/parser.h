@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:50 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/26 20:43:10 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 19:22:31 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,5 +21,6 @@ t_node	*parser_init_nodes(t_env *env);
 char	**parser_build_nodes(t_node *node, char **tokens, char **envp);
 char	**parser_set_inout(t_node *node, char **tokens);
 int		parser_resolve_nodes(char *token, t_node *node);
+char	*parser_build_path(char **envp, char *path);
 
 #endif

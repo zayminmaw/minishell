@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 19:11:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 19:12:36 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 19:26:13 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,9 @@ char	*ft_getenv(char **envp, char *env_key)
 		i++;
 	}
 	return (NULL);
+}
+
+char	**ft_get_pathenv(char **envp)
+{
+	return (ft_split(ft_getenv(envp, "PATH"), ':'));
 }

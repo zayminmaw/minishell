@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:11:06 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 19:12:13 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 19:26:48 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,5 +47,6 @@ char	*ft_cleanquotes(char *token);
 
 // ft_getenv.c
 char	*ft_getenv(char **envp, char *env_key);
+char	**ft_get_pathenv(char **envp);
 
 #endif

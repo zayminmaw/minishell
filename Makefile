@@ -20,7 +20,7 @@ VALIDATION		=	validate_inout
 
 PARSER_DIR	=	parser/
 PARSER		=	parser parser_count_tokens parser_init_nodes parser_build_nodes \
-				parser_set_inout parser_resolve_nodes
+				parser_set_inout parser_resolve_nodes parser_build_path
 
 EXIT_DIR	=	exit_status/
 EXIT		=	exit_status
