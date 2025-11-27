@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:50:12 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 21:24:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 19:13:59 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ static char	**parser_set_inout_exp(t_node *node, char **t, int *f)
 	return (t);
 }
 
+// set infile, outfile, delimiter and type of redirect arrow
 char	**parser_set_inout(t_node *node, char **tokens)
 {
 	int	flag;

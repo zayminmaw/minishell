@@ -6,13 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:00:04 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 20:09:17 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 19:14:26 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
+// init empty nodes
 t_node	*parser_init_nodes(t_env *env)
 {
 	t_node	*nodes;

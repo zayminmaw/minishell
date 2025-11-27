@@ -27,7 +27,7 @@ EXIT		=	exit_status
 
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
-				ft_validvarchar ft_cleanquotes
+				ft_validvarchar ft_cleanquotes ft_getenv
 
 ENTRY		=	main
 
