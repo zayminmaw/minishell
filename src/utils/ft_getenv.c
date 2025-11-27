@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 19:11:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 19:26:13 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/27 20:29:14 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 char	*ft_getenv(char **envp, char *env_key)
 {
-	int i;
-	int key_len;
+	int	i;
+	int	key_len;
 
 	key_len = ft_strlen(env_key);
 	i = 0;

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_count_tokens.c                              :+:      :+:    :+:   */
+/*   parser_count_nodes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/25 19:46:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/26 21:00:59 by zmin             ###   ########.fr       */
+/*   Created: 2025/11/27 20:19:10 by zmin              #+#    #+#             */
+/*   Updated: 2025/11/27 20:19:38 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 // Count how many nodes (commands and operators) are in token list
 // Each command counts onace, no matter how many arguments it has
 // Each operator is also it's own node
-int	parser_count_tokens(char **tokens)
+int	parser_count_nodes(char **tokens)
 {
 	int	i;
 	int	flag;
