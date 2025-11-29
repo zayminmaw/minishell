@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/26 19:58:43 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 13:25:52 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,14 @@ int	interpret_and_run(char *input, t_env *env)
 		return (ft_strarr_free(tokens), 3);
 	nodes = parser(tokens, env);
 	(void)nodes;
-	// i = 0;
+	return (0);
+}
+// i = 0;
 	// while (tokens[i])
 	// {
 	// 	printf("%s\n", tokens[i]);
 	// 	i++;
 	// }
-	return (0);
-}
 
 void	prompt(t_env *env)
 {
