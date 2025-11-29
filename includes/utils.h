@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:11:06 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 16:28:30 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 16:33:44 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,5 +51,8 @@ char	**ft_get_pathenv(char **envp);
 
 // ft_freeenv.c
 void	ft_freeenv(t_env *env);
+
+// ft_freenodes.c
+void	ft_freenodes(t_node *nodes);
 
 #endif
