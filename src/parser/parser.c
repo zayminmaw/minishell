@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 14:07:23 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 16:10:10 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,7 @@ t_node	*parser(char **tokens, t_env *env)
 		tokens = parser_build_nodes(&nodes[i], tokens, env->envp);
 		i++;
 	}
+	parser_count_cmd(nodes);
 	print_node_array(nodes, env->node_len);
 	return (nodes);
 }
@@ -44,7 +45,7 @@ void print_node_array(t_node *nodes, int array_size)
     while (i < array_size)
     {
         printf("\nNode %d Details:\n", i);
-        printf("  Node Type:       %d\n", nodes[i].node_type);
+        printf("  Node Type:       %d\n", nodes[i].type);
         printf("  Exec Path:       %s\n", nodes[i].exec_path ? nodes[i].exec_path : "(NULL)");
         
         printf("  Full Command:    [ ");

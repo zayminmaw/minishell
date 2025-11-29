@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:12:11 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/26 20:57:49 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 15:59:43 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,22 @@ int	parser_resolve_nodes(char *token, t_node *node)
 		return (1);
 	if (!ft_strcmp(token, "export") || !ft_strcmp(token, "cd")
 		|| !ft_strcmp(token, "unset") || !ft_strcmp(token, "exit"))
-		return (node->node_type = BUILDIN_PARENT, 1);
+		return (node->type = BUILDIN_PARENT, 1);
 	else if (!ft_strcmp(token, "echo") || !ft_strcmp(token, "pwd")
 		|| !ft_strcmp(token, "env"))
-		return (node->node_type = BUILDIN_CHILD, 1);
+		return (node->type = BUILDIN_CHILD, 1);
 	else if (!ft_strcmp(token, "&&"))
-		node->node_type = DOUBLE_AND;
+		node->type = DOUBLE_AND;
 	else if (!ft_strcmp(token, "||"))
-		node->node_type = DOUBLE_OR;
+		node->type = DOUBLE_OR;
 	else if (!ft_strcmp(token, "|"))
-		node->node_type = PIPE;
+		node->type = PIPE;
 	else if (!ft_strcmp(token, "("))
-		node->node_type = L_PAR;
+		node->type = L_PAR;
 	else if (!ft_strcmp(token, ")"))
-		node->node_type = R_PAR;
-	if (node->node_type != ALIEN)
+		node->type = R_PAR;
+	if (node->type != ALIEN)
 		return (2);
-	node->node_type = CMD;
+	node->type = CMD;
 	return (0);
 }

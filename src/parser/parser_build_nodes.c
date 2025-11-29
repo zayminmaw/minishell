@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:32:40 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 14:34:30 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 15:59:43 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 	tokens = parser_set_inout(node, tokens);
 	if (!parser_resolve_nodes(*tokens, node))
 		node->exec_path = parser_build_path(envp, *tokens);
-	else if (node->node_type == BUILDIN_CHILD
-		|| node->node_type == BUILDIN_PARENT)
+	else if (node->type == BUILDIN_CHILD
+		|| node->type == BUILDIN_PARENT)
 		node->exec_path = ft_strdup(*tokens);
 	else
 		return (++tokens);

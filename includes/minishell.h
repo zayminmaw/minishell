@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 20:08:21 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 15:59:43 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ typedef enum e_node_type
 // out_flag 0 = none, 1 = >, 2 = >>
 typedef struct s_node
 {
-	t_node_type	node_type;
+	t_node_type	type;
 	char		*exec_path;
 	char		**full_cmd;
 	int			in_flag;
