@@ -6,13 +6,16 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:50:12 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 19:13:59 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 13:41:07 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
+// check if it's redir and if so assign them number
+// then check if next parameter if not redir
+// assume it's file name or delimiter and set the value
 static char	**parser_set_inout_exp(t_node *node, char **t, int *f)
 {
 	if (*t && (!ft_strncmp(*t, ">", 2) || !ft_strncmp(*t, "<", 2)
