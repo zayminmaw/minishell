@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 16:10:10 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/29 16:27:25 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_node	*parser(char **tokens, t_env *env)
 	env->node_len = parser_count_nodes(tokens);
 	nodes = parser_init_nodes(env);
 	if (!nodes)
-		return (free(env), NULL);
+		return (ft_freeenv(env), NULL);
 	while (i < env->node_len)
 	{
 		tokens = parser_build_nodes(&nodes[i], tokens, env->envp);
