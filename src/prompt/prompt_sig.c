@@ -14,6 +14,9 @@
 #include "utils.h"
 #include "exit_status.h"
 
+/* Readline function declarations for compatibility */
+void	rl_replace_line(const char *text, int clear_undo);
+
 static void	show_new_line(int sig)
 {
 	if (sig == SIGINT)

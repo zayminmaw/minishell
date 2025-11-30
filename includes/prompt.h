@@ -13,11 +13,11 @@
 #ifndef PROMPT_H
 # define PROMPT_H
 
+# include <stdio.h>
+# include <signal.h>
+# include <sys/ioctl.h>
 # include <readline/readline.h>
 # include <readline/history.h>
-# include <signal.h>
-# include <stdio.h>
-# include <sys/ioctl.h>
 # include "minishell.h"
 
 void	override_sig(void);

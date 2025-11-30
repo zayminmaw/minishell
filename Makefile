@@ -4,7 +4,11 @@ LIBFT		=	libft
 
 CC			=	cc
 
-CFLAGS		=	-Wall -Werror -Wextra -I ./includes
+READLINE_PATH	=	$(shell brew --prefix readline)
+READFLAG	=	-lreadline -L$(READLINE_PATH)/lib
+READINCLUDE	=	-I$(READLINE_PATH)/include
+
+CFLAGS		=	-Wall -Werror -Wextra -I ./includes $(READINCLUDE)
 
 SRCS_DIR	=	src/
 OBJS_DIR	=	obj/
@@ -51,7 +55,7 @@ all: ${NAME}
 
 ${NAME}: ${OBJS}
 	@make -C ${LIBFT}
-	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME) -lreadline
+	@$(CC) $(CFLAGS) $(OBJS) ./libft/libft.a -o $(NAME) $(READFLAG)
 
 clean: 
 	rm -rf ${OBJS_DIR}
