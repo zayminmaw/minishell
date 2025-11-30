@@ -1,23 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins.h                                         :+:      :+:    :+:   */
+/*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/30 18:57:45 by wmin-kha         ###   ########.fr       */
+/*   Created: 2025/11/30 17:46:02 by wmin-kha          #+#    #+#             */
+/*   Updated: 2025/11/30 17:46:03 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILDINS_H
-# define BUILDINS_H
-
-# include "minishell.h"
-
-int		is_buildin(char *cmd);
-int		is_parent_buildin(char *cmd);
-void	exec_buildin_child(t_node *node);
-int		exec_buildin_parent(t_node *node);
-
-#endif

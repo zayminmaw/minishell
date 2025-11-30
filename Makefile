@@ -34,6 +34,12 @@ UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
 				ft_validvarchar ft_cleanquotes ft_getenv ft_freeenv ft_freenodes
 
+BUILDINS_DIR=	buildins/
+BUILDINS	=	buildin_manager ft_unset
+
+EXEC_DIR	=	executor/
+EXEC		=	executor heredoc pipes redirections
+
 ENTRY		=	main
 
 SRC_FILES	+=	$(addprefix $(UTILS_DIR), $(UTILS))
@@ -42,6 +48,8 @@ SRC_FILES	+=	$(addprefix $(LEXER_DIR), $(LEXER))
 SRC_FILES	+=	$(addprefix $(VALIDATION_DIR), $(VALIDATION))
 SRC_FILES	+=	$(addprefix $(PARSER_DIR), $(PARSER))
 SRC_FILES	+=	$(addprefix $(EXIT_DIR), $(EXIT))
+SRC_FILES	+=	$(addprefix $(BUILDINS_DIR), $(BUILDINS))
+SRC_FILES	+=	$(addprefix $(EXEC_DIR), $(EXEC))
 SRC_FILES	+=  $(ENTRY)
 
 SRCS 		= 	$(addprefix $(SRCS_DIR), $(addsuffix .c, $(SRC_FILES)))

@@ -1,23 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins.h                                         :+:      :+:    :+:   */
+/*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/30 18:57:45 by wmin-kha         ###   ########.fr       */
+/*   Created: 2025/11/30 18:01:39 by wmin-kha          #+#    #+#             */
+/*   Updated: 2025/11/30 19:07:13 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILDINS_H
-# define BUILDINS_H
+#ifndef EXECUTOR_H
+# define EXECUTOR_H
 
-# include "minishell.h"
+#include "minishell.h"
 
-int		is_buildin(char *cmd);
-int		is_parent_buildin(char *cmd);
-void	exec_buildin_child(t_node *node);
-int		exec_buildin_parent(t_node *node);
+void	executor(t_node *nodes);
 
 #endif

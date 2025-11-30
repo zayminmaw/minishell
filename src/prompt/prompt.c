@@ -3,13 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 13:25:52 by zmin             ###   ########.fr       */
+/*   Updated: 2025/11/30 19:08:16 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "executor.h"
 #include "lexer.h"
 #include "minishell.h"
 #include "parser.h"
@@ -72,15 +73,16 @@ int	interpret_and_run(char *input, t_env *env)
 	if (validate_inout(tokens))
 		return (ft_strarr_free(tokens), 3);
 	nodes = parser(tokens, env);
-	(void)nodes;
+	executor(nodes);
+	ft_freenodes(nodes);
 	return (0);
 }
 // i = 0;
-	// while (tokens[i])
-	// {
-	// 	printf("%s\n", tokens[i]);
-	// 	i++;
-	// }
+// while (tokens[i])
+// {
+// 	printf("%s\n", tokens[i]);
+// 	i++;
+// }
 
 void	prompt(t_env *env)
 {
