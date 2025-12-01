@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:03:07 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/01 19:39:10 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 20:03:38 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void	exec_buildin_child(t_node *node)
 {
 	if (!ft_strcmp(node->full_cmd[0], "echo"))
 		set_exit_status(ft_echo(node));
+	if (!ft_strcmp(node->full_cmd[0], "pwd"))
+		set_exit_status(ft_pwd());
 	// printf("minishell: %s: buildin not implemented yet\n", node->full_cmd[0]);
 	exit(0);
 }

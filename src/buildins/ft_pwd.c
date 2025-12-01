@@ -1,30 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins.h                                         :+:      :+:    :+:   */
+/*   ft_pwd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 19:59:38 by zmin             ###   ########.fr       */
+/*   Created: 2025/12/01 19:49:14 by zmin              #+#    #+#             */
+/*   Updated: 2025/12/01 20:05:59 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILDINS_H
-# define BUILDINS_H
+#include "buildins.h"
+#include "utils.h"
 
-# include "minishell.h"
+int	ft_pwd(void)
+{
+	char	*cwd;
 
-// buildins.c
-int		is_buildin(char *cmd);
-int		is_parent_buildin(char *cmd);
-void	exec_buildin_child(t_node *node);
-int		exec_buildin_parent(t_node *node);
-
-// ft_echo
-int		ft_echo(t_node *node);
-
-// ft_pwd
-int		ft_pwd(void);
-
-#endif
+	cwd = getcwd(NULL, 0);
+	if (cwd == NULL)
+	{
+		perror("pwd:");
+		return (1);
+	}
+	printf("%s\n", (char *)cwd);
+	free(cwd);
+	return (0);
+}
