@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/01 19:21:49 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 19:43:00 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 19:44:03 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,24 @@ static void	check_nflag(t_node *node, int *i, int *n_flag)
 		while (node->full_cmd[*i][j] == 'n')
 			j++;
 		if (node->full_cmd[*i][j] != '\0')
-			break;
+			break ;
 		*n_flag = 1;
-		(*i)++;	
+		(*i)++;
 	}
 }
 
 int	ft_echo(t_node *node)
 {
-	int i;
-	int n_flag;
+	int	i;
+	int	n_flag;
 
 	i = 1;
 	n_flag = 0;
 	check_nflag(node, &i, &n_flag);
-	while(node->full_cmd[i])
+	while (node->full_cmd[i])
 	{
 		printf("%s", node->full_cmd[i]);
-		if (node->full_cmd[i+1])
+		if (node->full_cmd[i + 1])
 			printf(" ");
 		i++;
 	}
