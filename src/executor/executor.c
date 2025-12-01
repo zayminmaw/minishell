@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/01 16:58:55 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/02 00:41:10 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,7 @@ static void	execute_single_cmd(t_node *node)
 	}
 	if (validate_infile(node) || validate_outfile(node))
 		return ;
+	write_heredoc(node);
 	pid = fork();
 	if (pid < 0)
 	{
