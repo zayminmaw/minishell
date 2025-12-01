@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 17:07:41 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/02 02:05:06 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,14 +63,19 @@ void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 	return (NULL);
 }
 
-// void	ft_perror(char *cmd)
-// {
-// 	write(2, "minishell: ", 11);
-// 	if (cmd)
-// 	{
-// 		write(2, cmd, ft_strlen(cmd));
-// 		write(2, ": ", 2);
-// 	}
-// 	write(2, strerror(errno), ft_strlen(strerror(errno)));
-// 	write(2, "\n", 1);
-// }
+void	ft_perror(char *prefix, char *arg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (prefix)
+	{
+		ft_putstr_fd(prefix, 2);
+		ft_putstr_fd(": ", 2);
+	}
+	write(2, strerror(errno), ft_strlen(strerror(errno)));
+	if (arg)
+	{
+		ft_putstr_fd(": ", 2);
+		ft_putstr_fd(arg, 2);
+		ft_putstr_fd("\n", 2);
+	}
+}
