@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_set_fullcmd.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 14:08:48 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 14:32:35 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 17:04:03 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ char	**parser_set_fullcmd(t_node *node, int args_count, char **tokens)
 	if (node->exec_path)
 		node->full_cmd[i++] = ft_strdup(node->exec_path);
 	else
-		node->full_cmd[i++] = ft_strdup("null");
+		node->full_cmd[i++] = ft_strdup(*tokens);
 	tokens++;
 	while (i < args_count)
 	{

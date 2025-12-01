@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:11:06 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 16:33:44 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 16:55:04 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include "../libft/includes/libft.h"
 # include "minishell.h"
+# include <errno.h>
 # include <stdio.h>
 
 // ft_isenvempty
