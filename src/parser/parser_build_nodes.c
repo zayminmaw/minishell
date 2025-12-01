@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:32:40 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 15:59:43 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 18:32:05 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,8 @@
 // return pointer of next token
 char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 {
-	int args_count;
-	
+	int	args_count;
+
 	tokens = parser_set_inout(node, tokens);
 	if (!parser_resolve_nodes(*tokens, node))
 		node->exec_path = parser_build_path(envp, *tokens);

@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 16:29:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 16:33:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 18:31:47 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,8 @@
 
 void	ft_freenodes(t_node *nodes)
 {
-	int i;
-	int len;
+	int	i;
+	int	len;
 
 	len = nodes->env->node_len;
 	i = 0;
