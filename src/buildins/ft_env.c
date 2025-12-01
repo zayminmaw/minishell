@@ -1,33 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   buildins.h                                         :+:      :+:    :+:   */
+/*   ft_env.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 20:20:04 by zmin             ###   ########.fr       */
+/*   Created: 2025/12/01 20:18:18 by zmin              #+#    #+#             */
+/*   Updated: 2025/12/01 20:19:12 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILDINS_H
-# define BUILDINS_H
+#include "buildins.h"
+#include "utils.h"
 
-# include "minishell.h"
-
-// buildins.c
-int		is_buildin(char *cmd);
-int		is_parent_buildin(char *cmd);
-void	exec_buildin_child(t_node *node);
-int		exec_buildin_parent(t_node *node);
-
-// ft_echo.c
-int		ft_echo(t_node *node);
-
-// ft_pwd.c
-int		ft_pwd(void);
-
-// ft_env.c
-int		ft_env(char **env);
-
-#endif
+int	ft_env(char **env)
+{
+	int	i;
+	
+	i = 0;
+	while (env[i])
+	{
+		printf("%s\n", env[i]);
+		i++;
+	}
+	return (0);
+}
