@@ -6,14 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:03:07 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/01 18:30:37 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/01 19:39:10 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildins.h"
 #include "minishell.h"
 #include "utils.h"
-#include <stdio.h>
+#include "exit_status.h"
 
 int	is_buildin(char *cmd)
 {
@@ -31,7 +31,7 @@ int	is_buildin(char *cmd)
 		return (1);
 	if (!ft_strcmp(cmd, "env"))
 		return (1);
-	if (!ft_strcmp(cmd, "exit"))
+	if (!ft_strcmp(cmd,  "exit"))
 		return (1);
 	return (0);
 }
@@ -51,7 +51,9 @@ int	is_parent_buildin(char *cmd)
 
 void	exec_buildin_child(t_node *node)
 {
-	printf("minishell: %s: buildin not implemented yet\n", node->full_cmd[0]);
+	if (!ft_strcmp(node->full_cmd[0], "echo"))
+		set_exit_status(ft_echo(node));
+	// printf("minishell: %s: buildin not implemented yet\n", node->full_cmd[0]);
 	exit(0);
 }
 

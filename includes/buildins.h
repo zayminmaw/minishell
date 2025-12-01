@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/30 18:57:45 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/01 19:37:51 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,13 @@
 
 # include "minishell.h"
 
+// buildins.c
 int		is_buildin(char *cmd);
 int		is_parent_buildin(char *cmd);
 void	exec_buildin_child(t_node *node);
 int		exec_buildin_parent(t_node *node);
+
+// ft_echo
+int	ft_echo(t_node *node);
 
 #endif
