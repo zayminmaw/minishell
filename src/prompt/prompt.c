@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/30 19:08:16 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/02 23:04:02 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static void	post_read_actions(char *input)
 int	interpret_and_run(char *input, t_env *env)
 {
 	int		i;
+	int		status;
 	char	**tokens;
 	t_node	*nodes;
 
@@ -73,9 +74,9 @@ int	interpret_and_run(char *input, t_env *env)
 	if (validate_inout(tokens))
 		return (ft_strarr_free(tokens), 3);
 	nodes = parser(tokens, env);
-	executor(nodes);
+	status = executor(nodes);
 	ft_freenodes(nodes);
-	return (0);
+	return (status);
 }
 // i = 0;
 // while (tokens[i])

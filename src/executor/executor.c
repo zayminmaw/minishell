@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/02 00:41:10 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/02 23:34:36 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,41 +60,43 @@ static void	wait_and_set_status(pid_t pid)
 		set_exit_status(WEXITSTATUS(status));
 }
 
-static void	execute_single_cmd(t_node *node)
+static int	execute_single_cmd(t_node *node)
 {
 	pid_t	pid;
-	int		status;
 
 	if (node->type == BUILDIN_PARENT)
 	{
-		status = exec_buildin_parent(node);
-		set_exit_status(status);
-		return ;
+		if (exec_buildin_parent(node))
+			return (4);
+		return (0);
 	}
 	if (validate_infile(node) || validate_outfile(node))
-		return ;
+		return (0);
 	write_heredoc(node);
 	pid = fork();
 	if (pid < 0)
 	{
 		ft_process_error(FORK_ERR, 1);
-		return ;
+		return (0);
 	}
 	if (pid == 0)
 		execute_child_process(node);
 	wait_and_set_status(pid);
+	return (0);
 }
 
-void	executor(t_node *nodes)
+int	executor(t_node *nodes)
 {
 	int	i;
 
 	if (!nodes)
-		return ;
+		return (0);
 	i = 0;
 	while (i < nodes->env->node_len)
 	{
-		execute_single_cmd(&nodes[i]);
+		if (execute_single_cmd(&nodes[i]) == 4)
+			return (4);
 		i++;
 	}
+	return (0);
 }
