@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/02 23:34:36 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/03 22:13:08 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ static void	execute_child_process(t_node *node)
 {
 	handle_redirections(node);
 	if (node->type == BUILDIN_CHILD)
+	{
 		exec_buildin_child(node);
+		exit(get_exit_status());
+	}
 	else
 	{
 		execve(node->exec_path, node->full_cmd, node->env->envp);
@@ -63,11 +66,14 @@ static void	wait_and_set_status(pid_t pid)
 static int	execute_single_cmd(t_node *node)
 {
 	pid_t	pid;
+	int		exit_status;
 
 	if (node->type == BUILDIN_PARENT)
 	{
-		if (exec_buildin_parent(node))
+		exit_status = exec_buildin_parent(node);
+		if (exit_status == 1)
 			return (4);
+		set_exit_status(exit_status);
 		return (0);
 	}
 	if (validate_infile(node) || validate_outfile(node))
