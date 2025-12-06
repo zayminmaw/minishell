@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:03:07 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/06 17:54:02 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/06 18:08:10 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,10 +53,10 @@ void	exec_buildin_child(t_node *node)
 
 int	exec_buildin_parent(t_node *node)
 {
-	if (ft_strcmp(node->full_cmd[0], "exit") == 0)
+	if (ft_strcmp(node->full_cmd[0], "unset") == 0)
+		node->env->envp = ft_unset(node);
+	else if (ft_strcmp(node->full_cmd[0], "exit") == 0)
 		if (ft_exit(node))
 			return (1);
-	else if (ft_strcmp(node->full_cmd[0], "unset") == 0)
-		node->env->envp = ft_unset(node);
 	return (0);
 }
