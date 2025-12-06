@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:03:07 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/02 20:19:08 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/06 17:54:02 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,20 @@ int	is_parent_buildin(char *cmd)
 
 void	exec_buildin_child(t_node *node)
 {
-	if (!ft_strcmp(node->full_cmd[0], "echo"))
+	if (ft_strcmp(node->full_cmd[0], "echo") == 0)
 		set_exit_status(ft_echo(node));
-	if (!ft_strcmp(node->full_cmd[0], "pwd"))
+	if (ft_strcmp(node->full_cmd[0], "pwd") == 0)
 		set_exit_status(ft_pwd());
-	if (!ft_strcmp(node->full_cmd[0], "env"))
+	if (ft_strcmp(node->full_cmd[0], "env") == 0)
 		set_exit_status(ft_env(node->env->envp));
-	// printf("minishell: %s: buildin not implemented yet\n", node->full_cmd[0]);
 }
 
 int	exec_buildin_parent(t_node *node)
 {
-	if (!ft_strcmp(node->full_cmd[0], "exit"))
+	if (ft_strcmp(node->full_cmd[0], "exit") == 0)
 		if (ft_exit(node))
 			return (1);
-	// printf("minishell: %s: buildin not implemented yet\n", node->full_cmd[0]);
+	else if (ft_strcmp(node->full_cmd[0], "unset") == 0)
+		node->env->envp = ft_unset(node);
 	return (0);
 }
