@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:03:52 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 18:35:29 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/06 17:48:02 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "validation.h"
 
 // return 0 if valid and 1 if not. 
-// validate if redir are followed by actural params
+// validate if redir are followed by actual params
 int	validate_inout(char **str)
 {
 	int	saw_redir;
