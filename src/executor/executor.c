@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/08 00:52:39 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/08 01:22:34 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,10 @@ static void	execute_pipeline_child(t_node *node, int cmd_index)
 	else
 	{
 		execve(node->exec_path, node->full_cmd, node->env->envp);
-		ft_file_error(CMD_ERR, node->full_cmd[0], 127);
+		if (ft_strchr(node->full_cmd[0], '/'))
+			ft_file_error(DIR_ERR, node->full_cmd[0], 127);
+		else
+			ft_file_error(CMD_ERR, node->full_cmd[0], 127);
 		exit(127);
 	}
 }
@@ -65,8 +68,8 @@ static int	execute_pipeline(t_node *nodes, int start)
 	int		cmd_index;
 	pid_t	pid;
 
-	printf("DEBUG: cmd_count=%d, real_cmd_count=%d, start=%d\n",
-		nodes[start].cmd_count, nodes[start].real_cmd_count, start);
+	// printf("DEBUG: cmd_count=%d, real_cmd_count=%d, start=%d\n",
+	// 	nodes[start].cmd_count, nodes[start].real_cmd_count, start);
 	alloc_pipes(&nodes[start]);
 	if (!nodes[start].env->fd && nodes[start].cmd_count > 1)
 		return (0);
@@ -139,7 +142,10 @@ static void	execute_child_process(t_node *node)
 	else
 	{
 		execve(node->exec_path, node->full_cmd, node->env->envp);
-		ft_file_error(CMD_ERR, node->full_cmd[0], 127);
+		if (ft_strchr(node->full_cmd[0], '/'))
+			ft_file_error(DIR_ERR, node->full_cmd[0], 127);
+		else
+			ft_file_error(CMD_ERR, node->full_cmd[0], 127);
 		exit(127);
 	}
 }
