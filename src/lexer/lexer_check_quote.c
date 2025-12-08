@@ -6,13 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/13 21:26:17 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 21:27:58 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/08 19:26:36 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
 // If the quote is unmatch will return 1 and if match 0
+// unmatched as in not a pair
 int	lexer_check_quote(char **tokens)
 {
 	int		i;

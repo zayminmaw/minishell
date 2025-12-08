@@ -6,13 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:11:28 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/25 19:17:49 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/08 19:12:42 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "utils.h"
 
+// copy everythin inside the quote ' or " into padded_str
 static void	skip_quote(char *input, char *padded_str, int *i, int *j)
 {
 	char	q;
@@ -25,6 +26,15 @@ static void	skip_quote(char *input, char *padded_str, int *i, int *j)
 		padded_str[(*j)++] = input[(*i)++];
 }
 
+// padding for shell special characters with spaces
+// It checks for two-character operators (>>, <<, &&, ||)
+// 1. adds a preceding space if needed
+// 2. copies the two-character operator
+// 3. adds a trailing space if the next character isn't already one
+// If it's a single character operator (>, <, |, &)
+// 1. adds a preceding space if needed
+// 2. copies the single character
+// 3. adds a trailing space if the next character isn't already one
 static void	pad_string(char *input, char *padded_str, int *i, int *j)
 {
 	if ((input[*i] == '>' && input[*i + 1] == '>') || (input[*i] == '<'
@@ -48,6 +58,12 @@ static void	pad_string(char *input, char *padded_str, int *i, int *j)
 }
 
 // adding space before and after shell special characters
+// malloc for padded_str
+// mutiply strlen by 3 as in still work in worse case scenario
+// iterate the input
+// 1. skip_quote aka copy everthing inside the quote
+// 2. check if the input[i] is a special shell characters
+// 3. else copy the input[i] as its.
 char	*lexer_pad_str(char *input)
 {
 	char	*padded_str;

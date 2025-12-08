@@ -6,14 +6,17 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:10:07 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/26 19:56:58 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/08 20:03:00 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "exit_status.h"
 #include "lexer.h"
 #include "utils.h"
-#include "exit_status.h"
 
+// join two string from param
+// free 2 param
+// return new malloc string
 static char	*join_and_free(char *s1, char *s2)
 {
 	char	*tmp;
@@ -24,6 +27,11 @@ static char	*join_and_free(char *s1, char *s2)
 	return (tmp);
 }
 
+// if var name empty return empty string
+// if ? return exit status
+// interate the envp and compare
+// return the value by shifting the pointer to value
+// if not found return empty
 static char	*get_var_value(char *var_name, char **envp)
 {
 	int	i;
@@ -31,19 +39,27 @@ static char	*get_var_value(char *var_name, char **envp)
 
 	if (!var_name || !*var_name)
 		return (ft_strdup(""));
-	if (!ft_strcmp(var_name, "?"))
+	if (ft_strcmp(var_name, "?") == 0)
 		return (ft_itoa(get_exit_status()));
 	i = 0;
 	len = ft_strlen(var_name);
 	while (envp[i])
 	{
-		if (!ft_strncmp(envp[i], var_name, len) && envp[i][len] == '=')
+		if (ft_strncmp(envp[i], var_name, len) == 0 && envp[i][len] == '=')
 			return (ft_strdup(envp[i] + len + 1));
 		i++;
 	}
 	return (ft_strdup(""));
 }
 
+// increment i to pass $
+// if the var name is not valid return $
+// get start
+// if s[*i] is just ? increment one time
+// else interate until not valid var name
+// get var name from start to *i - start
+// get var value
+// free var name as it has no more use
 static char	*expand_var(char *s, int *i, char **envp)
 {
 	int		start;
@@ -65,6 +81,13 @@ static char	*expand_var(char *s, int *i, char **envp)
 	return (var_value);
 }
 
+// allocate empty string res
+// iterate the tokens
+// do nothing if in single quote
+// else expand var and add it to res
+// if it's not a var add it as a normal char
+// after loop is done free old token
+// return res as new token
 char	*lexer_expand_var(char *token, char **envp)
 {
 	int		i;

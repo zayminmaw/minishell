@@ -6,13 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 22:04:33 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/08 18:59:24 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "utils.h"
 
+// 
 int	lexer(char *input, t_env *env, char ***tokens)
 {
 	int	i;
