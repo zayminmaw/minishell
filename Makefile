@@ -38,7 +38,7 @@ BUILDINS_DIR=	buildins/
 BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit
 
 EXEC_DIR	=	executor/
-EXEC		=	executor heredoc pipes redirections
+EXEC		=	executor heredoc pipes redirections logical_operator executor_auxiliary pipeline_executor
 
 ENTRY		=	main
 

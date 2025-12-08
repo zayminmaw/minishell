@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/02 02:02:58 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/08 20:32:05 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,4 +85,24 @@ void	handle_redirections(t_node *node)
 {
 	handle_input_redirect(node);
 	handle_output_redirect(node);
+}
+
+int	validate_infile(t_node *node)
+{
+	if (node->in_flag != 1)
+		return (0);
+	if (access(node->infile, F_OK) < 0)
+		return (ft_file_error(DIR_ERR, node->infile, 1), 1);
+	if (access(node->infile, R_OK) < 0)
+		return (ft_file_error(PERM_ERR, node->infile, 1), 1);
+	return (0);
+}
+
+int	validate_outfile(t_node *node)
+{
+	if (node->out_flag == 0)
+		return (0);
+	if (access(node->outfile, F_OK) == 0 && access(node->outfile, W_OK) < 0)
+		return (ft_file_error(PERM_ERR, node->outfile, 1), 1);
+	return (0);
 }
