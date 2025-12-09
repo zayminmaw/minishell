@@ -6,13 +6,15 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:37:02 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/13 21:17:33 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/08 19:25:06 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "utils.h"
 
+// count the number of words/tokens respecting quotes
+// use flag to identify token
 static int	count_words(char *str)
 {
 	int	i;
@@ -39,6 +41,7 @@ static int	count_words(char *str)
 	return (count);
 }
 
+// loop until end of the string or unquoted whitespace
 static void	escape_quote_and_interate(char *str, char *q, int *i)
 {
 	while (str[*i] && (!ft_isspace(str[*i]) || *q))
@@ -51,6 +54,11 @@ static void	escape_quote_and_interate(char *str, char *q, int *i)
 	}
 }
 
+// split the padded str into tokens (str array)
+// 1. malloc requite size by counting words
+// 2. interate the string skipping spaces
+// 3. if i is bigger than start, substr the str and put in tokens
+// 4. NULL terminate
 char	**lexer_tokenize(char *str)
 {
 	char	**tokens;

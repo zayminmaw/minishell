@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/02 23:04:02 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/08 18:59:11 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,9 @@
 #include "utils.h"
 #include "validation.h"
 
+// get prompt when username is not avaliable
+// only minishell> will be displayed
+// if username is avaliable will show username@minishell>
 static char	*get_prompt(char **envp)
 {
 	int		i;
@@ -54,6 +57,11 @@ static void	post_read_actions(char *input)
 		printf("\033[H\033[2J");
 }
 
+// 1. Lexer (tokenize)
+// 2. clean/remove quotes (clean quotes from token)
+// 3. validate if redir are syntactically correct
+// 4. parser (parse token into nodes)
+// 5. execute 
 int	interpret_and_run(char *input, t_env *env)
 {
 	int		i;
@@ -85,6 +93,11 @@ int	interpret_and_run(char *input, t_env *env)
 // 	i++;
 // }
 
+// where what user type in will come in here
+// 1. first get prompt
+// 2. readline if the input is EOF exit
+// 3. add to history 
+// 4. then interpret and run
 void	prompt(t_env *env)
 {
 	char	*input;
