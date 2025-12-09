@@ -6,12 +6,14 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 16:13:59 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/09 19:11:02 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 
+// cmd_count: actual command count
+// real_cmd_count: node count including pipes
 void	parser_count_cmd(t_node *nodes)
 {
 	int	i;

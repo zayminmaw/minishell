@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/08 20:06:13 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/09 19:23:29 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,11 @@
 
 void	print_node_array(t_node *nodes, int array_size);
 
+// transforming tokens into nodes
+// 1. count nodes
+// 2. init nodes
+// 3. identify/build nodes
+// 4. count nodes
 t_node	*parser(char **tokens, t_env *env)
 {
 	t_node	*nodes;
