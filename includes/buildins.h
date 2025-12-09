@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/06 17:53:14 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/09 22:03:54 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ int		ft_exit(t_node *node);
 
 // ft_unset.c
 char	**ft_unset(t_node *node);
+
+// ft_export.c
+char	**ft_export(char **env, char **full_cmd);
 
 #endif

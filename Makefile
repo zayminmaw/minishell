@@ -35,7 +35,7 @@ UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar 
 				ft_validvarchar ft_cleanquotes ft_getenv ft_freeenv ft_freenodes
 
 BUILDINS_DIR=	buildins/
-BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit
+BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit ft_export
 
 EXEC_DIR	=	executor/
 EXEC		=	executor heredoc pipes redirections logical_operator executor_auxiliary pipeline_executor
