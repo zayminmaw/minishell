@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:01:39 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/08 21:02:20 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/09 19:46:40 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,7 @@ void	wait_for_children(int cmd_count);
 void	wait_and_set_status(pid_t pid);
 void	execute_pipeline_child(t_node *node, int cmd_index);
 int		execute_pipeline(t_node *nodes, int start);
+int		find_matching_rpar(t_node *nodes, int start);
+int		execute_subshell_group(t_node *nodes, int start);
 
 #endif

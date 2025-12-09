@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/08 21:04:28 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/09 19:47:58 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,8 +86,9 @@ int	executor(t_node *nodes)
 	t_node_type	pending_op;
 	int			status;
 	int			ret;
-	int			depth;
-	int			j;
+	int			should_skip;
+	int			next_i;
+	int			end;
 
 	if (!nodes)
 		return (0);
@@ -105,18 +106,27 @@ int	executor(t_node *nodes)
 		// 2. parentheses. skip for now
 		if (nodes[i].type == L_PAR)
 		{
-			depth = 1;
-			j = i + 1;
-			while (j < nodes->env->node_len && depth > 0)
+			status = get_exit_status();
+			should_skip = 0;
+			if (pending_op == DOUBLE_AND && status != 0)
+				should_skip = 1;
+			if (pending_op == DOUBLE_OR && status == 0)
+				should_skip = 1;
+			if (should_skip)
 			{
-				if (nodes[j].type == L_PAR)
-					depth++;
-				else if (nodes[j].type == R_PAR)
-					depth--;
-				j++;
+				end = find_matching_rpar(nodes, i);
+				if (end < 0)
+					return (0);
+				i = end + 1;
 			}
-			// TODO: execute nodes between i+1 and j-1 in subshell
-			i = j;
+			else
+			{
+				next_i = execute_subshell_group(nodes, i);
+				if (next_i < 0)
+					return (0);
+				i = next_i;
+			}
+			pending_op = ALIEN;
 			continue ;
 		}
 		if (nodes[i].type == R_PAR)

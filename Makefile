@@ -8,7 +8,8 @@ READLINE_PATH	=	$(shell brew --prefix readline)
 READFLAG	=	-lreadline -L$(READLINE_PATH)/lib
 READINCLUDE	=	-I$(READLINE_PATH)/include
 
-CFLAGS		=	-Wall -Werror -Wextra -I ./includes $(READINCLUDE)
+CFLAGS		=	-Wall -Werror -Wextra -g3 -I ./includes $(READINCLUDE)
+# CFLAGS		=	-I ./includes $(READINCLUDE)
 
 SRCS_DIR	=	src/
 OBJS_DIR	=	obj/
@@ -38,7 +39,8 @@ BUILDINS_DIR=	buildins/
 BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit
 
 EXEC_DIR	=	executor/
-EXEC		=	executor heredoc pipes redirections logical_operator executor_auxiliary pipeline_executor
+EXEC		=	executor heredoc pipes redirections logical_operator executor_auxiliary \
+				pipeline_executor subshell
 
 ENTRY		=	main
 
