@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/08 18:59:11 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/09 19:31:27 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	interpret_and_run(char *input, t_env *env)
 	if (validate_inout(tokens))
 		return (ft_strarr_free(tokens), 3);
 	nodes = parser(tokens, env);
+	ft_strarr_free(tokens);
 	status = executor(nodes);
 	ft_freenodes(nodes);
 	return (status);
