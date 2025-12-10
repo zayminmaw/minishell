@@ -6,19 +6,21 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:32:40 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 18:32:05 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 19:54:58 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "parser.h"
 #include "utils.h"
 
-// skip and set redir
-// identify command type
-// get command
-// count arguments
+// skip + set infile, outfile, delimiter and type of redirect arrow
+// identify command type between buildins, normal command and operators
+// if normal command, get executable path
+// if buildins, duplicate the token
+// else skip the token
+// count args for full_cmd array
 // fill args into full_cmd array
-// skip and set redir
+// skip + set infile, outfile, delimiter and type of redirect arrow
 // return pointer of next token
 char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 {
