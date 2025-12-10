@@ -20,7 +20,7 @@ LEXER_DIR	=	lexer/
 LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote
 
 VALIDATION_DIR	=	validation/
-VALIDATION		=	validate_inout
+VALIDATION		=	validate_inout validate_parens
 
 PARSER_DIR	=	parser/
 PARSER		=	parser parser_count_nodes parser_init_nodes parser_build_nodes \
