@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:23:24 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/09 22:12:56 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 17:17:07 by zayminmaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,18 +18,19 @@ static int	is_valid_varname(char *s)
 {
 	int	i;
 
-	i = 1;
-	if (s[0] == '_' && s[1] && s[1] == '=')
-		return (3);
-	if (!s || !(ft_isalpha(s[0])))
+	i = 0;
+	if (!s || !s[0])
 		return (0);
+	if (!ft_isalpha(s[0]) && s[0] != '_')
+		return (0);
+	i = 1;
 	while (s[i] && s[i] != '=')
 	{
-		if (!(ft_isalnum(s[i])) || s[i] == '-')
-			return (1);
+		if (!ft_isalnum(s[i]) && s[i] != '_')
+			return (0);
 		i++;
 	}
-	return (2);
+	return (1);
 }
 
 static void	update_or_add(char ***env, char *arg)
@@ -68,17 +69,14 @@ char	**ft_export(char **env, char **full_cmd)
 	i = 1;
 	while (full_cmd[i])
 	{
-		if (is_valid_varname(full_cmd[i]) == 0)
+		if (!is_valid_varname(full_cmd[i]))
 		{
-			printf("minishell: export: not an identifier: %s\n", full_cmd[i]);
+			ft_putstr_fd("minishell: export: `", 2);
+			ft_putstr_fd(full_cmd[i], 2);
+			ft_putendl_fd("': not a valid identifier", 2);
 			set_exit_status(1);
 		}
-		else if (is_valid_varname(full_cmd[i]) == 1)
-		{
-			printf("minishell: export: not valid in this context: %s\n", full_cmd[i]);
-			set_exit_status(1);
-		}
-		else if (is_valid_varname(full_cmd[i]) == 2)
+		else
 		{
 			update_or_add(&env, full_cmd[i]);
 			set_exit_status(0);
