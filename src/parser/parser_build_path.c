@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 19:15:58 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 20:15:55 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 19:51:12 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ static char	*construct_path(char **envp, char *token)
 	return (NULL);
 }
 
+// get absolute executable path
 char	*parser_build_path(char **envp, char *token)
 {
 	if (count_slash(token) > 0 && !access(token, F_OK))
