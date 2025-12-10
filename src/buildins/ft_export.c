@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:23:24 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 19:44:11 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 21:38:02 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ static void	print_sorted_env(char **env)
 	free(env);
 }
 
-static void	update_or_add(char ***env, char *arg)
+void	update_or_add(char ***env, char *arg)
 {
 	int		i;
 	char	*key;

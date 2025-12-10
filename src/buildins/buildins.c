@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   buildins.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:03:07 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/09 22:05:00 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 21:22:17 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildins.h"
+#include "exit_status.h"
 #include "minishell.h"
 #include "utils.h"
-#include "exit_status.h"
 
 int	is_buildin(char *cmd)
 {
@@ -55,6 +55,8 @@ int	exec_buildin_parent(t_node *node)
 {
 	if (ft_strcmp(node->full_cmd[0], "unset") == 0)
 		node->env->envp = ft_unset(node);
+	else if (ft_strcmp(node->full_cmd[0], "cd") == 0)
+		node->env->envp = ft_cd(node);
 	else if (ft_strcmp(node->full_cmd[0], "export") == 0)
 		node->env->envp = ft_export(node->env->envp, node->full_cmd);
 	else if (ft_strcmp(node->full_cmd[0], "exit") == 0)

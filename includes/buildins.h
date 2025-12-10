@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   buildins.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/09 22:03:54 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 21:24:51 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,5 +38,16 @@ char	**ft_unset(t_node *node);
 
 // ft_export.c
 char	**ft_export(char **env, char **full_cmd);
+
+// ft_cd.c
+char	**ft_cd(t_node *node);
+
+typedef enum e_cd_error
+{
+	HOME_NOT_SET,
+	OLDPWD,
+	TOO_MANY,
+	PATH
+}		t_cd_error;
 
 #endif
