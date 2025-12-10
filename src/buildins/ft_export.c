@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:23:24 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 19:40:34 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 19:44:11 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ static char	**clone_env(char **env)
 	return (env_cpy);
 }
 
-static void print_sorted_env(char **env)
+static void	print_sorted_env(char **env)
 {
 	int		i;
 	int		j;
@@ -93,14 +93,13 @@ static void	update_or_add(char ***env, char *arg)
 	i = 0;
 	while ((*env)[i])
 	{
-		if (!ft_strncmp((*env)[i], key, key_len)
-            && (*env)[i][key_len] == '=')
-        {
-            free((*env)[i]);
-            (*env)[i] = ft_strdup(arg);
-            free(key);
-            return ;
-        }
+		if (!ft_strncmp((*env)[i], key, key_len) && (*env)[i][key_len] == '=')
+		{
+			free((*env)[i]);
+			(*env)[i] = ft_strdup(arg);
+			free(key);
+			return ;
+		}
 		i++;
 	}
 	*env = ft_addvar(*env, arg);
@@ -109,7 +108,7 @@ static void	update_or_add(char ***env, char *arg)
 
 char	**ft_export(char **env, char **full_cmd)
 {
-	int		i;
+	int	i;
 
 	if (!full_cmd[1])
 	{
