@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:23:24 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 17:17:07 by zayminmaw        ###   ########.fr       */
+/*   Updated: 2025/12/10 19:40:34 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,53 @@ static int	is_valid_varname(char *s)
 		i++;
 	}
 	return (1);
+}
+
+static char	**clone_env(char **env)
+{
+	int		i;
+	int		count;
+	char	**env_cpy;
+
+	count = 0;
+	i = 0;
+	while (env[count])
+		count++;
+	env_cpy = malloc(sizeof(char *) * (count + 1));
+	while (i <= count)
+	{
+		env_cpy[i] = env[i];
+		i++;
+	}
+	return (env_cpy);
+}
+
+static void print_sorted_env(char **env)
+{
+	int		i;
+	int		j;
+	char	*tmp;
+
+	i = 0;
+	while (env[i])
+	{
+		j = i + 1;
+		while (env[j])
+		{
+			if (ft_strcmp(env[i], env[j]) > 0)
+			{
+				tmp = env[i];
+				env[i] = env[j];
+				env[j] = tmp;
+			}
+			j++;
+		}
+		i++;
+	}
+	i = 0;
+	while (env[i])
+		printf("declare -x %s\n", env[i++]);
+	free(env);
 }
 
 static void	update_or_add(char ***env, char *arg)
@@ -65,7 +112,10 @@ char	**ft_export(char **env, char **full_cmd)
 	int		i;
 
 	if (!full_cmd[1])
+	{
+		print_sorted_env(clone_env(env));
 		return (env);
+	}
 	i = 1;
 	while (full_cmd[i])
 	{
