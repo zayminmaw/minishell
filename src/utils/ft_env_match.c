@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/11 18:51:47 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/11 19:11:48 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:45:12 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ char	*cd_getenv_value(char **env, const char *key)
 
 char	**cd_setenv_value(char **env, const char *key, const char *value)
 {
-	char *tmp;
-	char *var;
-	int i;
+	char	*tmp;
+	char	*var;
+	int		i;
 
 	tmp = ft_strjoin(key, "=");
 	if (!tmp)
