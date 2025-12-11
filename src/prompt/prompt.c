@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/09 19:31:27 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 16:40:12 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ static void	post_read_actions(char *input)
 // 2. clean/remove quotes (clean quotes from token)
 // 3. validate if redir are syntactically correct
 // 4. parser (parse token into nodes)
-// 5. execute 
+// 5. execute
 int	interpret_and_run(char *input, t_env *env)
 {
 	int		i;
@@ -97,7 +97,7 @@ int	interpret_and_run(char *input, t_env *env)
 // where what user type in will come in here
 // 1. first get prompt
 // 2. readline if the input is EOF exit
-// 3. add to history 
+// 3. add to history
 // 4. then interpret and run
 void	prompt(t_env *env)
 {
@@ -107,7 +107,7 @@ void	prompt(t_env *env)
 	prompt = get_prompt(env->envp);
 	while (1)
 	{
-		override_sig();
+		set_prompt_signals();
 		input = readline(prompt);
 		if (!input)
 		{

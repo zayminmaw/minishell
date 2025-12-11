@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/02 01:13:11 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/10 17:31:57 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,19 @@
 #include <fcntl.h>
 #include <lexer.h>
 #include <readline/readline.h>
+#include <signal.h>
 #include <unistd.h>
+
+static void	set_heredoc_signals(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sa, NULL);
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
+}
 
 void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 {
@@ -45,6 +57,7 @@ void	write_heredoc(t_node *node)
 
 	if (node->in_flag != 2)
 		return ;
+	set_heredoc_signals();
 	fd = open(".tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
 		return ;
