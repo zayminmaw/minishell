@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_envops.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 18:13:52 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/02 18:55:28 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/11 17:42:22 by zayminmaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ char	**ft_delvar(char **envp, char *target)
 	target_index = 0;
 	while (envp[target_index])
 	{
-		if (ft_strncmp(envp[target_index], target, ft_strlen(target)) == 0)
+		if (ft_strncmp(envp[target_index], full_target, ft_strlen(full_target)) == 0)
 			break ;
 		target_index++;
 	}
