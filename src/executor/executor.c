@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/09 19:47:58 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:19:58 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ static int	execute_single_cmd(t_node *node)
 		exit_status = exec_buildin_parent(node);
 		if (exit_status == 1)
 			return (4);
-		set_exit_status(exit_status);
 		return (0);
 	}
 	if (validate_infile(node) || validate_outfile(node))

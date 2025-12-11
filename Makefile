@@ -33,10 +33,10 @@ EXIT		=	exit_status
 
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
-				ft_validvarchar ft_cleanquotes ft_getenv ft_freeenv ft_freenodes
+				ft_validvarchar ft_cleanquotes ft_getenv ft_freeenv ft_freenodes ft_env_match
 
 BUILDINS_DIR=	buildins/
-BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit ft_export
+BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit ft_export ft_cd
 
 EXEC_DIR	=	executor/
 EXEC		=	executor heredoc pipes redirections logical_operator executor_auxiliary \

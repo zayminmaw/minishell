@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 20:49:19 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 21:24:51 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:10:25 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ char	**ft_unset(t_node *node);
 char	**ft_export(char **env, char **full_cmd);
 
 // ft_cd.c
-char	**ft_cd(t_node *node);
+char	**ft_cd(char **env, char **full_cmd);
 
 typedef enum e_cd_error
 {
