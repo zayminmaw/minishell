@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/02 02:05:06 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:33:42 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 {
 	set_exit_status(exit_err_no);
 	if (err_type == DIR_ERR)
-		printf("minishell: no such file or directory: %s\n", msg);
+		printf("minishell: %s: No such file or directory\n", msg);
 	else if (err_type == PERM_ERR)
 		printf("minishell: permission denied: %s\n", msg);
 	else if (err_type == CMD_ERR)
