@@ -3,38 +3,66 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_sig.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 21:05:17 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/27 19:03:22 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/10 17:26:42 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "exit_status.h"
 #include "prompt.h"
 #include "utils.h"
-#include "exit_status.h"
 
 /* Readline function declarations for compatibility */
-void	rl_replace_line(const char *text, int clear_undo);
+void		rl_replace_line(const char *text, int clear_undo);
 
-static void	show_new_line(int sig)
+static void	execution_signal_handler(int sig)
+{
+	if (sig == SIGINT)
+		write(1, "\n", 1);
+	else if (sig == SIGQUIT)
+		write(1, "Quit : 3\n", 9);
+}
+
+static void	prompt_sigint_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
 		ioctl(0, TIOCSTI, "\n");
 		rl_replace_line("", 0);
 		rl_on_new_line();
-		set_exit_status(128 + sig);
+		set_exit_status(1);
 	}
 }
 
-void	override_sig(void)
+void	set_prompt_signals(void)
 {
 	struct sigaction	sa;
 
 	ft_bzero(&sa, sizeof(sa));
-	sa.sa_handler = &show_new_line;
+	sa.sa_handler = &prompt_sigint_handler;
 	sigaction(SIGINT, &sa, NULL);
 	sa.sa_handler = SIG_IGN;
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	set_execution_signals(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = &execution_signal_handler;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
+void	set_child_signals(void)
+{
+	struct sigaction	sa;
+
+	ft_bzero(&sa, sizeof(sa));
+	sa.sa_handler = SIG_DFL;
+	sigaction(SIGINT, &sa, NULL);
 	sigaction(SIGQUIT, &sa, NULL);
 }

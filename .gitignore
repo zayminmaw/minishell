@@ -4,3 +4,4 @@ obj/
 tmp*.c
 minishell
 .docs/
+minishell_tester

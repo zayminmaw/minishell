@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:33 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/09 20:38:35 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/10 17:27:00 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	execute_subshell_group(t_node *nodes, int start)
 		if (sig == SIGINT)
 			write(1, "\n", 1);
 		else if (sig == SIGQUIT)
-			write(1, "Quit 3\n", 8);
+			write(1, "Quit 3\n", 9);
 		set_exit_status(128 + sig);
 	}
 	return (end + 1);
