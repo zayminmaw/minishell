@@ -6,15 +6,17 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/09 19:47:58 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/10 17:23:09 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
+#include "prompt.h"
 
 static void	execute_child_process(t_node *node)
 {
 	handle_redirections(node);
+	set_child_signals();
 	if (node->type == BUILDIN_CHILD)
 	{
 		exec_buildin_child(node);
@@ -74,101 +76,117 @@ static int	execute_group(t_node *nodes, int start)
 	return (0);
 }
 
-/*
-** skip non executable nodes
-** check if the node is part of a pipeline
-- if so skip entire pipeline after that
-** otherwise execute signle command
-*/
+static int	handle_logical_op(t_node *nodes, int *i, t_node_type *pending_op)
+{
+	if (nodes[*i].type == DOUBLE_AND || nodes[*i].type == DOUBLE_OR)
+	{
+		*pending_op = nodes[*i].type;
+		(*i)++;
+		return (1);
+	}
+	return (0);
+}
+
+static int	should_skip_execution(t_node_type pending_op, int status)
+{
+	if (pending_op == DOUBLE_AND && status != 0)
+		return (1);
+	if (pending_op == DOUBLE_OR && status == 0)
+		return (1);
+	return (0);
+}
+
+static void	skip_command_group(t_node *nodes, int *i, t_node_type *pending_op)
+{
+	if (nodes[*i].cmd_count > 1)
+		*i += nodes[*i].real_cmd_count;
+	else
+		(*i)++;
+	*pending_op = ALIEN;
+}
+
+static int	execute_and_advance(t_node *nodes, int *i, t_node_type *pending_op)
+{
+	int	ret;
+
+	ret = execute_group(nodes, *i);
+	if (ret == 4)
+		return (4);
+	if (nodes[*i].cmd_count > 1)
+		*i += nodes[*i].real_cmd_count;
+	else
+		(*i)++;
+	*pending_op = ALIEN;
+	return (0);
+}
+
+static int	handle_parentheses(t_node *nodes, int *i, t_node_type *pending_op)
+{
+	int	should_skip;
+	int	next_i;
+	int	end;
+
+	if (nodes[*i].type != L_PAR)
+		return (0);
+	should_skip = should_skip_execution(*pending_op, get_exit_status());
+	if (should_skip)
+	{
+		end = find_matching_rpar(nodes, *i);
+		if (end < 0)
+			return (-1);
+		*i = end + 1;
+	}
+	else
+	{
+		next_i = execute_subshell_group(nodes, *i);
+		if (next_i < 0)
+			return (-1);
+		*i = next_i;
+	}
+	*pending_op = ALIEN;
+	return (1);
+}
+
+static int	process_node(t_node *nodes, int *i, t_node_type *pending_op)
+{
+	int	status;
+	int	ret;
+
+	if (handle_logical_op(nodes, i, pending_op))
+		return (0);
+	ret = handle_parentheses(nodes, i, pending_op);
+	if (ret != 0)
+		return (ret);
+	if (nodes[*i].type == R_PAR)
+		return ((*i)++, 0);
+	if (!is_executable_type(nodes[*i].type))
+		return ((*i)++, 0);
+	status = get_exit_status();
+	if (should_skip_execution(*pending_op, status))
+		return (skip_command_group(nodes, i, pending_op), 0);
+	return (execute_and_advance(nodes, i, pending_op));
+}
+
 int	executor(t_node *nodes)
 {
 	int			i;
 	t_node_type	pending_op;
-	int			status;
 	int			ret;
-	int			should_skip;
-	int			next_i;
-	int			end;
 
 	if (!nodes)
 		return (0);
+	set_execution_signals();
 	i = 0;
 	pending_op = ALIEN;
-	while (i < nodes->env->node_len)
+	ret = 0;
+	while (i < nodes->env->node_len && ret != 4)
 	{
-		// 1 handle logical opretors and remember them
-		if (nodes[i].type == DOUBLE_AND || nodes[i].type == DOUBLE_OR)
-		{
-			pending_op = nodes[i].type;
-			i++;
-			continue ;
-		}
-		// 2. parentheses. skip for now
-		if (nodes[i].type == L_PAR)
-		{
-			status = get_exit_status();
-			should_skip = 0;
-			if (pending_op == DOUBLE_AND && status != 0)
-				should_skip = 1;
-			if (pending_op == DOUBLE_OR && status == 0)
-				should_skip = 1;
-			if (should_skip)
-			{
-				end = find_matching_rpar(nodes, i);
-				if (end < 0)
-					return (0);
-				i = end + 1;
-			}
-			else
-			{
-				next_i = execute_subshell_group(nodes, i);
-				if (next_i < 0)
-					return (0);
-				i = next_i;
-			}
-			pending_op = ALIEN;
-			continue ;
-		}
-		if (nodes[i].type == R_PAR)
-		{
-			// unmatched or already handled by R_PAR, skip
-			i++;
-			continue ;
-		}
-		if (!is_executable_type(nodes[i].type))
-		{
-			i++;
-			continue ;
-		}
-		// 4. check to execute as a group cmd
-		status = get_exit_status();
-		if (pending_op == DOUBLE_AND && status != 0)
-		{
-			if (nodes[i].cmd_count > 1)
-				i += nodes[i].real_cmd_count;
-			else
-				i++;
-			pending_op = ALIEN;
-			continue ;
-		}
-		if (pending_op == DOUBLE_OR && status == 0)
-		{
-			if (nodes[i].cmd_count > 1)
-				i += nodes[i].real_cmd_count;
-			else
-				i++;
-			pending_op = ALIEN;
-			continue ;
-		}
-		// 5. execute the group as single or pipeline
-		ret = execute_group(nodes, i);
-		if (ret == 4)
-			return (4);
-		if (nodes[i].cmd_count > 1)
-			i += nodes[i].real_cmd_count;
-		else
-			i++;
-		pending_op = ALIEN;
+		ret = process_node(nodes, &i, &pending_op);
+		if (ret == -1)
+			break ;
 	}
+	set_prompt_signals();
+	if (ret == 4)
+		return (4);
 	return (0);
 }

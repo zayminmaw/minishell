@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 19:27:51 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/11 18:49:33 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,7 +109,7 @@ void	prompt(t_env *env)
 	prompt = get_prompt(env->envp);
 	while (1)
 	{
-		override_sig();
+		set_prompt_signals();
 		input = readline(prompt);
 		if (!input)
 		{

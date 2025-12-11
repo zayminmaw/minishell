@@ -6,18 +6,20 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/08 21:01:02 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/10 17:23:09 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
+#include "prompt.h"
 
 void	execute_pipeline_child(t_node *node, int cmd_index)
 {
 	setup_pipe_fds(node, cmd_index);
 	handle_redirections(node);
 	close_all_pipes(node);
+	set_child_signals();
 	if (node->type == BUILDIN_CHILD)
 	{
 		exec_buildin_child(node);
