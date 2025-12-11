@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/10 17:23:09 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/11 19:16:39 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,14 +36,13 @@ static void	execute_child_process(t_node *node)
 static int	execute_single_cmd(t_node *node)
 {
 	pid_t	pid;
-	int		exit_status;
+	int		return_status;
 
 	if (node->type == BUILDIN_PARENT)
 	{
-		exit_status = exec_buildin_parent(node);
-		if (exit_status == 1)
+		return_status = exec_buildin_parent(node);
+		if (return_status == 1)
 			return (4);
-		set_exit_status(exit_status);
 		return (0);
 	}
 	if (validate_infile(node) || validate_outfile(node))
