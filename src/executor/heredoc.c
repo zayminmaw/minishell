@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:45:37 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:50:09 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,25 +65,36 @@ static void	restore_parent_signals(struct sigaction *old_int,
 	sigaction(SIGQUIT, old_quit, NULL);
 }
 
-static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
+static void	read_heredoc_lines(int fd, char **delimiter, char **envp)
 {
 	char	*line;
 	char	*expanded;
+	int		di;
+	int		should_write;
 
-	while (1)
+	di = 0;
+	while (delimiter && delimiter[di])
 	{
-		line = readline("> ");
-		if (!line)
-			break ;
-		if (ft_strcmp(line, delimiter) == 0)
+		should_write = (delimiter[di + 1] == NULL);
+		while (1)
 		{
-			free(line);
-			break ;
+			line = readline("> ");
+			if (!line)
+				break ;
+			if (ft_strcmp(line, delimiter[di]) == 0)
+			{
+				free(line);
+				break ;
+			}
+			if (should_write)
+			{
+				expanded = lexer_expand_var(line, envp);
+				write(fd, expanded, ft_strlen(expanded));
+				write(fd, "\n", 1);
+				free(expanded);
+			}
 		}
-		expanded = lexer_expand_var(line, envp);
-		write(fd, expanded, ft_strlen(expanded));
-		write(fd, "\n", 1);
-		free(expanded);
+		di++;
 	}
 }
 
@@ -118,7 +129,7 @@ int	write_heredoc(t_node *node, int idx)
 		fd = open(node->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			exit(1);
-		read_heredoc_lines(fd, node->delimiter, node->env->envp);
+		read_heredoc_lines(fd, node->delimiters, node->env->envp);
 		close(fd);
 		exit(0);
 	}
