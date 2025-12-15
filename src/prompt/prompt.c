@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/15 12:20:22 by zayminmaw        ###   ########.fr       */
+/*   Updated: 2025/12/15 19:45:49 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,13 +71,14 @@ int	interpret_and_run(char *input, t_env *env)
 
 	if (lexer(input, env, &tokens))
 		return (1);
-	i = 0;
-	while (tokens[i])
+	i = -1;
+	if (!tokens[0] || (tokens[0][0] == '\0' && ft_count_tokens(tokens) == 1))
+		return (ft_strarr_free(tokens), 0);
+	while (tokens[++i])
 	{
 		tokens[i] = ft_cleanquotes(tokens[i]);
 		if (!tokens[i])
 			return (ft_strarr_free(tokens), 2);
-		i++;
 	}
 	if (validate_inout(tokens))
 		return (ft_strarr_free(tokens), 3);
@@ -89,6 +90,7 @@ int	interpret_and_run(char *input, t_env *env)
 	ft_freenodes(nodes);
 	return (status);
 }
+
 // i = 0;
 // while (tokens[i])
 // {

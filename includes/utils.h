@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 21:11:06 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/11 18:58:36 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 19:43:21 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,5 +61,8 @@ void	ft_freenodes(t_node *nodes);
 // ft_env_match.c
 char	*cd_getenv_value(char **env, const char *key);
 char	**cd_setenv_value(char **env, const char *key, const char *value);
+
+// ft_count_tokens.c
+int		ft_count_tokens(char **tokens);
 
 #endif
