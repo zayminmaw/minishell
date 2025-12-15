@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/15 21:06:29 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 21:36:10 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ t_node	*parser(char **tokens, t_env *env)
 	parser_count_cmd(nodes);
 	return (nodes);
 }
-
 // print_node_array(nodes, env->node_len);
 // void	print_node_array(t_node *nodes, int array_size)
 // {
@@ -73,8 +72,20 @@ t_node	*parser(char **tokens, t_env *env)
 // 			nodes[i].infile ? nodes[i].infile : "(NULL)");
 // 		printf("  Outfile:         %s\n",
 // 			nodes[i].outfile ? nodes[i].outfile : "(NULL)");
-// 		printf("  Delimiter:       %s\n",
-// 			nodes[i].delimiter ? nodes[i].delimiter : "(NULL)");
+// 		printf("  Delimiters:      [ ");
+// 		if (nodes[i].delimiters)
+// 		{
+// 			int j = 0;
+// 			while (nodes[i].delimiters[j] != NULL)
+// 			{
+// 				printf("\"%s\"%s", nodes[i].delimiters[j], nodes[i].delimiters[j
+// 					+ 1] ? ", " : "");
+// 				j++;
+// 			}
+// 		}
+// 		else
+// 			printf("(NULL)");
+// 		printf(" ]\n");
 // 		printf("  Cmd Count:       %d\n", nodes[i].cmd_count);
 // 		printf("  Real Cmd Count:  %d\n", nodes[i].real_cmd_count);
 

@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 16:29:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/01 18:31:47 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/15 21:20:42 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ void	ft_freenodes(t_node *nodes)
 			free(nodes[i].infile);
 		if (nodes[i].outfile)
 			free(nodes[i].outfile);
-		if (nodes[i].delimiter)
-			free(nodes[i].delimiter);
+		if (nodes[i].delimiters)
+			ft_strarr_free(nodes[i].delimiters);
 		i++;
 	}
 	free(nodes);

@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:58 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:06:51 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/15 20:28:35 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,32 +42,33 @@ static int	is_valid_prev_for_lpar(char *prev)
 	return (0);
 }
 
-static void	validate_parens_core(char **tokens, int *depth, char **prev, int *i)
+static void	validate_parens_core(char **tokens, int *depth, char **prev, int i)
 {
-	if (is_lpar(tokens[*i]))
+	if (is_lpar(tokens[i]))
 	{
 		if (!is_valid_prev_for_lpar(*prev))
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `('\n", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected token `('\n",
+				2);
 			set_exit_status(2);
 			*depth = -1;
 			return ;
 		}
 		(*depth)++;
 	}
-	else if (is_rpar(tokens[*i]))
+	else if (is_rpar(tokens[i]))
 	{
 		if (*depth == 0)
 		{
-			ft_putstr_fd("minishell: syntax error near unexpected token `)'\n", 2);
+			ft_putstr_fd("minishell: syntax error near unexpected token `)'\n",
+				2);
 			set_exit_status(2);
 			*depth = -1;
 			return ;
 		}
 		(*depth)--;
 	}
-	*prev = tokens[*i];
-	(*i)++;
+	*prev = tokens[i];
 }
 
 int	validate_parens(char **tokens)
@@ -81,7 +82,8 @@ int	validate_parens(char **tokens)
 	i = 0;
 	while (tokens[i])
 	{
-		validate_parens_core(tokens, &depth, &prev, &i);
+		validate_parens_core(tokens, &depth, &prev, i);
+		i++;
 		if (depth == -1)
 			return (1);
 	}
