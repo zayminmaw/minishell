@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:58 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:26:53 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/15 20:28:35 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,9 +83,9 @@ int	validate_parens(char **tokens)
 	while (tokens[i])
 	{
 		validate_parens_core(tokens, &depth, &prev, i);
+		i++;
 		if (depth == -1)
 			return (1);
-		i++;
 	}
 	if (depth != 0)
 	{
