@@ -6,14 +6,18 @@
 /*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/15 11:33:48 by zayminmaw        ###   ########.fr       */
+/*   Updated: 2025/12/15 12:10:13 by zayminmaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "utils.h"
 
-// 
+// main lexer: pad input, split into tokens, check quotes and expand vars
+// returns 0 on success
+// returns 1 if padding failed
+// returns 2 if tokenization failed
+// returns 3 if unmatched quotes (prints syntax error)
 int	lexer(char *input, t_env *env, char ***tokens)
 {
 	int	i;

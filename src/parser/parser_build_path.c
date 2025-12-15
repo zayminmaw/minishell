@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_build_path.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 19:15:58 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 19:51:12 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/15 11:58:03 by zayminmaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,8 @@ static char	*construct_path(char **envp, char *token)
 // get absolute executable path
 char	*parser_build_path(char **envp, char *token)
 {
+	if (!token || !*token)
+		return (NULL);
 	if (count_slash(token) > 0 && !access(token, F_OK))
 		return (ft_strdup(token));
 	else if (count_slash(token) == 0)
