@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/10 17:23:09 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 17:14:35 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,8 @@ static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 {
 	pid_t	pid;
 
-	write_heredoc(&nodes[*i]);
+	if (write_heredoc(&nodes[*i]))
+		return (1);
 	pid = fork();
 	if (pid < 0)
 	{
