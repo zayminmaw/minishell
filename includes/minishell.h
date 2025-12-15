@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 15:59:43 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/15 21:20:42 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ typedef struct s_node
 	int			out_flag;
 	char		*infile;
 	char		*outfile;
-	char		*delimiter;
+	char		**delimiters;
 	int			cmd_count;
 	int			real_cmd_count;
 	t_env		*env;
