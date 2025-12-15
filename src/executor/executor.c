@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:16:12 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:37:11 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,13 @@ static void	execute_child_process(t_node *node)
 	}
 }
 
-static int	execute_single_cmd(t_node *node)
+static int	execute_single_cmd(t_node *nodes, int start)
 {
 	pid_t	pid;
 	int		return_status;
+	t_node	*node;
 
+	node = &nodes[start];
 	if (node->type == BUILDIN_PARENT)
 	{
 		return_status = exec_buildin_parent(node);
@@ -47,7 +49,7 @@ static int	execute_single_cmd(t_node *node)
 	}
 	if (validate_infile(node) || validate_outfile(node))
 		return (0);
-	if (write_heredoc(node))
+	if (write_heredoc(node, start))
 		return (0);
 	pid = fork();
 	if (pid < 0)
@@ -70,7 +72,7 @@ static int	execute_group(t_node *nodes, int start)
 	}
 	else
 	{
-		if (execute_single_cmd(&nodes[start]) == 4)
+		if (execute_single_cmd(nodes, start) == 4)
 			return (4);
 	}
 	return (0);

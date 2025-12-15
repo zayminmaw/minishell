@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:16:50 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:45:37 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,19 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
+
+static char	*heredoc_tmpname(int idx)
+{
+	char	*num;
+	char	*name;
+
+	num = ft_itoa(idx);
+	if (!num)
+		return (NULL);
+	name = ft_strjoin("/tmp/heredoc_", num);
+	free(num);
+	return (name);
+}
 
 static void	set_heredoc_child_signals(void)
 {
@@ -74,23 +87,35 @@ static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 	}
 }
 
-int	write_heredoc(t_node *node)
+int	write_heredoc(t_node *node, int idx)
 {
 	pid_t				pid;
 	int					status;
 	int					fd;
 	struct sigaction	old_int;
 	struct sigaction	old_quit;
+	char				*tmp;
 
 	if (node->in_flag != 2)
 		return (0);
+	tmp = heredoc_tmpname(idx);
+	if (!tmp)
+		return (set_exit_status(1), 1);
+	if (node->infile)
+		free(node->infile);
+	node->infile = tmp;
 	pid = fork();
 	if (pid < 0)
+	{
+		unlink(node->infile);
+		free(node->infile);
+		node->infile = NULL;
 		return (ft_process_error(FORK_ERR, 1), 0);
+	}
 	if (pid == 0)
 	{
 		set_heredoc_child_signals();
-		fd = open(".tmp", O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		fd = open(node->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			exit(1);
 		read_heredoc_lines(fd, node->delimiter, node->env->envp);
@@ -101,21 +126,21 @@ int	write_heredoc(t_node *node)
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		restore_parent_signals(&old_int, &old_quit);
-		unlink(".tmp");
+		unlink(node->infile);
 		set_exit_status(1);
 		return (1);
 	}
 	restore_parent_signals(&old_int, &old_quit);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
-		unlink(".tmp");
+		unlink(node->infile);
 		write(STDOUT_FILENO, "\n", 1);
 		set_exit_status(130);
 		return (1);
 	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 	{
-		unlink(".tmp");
+		unlink(node->infile);
 		set_exit_status(WEXITSTATUS(status));
 		return (1);
 	}

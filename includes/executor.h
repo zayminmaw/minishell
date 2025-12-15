@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:01:39 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 17:14:35 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:27:12 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 
 int		executor(t_node *nodes);
 void	handle_redirections(t_node *node);
-int		write_heredoc(t_node *node);
+int		write_heredoc(t_node *node, int idx);
 void	alloc_pipes(t_node *nodes);
 void	free_pipes(t_node *nodes);
 void	setup_pipe_fds(t_node *node, int cmd_index);

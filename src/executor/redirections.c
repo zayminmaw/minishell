@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/08 20:32:05 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/15 20:36:33 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,20 +30,20 @@ static void	handle_input_redirect(t_node *node)
 	if (node->in_flag == 1)
 		fd = open(node->infile, O_RDONLY);
 	else
-		fd = open(".tmp", O_RDONLY);
+		fd = open(node->infile, O_RDONLY);
 	if (fd < 0)
 	{
 		if (node->in_flag == 1)
 			ft_perror(NULL, node->infile);
 		else
-			ft_perror("open here", ".tmp");
+			ft_perror("open here", node->infile);
 		exit(1);
 	}
 	if (dup2(fd, STDIN_FILENO) < 0)
 		ft_process_error(DUP_ERR, 1);
 	close(fd);
 	if (node->in_flag == 2)
-		unlink(".tmp");
+		unlink(node->infile);
 }
 
 /*
