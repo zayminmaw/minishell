@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: zayminmaw <zayminmaw@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/11 18:49:33 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/15 11:38:29 by zayminmaw        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,37 @@ static void	post_read_actions(char *input)
 		printf("\033[H\033[2J");
 }
 
+// Remove empty tokens after variable expansion and quote cleaning
+// This mimics bash behavior where unquoted empty expansions disappear
+// static char	**filter_empty_tokens(char **tokens)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	**filtered;
+// 	int		count;
+
+// 	i = 0;
+// 	count = 0;
+// 	while (tokens[i])
+// 		count += (tokens[i++][0] != '\0');
+// 	filtered = malloc(sizeof(char *) * (count + 1));
+// 	if (!filtered)
+// 		return (ft_strarr_free(tokens), NULL);
+// 	i = 0;
+// 	j = 0;
+// 	while (tokens[i])
+// 	{
+// 		if (tokens[i][0] != '\0')
+// 			filtered[j++] = tokens[i];
+// 		else
+// 			free(tokens[i]);
+// 		i++;
+// 	}
+// 	filtered[j] = NULL;
+// 	free(tokens);
+// 	return (filtered);
+// }
+
 // 1. Lexer (tokenize)
 // 2. clean/remove quotes (clean quotes from token)
 // 3. validate if redir are syntactically correct
@@ -79,6 +110,9 @@ int	interpret_and_run(char *input, t_env *env)
 			return (ft_strarr_free(tokens), 2);
 		i++;
 	}
+	// tokens = filter_empty_tokens(tokens);
+	// if (!tokens || !tokens[0])
+	// 	return (ft_strarr_free(tokens), 0);
 	if (validate_inout(tokens))
 		return (ft_strarr_free(tokens), 3);
 	if (validate_parens(tokens))
