@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:37:11 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/16 20:34:59 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,15 @@ static int	execute_single_cmd(t_node *nodes, int start)
 	wait_and_set_status(pid);
 	return (0);
 }
+
+// void	list_arr(char **data)
+// {
+// 	int	i;
+
+// 	i = 0;
+// 	while (data[i])
+// 		printf("%s\n", data[i++]);
+// }
 
 static int	execute_group(t_node *nodes, int start)
 {

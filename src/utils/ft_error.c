@@ -3,23 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/11 19:33:42 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/16 20:56:23 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exit_status.h"
 #include "utils.h"
 
+void	print_error(char *prefix, char *arg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (prefix)
+		ft_putstr_fd(prefix, 2);
+	if (arg)
+		ft_putstr_fd(arg, 2);
+	ft_putstr_fd("\n", 2);
+}
+
 void	*ft_syntax_error(t_parse_error err_type, int exit_err_no)
 {
 	set_exit_status(exit_err_no);
 	if (err_type == QUOTE_ERR)
-		printf("minishell: error while looking for matching quote\n");
+		print_error("error while looking for matching quote", NULL);
 	else if (err_type == SYN_ERR)
-		printf("minishell: syntax error near unexpected token\n");
+		print_error("syntax error near unexpected token", NULL);
 	return (NULL);
 }
 
@@ -27,9 +37,9 @@ void	*ft_env_error(t_env_error err_type, char *msg, int exit_err_no)
 {
 	set_exit_status(exit_err_no);
 	if (err_type == HOMESET_ERR)
-		printf("minishell: %s HOME not set\n", msg);
+		print_error(msg, " HOME not set");
 	else if (err_type == PWDSET_ERR)
-		printf("minishell: %s OLDPWD not set\n", msg);
+		print_error(msg, " OLDPWD not set");
 	return (NULL);
 }
 
@@ -37,13 +47,13 @@ void	*ft_process_error(t_process_error err_type, int exit_err_no)
 {
 	set_exit_status(exit_err_no);
 	if (err_type == DUP_ERR)
-		printf("minishell: dup2 failed\n");
+		print_error("dup2 failed", NULL);
 	else if (err_type == FORK_ERR)
-		printf("minishell: fork failed\n");
+		print_error("fork failed", NULL);
 	else if (err_type == PIPE_ERR)
-		printf("minishell: error creating pipe\n");
+		print_error("error creating pipe", NULL);
 	else if (err_type == MEM_ERR)
-		printf("minishell: memory allocation failed\n");
+		print_error("memory allocation failed", NULL);
 	return (NULL);
 }
 
@@ -51,15 +61,15 @@ void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 {
 	set_exit_status(exit_err_no);
 	if (err_type == DIR_ERR)
-		printf("minishell: %s: No such file or directory\n", msg);
+		print_error(msg, " No such file or directory");
 	else if (err_type == PERM_ERR)
-		printf("minishell: permission denied: %s\n", msg);
+		print_error(msg, " permission denied");
 	else if (err_type == CMD_ERR)
-		printf("minishell: command not found: %s\n", msg);
+		print_error(msg, " command not found");
 	else if (err_type == ISDIR_ERR)
-		printf("minishell: is a directory: %s\n", msg);
+		print_error(msg, " is a directory");
 	else if (err_type == NOTDIR_ERR)
-		printf("minishell: not a directory: %s\n", msg);
+		print_error(msg, " not a directory");
 	return (NULL);
 }
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_count_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/09 19:11:02 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/16 20:31:45 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,13 @@ void	parser_count_cmd(t_node *nodes)
 	while (i < nodes->env->node_len)
 	{
 		count = 0;
-		if (nodes[i].type == CMD || nodes[i].type == BUILDIN_CHILD)
+		if (nodes[i].type == CMD || nodes[i].type == BUILDIN_CHILD
+			|| nodes[i].type == BUILDIN_PARENT)
 		{
 			start = i;
 			while (i < nodes->env->node_len && (nodes[i].type == BUILDIN_CHILD
-					|| nodes[i].type == PIPE || nodes[i].type == CMD))
+					|| nodes[i].type == PIPE || nodes[i].type == CMD
+					|| nodes[i].type == BUILDIN_PARENT))
 				if (nodes[i++].type != PIPE)
 					count++;
 			while (start < i)

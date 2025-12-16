@@ -6,13 +6,37 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/16 15:56:49 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/16 19:19:04 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
 #include "prompt.h"
+
+static int	wait_for_n_children(int n)
+{
+	int	status;
+	int	i;
+
+	i = 0;
+	while (i < n)
+	{
+		wait(&status);
+		i++;
+	}
+	return (0);
+}
+
+static int	pipeline_abort(t_node *nodes, int start, int forked_children,
+		int ret)
+{
+	close_all_pipes(&nodes[start]);
+	if (forked_children > 0)
+		wait_for_n_children(forked_children);
+	free_pipes(&nodes[start]);
+	return (ret);
+}
 
 void	execute_pipeline_child(t_node *node, int cmd_index)
 {
@@ -94,8 +118,8 @@ int	execute_pipeline(t_node *nodes, int start)
 		if (ret != 0)
 		{
 			if (ret == 4)
-				return (4);
-			return (0);
+				return (pipeline_abort(nodes, start, cmd_index, 4));
+			return (pipeline_abort(nodes, start, cmd_index, 0));
 		}
 	}
 	close_all_pipes(&nodes[start]);
