@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:27:47 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/16 15:56:49 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 		exec_buildin_child(node);
 		exit(get_exit_status());
 	}
+	else if (node->type == BUILDIN_PARENT)
+	{
+		exec_buildin_parent(node);
+		exit(get_exit_status());
+	}
 	else
 	{
 		execve(node->exec_path, node->full_cmd, node->env->envp);
@@ -34,20 +39,6 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 			ft_file_error(CMD_ERR, node->full_cmd[0], 127);
 		exit(127);
 	}
-}
-
-static int	handle_buildin_parent(t_node *nodes, int *i, int *cmd_index,
-		int start)
-{
-	close_all_pipes(&nodes[start]);
-	if (exec_buildin_parent(&nodes[*i]) == 1)
-	{
-		free_pipes(&nodes[start]);
-		return (4);
-	}
-	(*cmd_index)++;
-	(*i)++;
-	return (0);
 }
 
 static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
@@ -72,13 +63,12 @@ static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
 		int start)
 {
+	(void)start;
 	if (nodes[*i].type == PIPE)
 	{
 		(*i)++;
 		return (0);
 	}
-	if (nodes[*i].type == BUILDIN_PARENT)
-		return (handle_buildin_parent(nodes, i, cmd_index, start));
 	return (handle_child_cmd(nodes, i, cmd_index));
 }
 
