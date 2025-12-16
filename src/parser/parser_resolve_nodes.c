@@ -3,15 +3,30 @@
 /*                                                        :::      ::::::::   */
 /*   parser_resolve_nodes.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:12:11 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 15:59:43 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/17 02:11:08 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
+
+static int	is_quoted(char *token)
+{
+	int	len;
+
+	if (!token || !token[0])
+		return (0);
+	len = ft_strlen(token);
+	if (len >= 2 && (token[0] == '\'' || token[0] == '"'))
+	{
+		if (token[len - 1] == token[0])
+			return (1);
+	}
+	return (0);
+}
 
 // Return 1 -> buildin commands
 // Return 2 -> operator
@@ -26,7 +41,12 @@ int	parser_resolve_nodes(char *token, t_node *node)
 	else if (!ft_strcmp(token, "echo") || !ft_strcmp(token, "pwd")
 		|| !ft_strcmp(token, "env"))
 		return (node->type = BUILDIN_CHILD, 1);
-	else if (!ft_strcmp(token, "&&"))
+	if (is_quoted(token))
+	{
+		node->type = CMD;
+		return (0);
+	}
+	if (!ft_strcmp(token, "&&"))
 		node->type = DOUBLE_AND;
 	else if (!ft_strcmp(token, "||"))
 		node->type = DOUBLE_OR;

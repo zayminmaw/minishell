@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/15 19:45:49 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/17 02:11:08 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,26 @@ int	interpret_and_run(char *input, t_env *env)
 	i = -1;
 	if (!tokens[0] || (tokens[0][0] == '\0' && ft_count_tokens(tokens) == 1))
 		return (ft_strarr_free(tokens), 0);
-	while (tokens[++i])
-	{
-		tokens[i] = ft_cleanquotes(tokens[i]);
-		if (!tokens[i])
-			return (ft_strarr_free(tokens), 2);
-	}
 	if (validate_inout(tokens))
 		return (ft_strarr_free(tokens), 3);
 	if (validate_parens(tokens))
 		return (ft_strarr_free(tokens), 2);
 	nodes = parser(tokens, env);
 	ft_strarr_free(tokens);
+	i = 0;
+	while (i < env->node_len)
+	{
+		if (nodes[i].full_cmd)
+		{
+			int j = 0;
+			while (nodes[i].full_cmd[j])
+			{
+				nodes[i].full_cmd[j] = ft_cleanquotes(nodes[i].full_cmd[j]);
+				j++;
+			}
+		}
+		i++;
+	}
 	status = executor(nodes);
 	ft_freenodes(nodes);
 	return (status);
