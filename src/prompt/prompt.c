@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 02:11:08 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 02:15:58 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,34 @@ static void	post_read_actions(char *input)
 		printf("\033[H\033[2J");
 }
 
+// Filter out empty tokens (from unexpanded variables like $EMPTY)
+static char	**filter_empty_tokens(char **tokens)
+{
+	int	i;
+	int	j;
+	int	count;
+	char	**filtered;
+
+	count = 0;
+	i = -1;
+	while (tokens[++i])
+		if (tokens[i][0] != '\0')
+			count++;
+	filtered = malloc(sizeof(char *) * (count + 1));
+	if (!filtered)
+		return (NULL);
+	i = 0;
+	j = 0;
+	while (tokens[i])
+	{
+		if (tokens[i][0] != '\0')
+			filtered[j++] = tokens[i];
+		i++;
+	}
+	filtered[j] = NULL;
+	return (filtered);
+}
+
 // 1. Lexer (tokenize)
 // 2. clean/remove quotes (clean quotes from token)
 // 3. validate if redir are syntactically correct
@@ -78,7 +106,14 @@ int	interpret_and_run(char *input, t_env *env)
 		return (ft_strarr_free(tokens), 3);
 	if (validate_parens(tokens))
 		return (ft_strarr_free(tokens), 2);
-	nodes = parser(tokens, env);
+	char **tokens_filtered = filter_empty_tokens(tokens);
+	if (!tokens_filtered || !tokens_filtered[0])
+	{
+		free(tokens_filtered);
+		return (ft_strarr_free(tokens), 0);
+	}
+	nodes = parser(tokens_filtered, env);
+	free(tokens_filtered);
 	ft_strarr_free(tokens);
 	i = 0;
 	while (i < env->node_len)
