@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_build_nodes.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:32:40 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/10 19:54:58 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/17 18:13:56 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,8 +33,7 @@ char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 	tokens = parser_set_inout(node, tokens);
 	if (!resolve_result)
 		node->exec_path = parser_build_path(envp, *tokens);
-	else if (node->type == BUILDIN_CHILD
-		|| node->type == BUILDIN_PARENT)
+	else if (node->type == BUILDIN_CHILD || node->type == BUILDIN_PARENT)
 		node->exec_path = ft_strdup(*tokens);
 	args_count = parser_count_args(tokens);
 	tokens = parser_set_fullcmd(node, args_count, tokens);
