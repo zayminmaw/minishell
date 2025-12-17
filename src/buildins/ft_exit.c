@@ -6,14 +6,45 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 18:36:13 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/02 20:18:07 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/17 21:16:40 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "buildins.h"
 #include "exit_status.h"
 #include "utils.h"
+#include <limits.h>
 
+// check if adding next digit would cause overflow
+// return -1 if overflow, 0 if safe
+// for positive: check against LONG_MAX (9223372036854775807)
+// for negative: check against LONG_MIN (-9223372036854775808)
+static int	check_overflow(long current, int digit, int sign)
+{
+	if (sign == 1)
+	{
+		if (current > LONG_MAX / 10)
+			return (-1);
+		if (current == LONG_MAX / 10 && digit > LONG_MAX % 10)
+			return (-1);
+	}
+	else
+	{
+		if (current > -(LONG_MIN / 10))
+			return (-1);
+		if (current == -(LONG_MIN / 10) && digit > -(LONG_MIN % 10))
+			return (-1);
+	}
+	return (0);
+}
+
+// validate if string is a valid number within long range
+// 1. skip whitespace
+// 2. check for sign (+/-)
+// 3. verify first char is digit
+// 4. parse each digit checking for overflow
+// 5. verify no trailing chars
+// return -1 if invalid, 0 if valid
 static int	validate_arg(const char *s, long *out)
 {
 	int	i;
@@ -34,6 +65,8 @@ static int	validate_arg(const char *s, long *out)
 		return (-1);
 	while (s[i] >= '0' && s[i] <= '9')
 	{
+		if (check_overflow(*out, s[i] - '0', sign) < 0)
+			return (-1);
 		*out = *out * 10 + (s[i] - '0');
 		i++;
 	}
