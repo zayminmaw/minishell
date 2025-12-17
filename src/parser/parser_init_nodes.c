@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_init_nodes.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:00:04 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 02:50:36 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:12:46 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,8 +27,8 @@ t_node	*parser_init_nodes(t_env *env)
 	{
 		nodes[i].full_cmd = NULL;
 		nodes[i].exec_path = NULL;
-		nodes[i].infile = NULL;
-		nodes[i].outfile = NULL;
+		nodes[i].infiles = NULL;
+		nodes[i].outfiles = NULL;
 		nodes[i].delimiters = NULL;
 		nodes[i].in_flag = 0;
 		nodes[i].out_flag = 0;
