@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/18 13:45:42 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 02:50:36 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:12:46 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,8 +45,8 @@ typedef struct s_node
 	char		**full_cmd;
 	int			in_flag;
 	int			out_flag;
-	char		*infile;
-	char		*outfile;
+	char		**infiles;
+	char		**outfiles;
 	char		**delimiters;
 	int			cmd_count;
 	int			real_cmd_count;
