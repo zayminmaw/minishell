@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 18:13:56 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:33:06 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,37 +65,41 @@ static void	restore_parent_signals(struct sigaction *old_int,
 	sigaction(SIGQUIT, old_quit, NULL);
 }
 
-static void	read_heredoc_lines(int fd, char **delimiter, char **envp)
+static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 {
 	char	*line;
 	char	*expanded;
-	int		di;
-	int		should_write;
 
-	di = 0;
-	while (delimiter && delimiter[di])
+	while (1)
 	{
-		should_write = (delimiter[di + 1] == NULL);
-		while (1)
+		line = readline("> ");
+		if (!line)
+			break ;
+		if (ft_strcmp(line, delimiter) == 0)
 		{
-			line = readline("> ");
-			if (!line)
-				break ;
-			if (ft_strcmp(line, delimiter[di]) == 0)
-			{
-				free(line);
-				break ;
-			}
-			if (should_write)
-			{
-				expanded = lexer_expand_var(line, envp);
-				write(fd, expanded, ft_strlen(expanded));
-				write(fd, "\n", 1);
-				free(expanded);
-			}
+			free(line);
+			break ;
 		}
-		di++;
+		expanded = lexer_expand_var(line, envp);
+		write(fd, expanded, ft_strlen(expanded));
+		write(fd, "\n", 1);
+		free(line);
+		free(expanded);
 	}
+}
+
+static char	*get_last_delimiter(t_node *node)
+{
+	int	i;
+
+	if (!node->delimiters)
+		return (NULL);
+	i = 0;
+	while (node->delimiters[i])
+		i++;
+	if (i == 0)
+		return (NULL);
+	return (node->delimiters[i - 1]);
 }
 
 int	write_heredoc(t_node *node, int idx)
@@ -106,10 +110,12 @@ int	write_heredoc(t_node *node, int idx)
 	struct sigaction	old_int;
 	struct sigaction	old_quit;
 	char				*tmp;
+	char				*delimiter;
 
 	if (node->in_flag != 2)
 		return (0);
-	if (!node->delimiters || !node->delimiters[0])
+	delimiter = get_last_delimiter(node);
+	if (!delimiter)
 	{
 		node->in_flag = 0;
 		return (0);
@@ -117,24 +123,19 @@ int	write_heredoc(t_node *node, int idx)
 	tmp = heredoc_tmpname(idx);
 	if (!tmp)
 		return (set_exit_status(1), 1);
-	if (node->infile)
-		free(node->infile);
-	node->infile = tmp;
 	pid = fork();
 	if (pid < 0)
 	{
-		unlink(node->infile);
-		free(node->infile);
-		node->infile = NULL;
+		free(tmp);
 		return (ft_process_error(FORK_ERR, 1), 0);
 	}
 	if (pid == 0)
 	{
 		set_heredoc_child_signals();
-		fd = open(node->infile, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			exit(1);
-		read_heredoc_lines(fd, node->delimiters, node->env->envp);
+		read_heredoc_lines(fd, delimiter, node->env->envp);
 		close(fd);
 		exit(0);
 	}
@@ -142,23 +143,27 @@ int	write_heredoc(t_node *node, int idx)
 	if (waitpid(pid, &status, 0) == -1)
 	{
 		restore_parent_signals(&old_int, &old_quit);
-		unlink(node->infile);
+		unlink(tmp);
+		free(tmp);
 		set_exit_status(1);
 		return (1);
 	}
 	restore_parent_signals(&old_int, &old_quit);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
-		unlink(node->infile);
+		unlink(tmp);
+		free(tmp);
 		write(STDOUT_FILENO, "\n", 1);
 		set_exit_status(130);
 		return (1);
 	}
 	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
 	{
-		unlink(node->infile);
+		unlink(tmp);
+		free(tmp);
 		set_exit_status(WEXITSTATUS(status));
 		return (1);
 	}
+	free(tmp);
 	return (0);
 }

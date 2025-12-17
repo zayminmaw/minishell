@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:33 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 18:13:56 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 19:33:06 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_id
 		if (cmd_idx >= 0 && sub_nodes[i].in_flag == 2)
 		{
 			sub_nodes[i].in_flag = 0;
-			sub_nodes[i].infile = NULL;
+			sub_nodes[i].infiles = NULL;
 			sub_nodes[i].delimiters = NULL;
 		}
 		i++;

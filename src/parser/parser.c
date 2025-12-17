@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:39 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 19:12:45 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/17 19:34:37 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ t_node	*parser(char **tokens, t_env *env)
 		i++;
 	}
 	parser_count_cmd(nodes);
-	print_node_array(nodes, env->node_len);
+	// print_node_array(nodes, env->node_len);
 	return (nodes);
 }
 // print_node_array(nodes, env->node_len);
