@@ -36,7 +36,7 @@ int	find_matching_rpar(t_node *nodes, int start)
 	return (j - 1);
 }
 
-static void	execute_subshell_child(t_node *nodes, int start, int end)
+static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_idx)
 {
 	t_env	sub_env;
 	t_node	*sub_nodes;
@@ -45,6 +45,10 @@ static void	execute_subshell_child(t_node *nodes, int start, int end)
 
 	if (end <= start + 1)
 		exit(0);
+	if (end <= start + 1)
+		exit(0);
+	if (cmd_idx >= 0)
+		setup_pipe_fds(&nodes[start], cmd_idx);
 	len = end - start - 1;
 	sub_nodes = malloc(sizeof(t_node) * len);
 	if (!sub_nodes)
@@ -58,8 +62,16 @@ static void	execute_subshell_child(t_node *nodes, int start, int end)
 	{
 		sub_nodes[i] = nodes[start + 1 + i];
 		sub_nodes[i].env = &sub_env;
+		if (cmd_idx >= 0 && sub_nodes[i].in_flag == 2)
+		{
+			sub_nodes[i].in_flag = 0;
+			sub_nodes[i].infile = NULL;
+			sub_nodes[i].delimiters = NULL;
+		}
 		i++;
 	}
+	if (cmd_idx >= 0)
+		close_all_pipes(&nodes[start]);
 	executor(sub_nodes);
 	exit(get_exit_status());
 }
@@ -82,7 +94,7 @@ int	execute_subshell_group(t_node *nodes, int start)
 		return (-1);
 	}
 	if (pid == 0)
-		execute_subshell_child(nodes, start, end);
+		execute_subshell_child(nodes, start, end, -1);
 	if (waitpid(pid, &status, 0) == -1)
 		return (-1);
 	if (WIFEXITED(status))
@@ -96,5 +108,24 @@ int	execute_subshell_group(t_node *nodes, int start)
 			write(1, "Quit 3\n", 9);
 		set_exit_status(128 + sig);
 	}
+	return (end + 1);
+}
+
+int	execute_subshell_in_pipeline(t_node *nodes, int start, int cmd_idx)
+{
+	int		end;
+	pid_t	pid;
+
+	end = find_matching_rpar(nodes, start);
+	if (end < 0)
+		return (-1);
+	pid = fork();
+	if (pid < 0)
+	{
+		ft_process_error(FORK_ERR, 1);
+		return (-1);
+	}
+	if (pid == 0)
+		execute_subshell_child(nodes, start, end, cmd_idx);
 	return (end + 1);
 }

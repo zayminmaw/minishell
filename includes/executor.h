@@ -37,5 +37,6 @@ void	execute_pipeline_child(t_node *node, int cmd_index);
 int		execute_pipeline(t_node *nodes, int start);
 int		find_matching_rpar(t_node *nodes, int start);
 int		execute_subshell_group(t_node *nodes, int start);
+int		execute_subshell_in_pipeline(t_node *nodes, int start, int cmd_idx);
 
 #endif

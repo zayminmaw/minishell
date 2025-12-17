@@ -25,15 +25,17 @@
 char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 {
 	int	args_count;
+	int	resolve_result;
 
+	resolve_result = parser_resolve_nodes(*tokens, node);
+	if (resolve_result == 2)
+		return (++tokens);
 	tokens = parser_set_inout(node, tokens);
-	if (!parser_resolve_nodes(*tokens, node))
+	if (!resolve_result)
 		node->exec_path = parser_build_path(envp, *tokens);
 	else if (node->type == BUILDIN_CHILD
 		|| node->type == BUILDIN_PARENT)
 		node->exec_path = ft_strdup(*tokens);
-	else
-		return (++tokens);
 	args_count = parser_count_args(tokens);
 	tokens = parser_set_fullcmd(node, args_count, tokens);
 	if (*tokens)

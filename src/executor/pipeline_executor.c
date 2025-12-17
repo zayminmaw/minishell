@@ -6,13 +6,14 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 02:15:58 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 03:08:49 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
 #include "prompt.h"
+#include <sys/stat.h>
 
 static int	wait_for_n_children(int n)
 {
@@ -40,6 +41,8 @@ static int	pipeline_abort(t_node *nodes, int start, int forked_children,
 
 void	execute_pipeline_child(t_node *node, int cmd_index)
 {
+		struct stat path_stat;
+
 	setup_pipe_fds(node, cmd_index);
 	handle_redirections(node);
 	close_all_pipes(node);
@@ -59,8 +62,13 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 		execve(node->exec_path, node->full_cmd, node->env->envp);
 		if (ft_strchr(node->full_cmd[0], '/'))
 		{
-			if (access(node->full_cmd[0], F_OK) == 0)
+			if (stat(node->full_cmd[0], &path_stat) == 0)
 			{
+				if (S_ISDIR(path_stat.st_mode))
+				{
+					ft_file_error(ISDIR_ERR, node->full_cmd[0], 126);
+					exit(126);
+				}
 				ft_file_error(PERM_ERR, node->full_cmd[0], 126);
 				exit(126);
 			}
@@ -75,7 +83,17 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 {
 	pid_t	pid;
+	int		next_i;
 
+	if (nodes[*i].type == L_PAR)
+	{
+		next_i = execute_subshell_in_pipeline(nodes, *i, *cmd_index);
+		if (next_i < 0)
+			return (-1);
+		(*cmd_index)++;
+		*i = next_i;
+		return (0);
+	}
 	if (write_heredoc(&nodes[*i], *i))
 		return (1);
 	pid = fork();

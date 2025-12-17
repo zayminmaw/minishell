@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/15 20:36:33 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 15:23:15 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,8 @@ static void	handle_input_redirect(t_node *node)
 	int	fd;
 
 	if (node->in_flag == 0)
+		return ;
+	if (!node->infile)
 		return ;
 	if (node->in_flag == 1)
 		fd = open(node->infile, O_RDONLY);

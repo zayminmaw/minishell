@@ -6,15 +6,18 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 02:15:58 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/17 18:10:45 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "prompt.h"
+#include <sys/stat.h>
 
 static void	execute_child_process(t_node *node)
 {
+	struct stat	path_stat;
+
 	handle_redirections(node);
 	set_child_signals();
 	if (node->type == BUILDIN_CHILD)
@@ -27,8 +30,13 @@ static void	execute_child_process(t_node *node)
 		execve(node->exec_path, node->full_cmd, node->env->envp);
 		if (ft_strchr(node->full_cmd[0], '/'))
 		{
-			if (access(node->full_cmd[0], F_OK) == 0)
+			if (stat(node->full_cmd[0], &path_stat) == 0)
 			{
+				if (S_ISDIR(path_stat.st_mode))
+				{
+					ft_file_error(ISDIR_ERR, node->full_cmd[0], 126);
+					exit(126);
+				}
 				ft_file_error(PERM_ERR, node->full_cmd[0], 126);
 				exit(126);
 			}

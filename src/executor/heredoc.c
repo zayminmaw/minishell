@@ -109,6 +109,11 @@ int	write_heredoc(t_node *node, int idx)
 
 	if (node->in_flag != 2)
 		return (0);
+	if (!node->delimiters || !node->delimiters[0])
+	{
+		node->in_flag = 0;
+		return (0);
+	}
 	tmp = heredoc_tmpname(idx);
 	if (!tmp)
 		return (set_exit_status(1), 1);
