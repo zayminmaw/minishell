@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_set_inout.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:50:12 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 19:12:47 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 17:11:21 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ static void	append_infile(t_node *node, char *infile)
 	int		count;
 	int		i;
 
+	if (!infile)
+		return ;
 	count = 0;
 	if (node->infiles)
 	{
@@ -36,6 +38,11 @@ static void	append_infile(t_node *node, char *infile)
 		i++;
 	}
 	new_infiles[count] = ft_strdup(infile);
+	if (!new_infiles[count])
+	{
+		free(new_infiles);
+		return ;
+	}
 	new_infiles[count + 1] = NULL;
 	if (node->infiles)
 		free(node->infiles);
@@ -49,6 +56,8 @@ static void	append_outfile(t_node *node, char *outfile)
 	int		count;
 	int		i;
 
+	if (!outfile)
+		return ;
 	count = 0;
 	if (node->outfiles)
 	{
@@ -65,6 +74,11 @@ static void	append_outfile(t_node *node, char *outfile)
 		i++;
 	}
 	new_outfiles[count] = ft_strdup(outfile);
+	if (!new_outfiles[count])
+	{
+		free(new_outfiles);
+		return ;
+	}
 	new_outfiles[count + 1] = NULL;
 	if (node->outfiles)
 		free(node->outfiles);
@@ -78,6 +92,8 @@ static void	append_delimiter(t_node *node, char *delimiter)
 	int		count;
 	int		i;
 
+	if (!delimiter)
+		return ;
 	count = 0;
 	if (node->delimiters)
 	{
@@ -94,6 +110,11 @@ static void	append_delimiter(t_node *node, char *delimiter)
 		i++;
 	}
 	new_delimiters[count] = ft_strdup(delimiter);
+	if (!new_delimiters[count])
+	{
+		free(new_delimiters);
+		return ;
+	}
 	new_delimiters[count + 1] = NULL;
 	if (node->delimiters)
 		free(node->delimiters);

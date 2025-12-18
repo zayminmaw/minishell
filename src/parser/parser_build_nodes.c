@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 20:32:40 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 18:13:56 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 17:11:21 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ char	**parser_build_nodes(t_node *node, char **tokens, char **envp)
 	if (resolve_result == 2)
 		return (++tokens);
 	tokens = parser_set_inout(node, tokens);
+	if (!*tokens)
+		return (tokens);
 	if (!resolve_result)
 		node->exec_path = parser_build_path(envp, *tokens);
 	else if (node->type == BUILDIN_CHILD || node->type == BUILDIN_PARENT)

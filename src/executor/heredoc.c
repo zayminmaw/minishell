@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 19:33:06 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 17:11:42 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,8 @@ static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 	char	*line;
 	char	*expanded;
 
+	if (!delimiter)
+		return ;
 	while (1)
 	{
 		line = readline("> ");
@@ -81,10 +83,12 @@ static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 			break ;
 		}
 		expanded = lexer_expand_var(line, envp);
-		write(fd, expanded, ft_strlen(expanded));
-		write(fd, "\n", 1);
-		free(line);
-		free(expanded);
+		if (expanded)
+		{
+			write(fd, expanded, ft_strlen(expanded));
+			write(fd, "\n", 1);
+			free(expanded);
+		}
 	}
 }
 

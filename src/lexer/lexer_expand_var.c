@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expand_var.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:10:07 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/08 20:03:00 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 17:11:21 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,8 @@ static char	*get_var_value(char *var_name, char **envp)
 		return (ft_strdup(""));
 	if (ft_strcmp(var_name, "?") == 0)
 		return (ft_itoa(get_exit_status()));
+	if (!envp)
+		return (ft_strdup(""));
 	i = 0;
 	len = ft_strlen(var_name);
 	while (envp[i])
@@ -98,6 +100,8 @@ char	*lexer_expand_var(char *token, char **envp)
 	i = 0;
 	in_single_quote = 0;
 	res = ft_strdup("");
+	if (!res)
+		return (NULL);
 	while (token && token[i])
 	{
 		if (token[i] == '\'' && !in_single_quote)
