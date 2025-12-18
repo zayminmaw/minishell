@@ -15,7 +15,7 @@ SRCS_DIR	=	src/
 OBJS_DIR	=	obj/
 
 PROMPT_DIR	=	prompt/
-PROMPT		=	prompt prompt_sig
+PROMPT		=	prompt prompt_sig prompt_utils
 
 LEXER_DIR	=	lexer/
 LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote
@@ -35,7 +35,7 @@ EXIT		=	exit_status
 UTILS_DIR	=	utils/
 UTILS		=	ft_isenvempty ft_error ft_envcpy ft_envops ft_skipquotes ft_appendchar \
 				ft_validvarchar ft_cleanquotes ft_getenv ft_freeenv ft_freenodes ft_env_match \
-				ft_count_tokens
+				ft_count_tokens ft_perror
 
 BUILDINS_DIR=	buildins/
 BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit ft_export ft_cd

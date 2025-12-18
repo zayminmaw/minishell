@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 18:20:14 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 20:35:06 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,21 +71,4 @@ void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 	else if (err_type == NOTDIR_ERR)
 		print_error(msg, " not a directory");
 	return (NULL);
-}
-
-void	ft_perror(char *prefix, char *arg)
-{
-	ft_putstr_fd("minishell: ", 2);
-	if (prefix)
-	{
-		ft_putstr_fd(prefix, 2);
-		ft_putstr_fd(": ", 2);
-	}
-	if (arg)
-	{
-		ft_putstr_fd(arg, 2);
-		ft_putstr_fd(": ", 2);
-	}
-	write(2, strerror(errno), ft_strlen(strerror(errno)));
-	ft_putstr_fd("\n", 2);
 }

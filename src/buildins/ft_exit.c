@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 18:36:13 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 21:16:40 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 20:05:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ static int	check_overflow(long current, int digit, int sign)
 	return (0);
 }
 
+static void	get_sign_and_advance(const char s, int *sign, int *i)
+{
+	if (s == '-' || s == '+')
+	{
+		if (s == '-')
+			*sign = -1;
+		(*i)++;
+	}
+}
+
 // validate if string is a valid number within long range
 // 1. skip whitespace
 // 2. check for sign (+/-)
@@ -55,12 +65,7 @@ static int	validate_arg(const char *s, long *out)
 	*out = 0;
 	while (s[i] == ' ' || (s[i] >= 9 && s[i] <= 13))
 		i++;
-	if (s[i] == '-' || s[i] == '+')
-	{
-		if (s[i] == '-')
-			sign = -1;
-		i++;
-	}
+	get_sign_and_advance(s[i], &sign, &i);
 	if (s[i] < '0' || s[i] > '9')
 		return (-1);
 	while (s[i] >= '0' && s[i] <= '9')

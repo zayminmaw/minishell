@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 02:15:58 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 20:26:23 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,34 +57,6 @@ static void	post_read_actions(char *input)
 		printf("\033[H\033[2J");
 }
 
-// Filter out empty tokens (from unexpanded variables like $EMPTY)
-static char	**filter_empty_tokens(char **tokens)
-{
-	int	i;
-	int	j;
-	int	count;
-	char	**filtered;
-
-	count = 0;
-	i = -1;
-	while (tokens[++i])
-		if (tokens[i][0] != '\0')
-			count++;
-	filtered = malloc(sizeof(char *) * (count + 1));
-	if (!filtered)
-		return (NULL);
-	i = 0;
-	j = 0;
-	while (tokens[i])
-	{
-		if (tokens[i][0] != '\0')
-			filtered[j++] = tokens[i];
-		i++;
-	}
-	filtered[j] = NULL;
-	return (filtered);
-}
-
 // 1. Lexer (tokenize)
 // 2. clean/remove quotes (clean quotes from token)
 // 3. validate if redir are syntactically correct
@@ -92,54 +64,40 @@ static char	**filter_empty_tokens(char **tokens)
 // 5. execute
 int	interpret_and_run(char *input, t_env *env)
 {
-	int		i;
 	int		status;
 	char	**tokens;
 	t_node	*nodes;
 
 	if (lexer(input, env, &tokens))
 		return (1);
-	i = -1;
 	if (!tokens[0] || (tokens[0][0] == '\0' && ft_count_tokens(tokens) == 1))
 		return (ft_strarr_free(tokens), 0);
-	if (validate_inout(tokens))
-		return (ft_strarr_free(tokens), 3);
-	if (validate_parens(tokens))
-		return (ft_strarr_free(tokens), 2);
-	char **tokens_filtered = filter_empty_tokens(tokens);
-	if (!tokens_filtered || !tokens_filtered[0])
-	{
-		free(tokens_filtered);
-		return (ft_strarr_free(tokens), 0);
-	}
-	nodes = parser(tokens_filtered, env);
-	free(tokens_filtered);
-	ft_strarr_free(tokens);
-	i = 0;
-	while (i < env->node_len)
-	{
-		if (nodes[i].full_cmd)
-		{
-			int j = 0;
-			while (nodes[i].full_cmd[j])
-			{
-				nodes[i].full_cmd[j] = ft_cleanquotes(nodes[i].full_cmd[j]);
-				j++;
-			}
-		}
-		i++;
-	}
+	status = process_tokens(tokens, &nodes, env);
+	if (status != -1)
+		return (status);
 	status = executor(nodes);
 	ft_freenodes(nodes);
 	return (status);
 }
 
-// i = 0;
-// while (tokens[i])
-// {
-// 	printf("%s\n", tokens[i]);
-// 	i++;
-// }
+// handle user input after readline
+// 1. add to history if not empty
+// 2. execute clear command if needed
+// 3. interpret and run the input
+// 4. return 1 if exit status is 4 (to break main loop)
+static int	handle_input(char *input, t_env *env)
+{
+	int	status;
+
+	post_read_actions(input);
+	if (ft_strlen(input))
+	{
+		status = interpret_and_run(input, env);
+		if (status == 4)
+			return (1);
+	}
+	return (0);
+}
 
 // where what user type in will come in here
 // 1. first get prompt
@@ -161,14 +119,10 @@ void	prompt(t_env *env)
 			printf("exit\n");
 			break ;
 		}
-		post_read_actions(input);
-		if (ft_strlen(input))
+		if (handle_input(input, env))
 		{
-			if (interpret_and_run(input, env) == 4)
-			{
-				free(input);
-				break ;
-			}
+			free(input);
+			break ;
 		}
 		free(input);
 	}
