@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer_expand_var.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 19:10:07 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 17:11:21 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 20:47:30 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,73 +14,15 @@
 #include "lexer.h"
 #include "utils.h"
 
-// join two string from param
-// free 2 param
-// return new malloc string
-static char	*join_and_free(char *s1, char *s2)
+// handle single quote toggle
+// if encounter ' and not in single quote, turn it on
+// if encounter ' and in single quote, turn it off
+static void	handle_quote(char c, int *in_single_quote)
 {
-	char	*tmp;
-
-	tmp = ft_strjoin(s1, s2);
-	free(s1);
-	free(s2);
-	return (tmp);
-}
-
-// if var name empty return empty string
-// if ? return exit status
-// interate the envp and compare
-// return the value by shifting the pointer to value
-// if not found return empty
-static char	*get_var_value(char *var_name, char **envp)
-{
-	int	i;
-	int	len;
-
-	if (!var_name || !*var_name)
-		return (ft_strdup(""));
-	if (ft_strcmp(var_name, "?") == 0)
-		return (ft_itoa(get_exit_status()));
-	if (!envp)
-		return (ft_strdup(""));
-	i = 0;
-	len = ft_strlen(var_name);
-	while (envp[i])
-	{
-		if (ft_strncmp(envp[i], var_name, len) == 0 && envp[i][len] == '=')
-			return (ft_strdup(envp[i] + len + 1));
-		i++;
-	}
-	return (ft_strdup(""));
-}
-
-// increment i to pass $
-// if the var name is not valid return $
-// get start
-// if s[*i] is just ? increment one time
-// else interate until not valid var name
-// get var name from start to *i - start
-// get var value
-// free var name as it has no more use
-static char	*expand_var(char *s, int *i, char **envp)
-{
-	int		start;
-	char	*var_name;
-	char	*var_value;
-
-	(*i)++;
-	if (!s[*i] || (!ft_isalnum(s[*i]) && s[*i] != '_' && s[*i] != '?'))
-		return (ft_strdup("$"));
-	start = *i;
-	if (s[*i] == '?')
-		(*i)++;
-	else
-		while (s[*i] && ft_validvarchar(s[*i]))
-			(*i)++;
-	var_name = ft_substr(s, start, *i - start);
-	var_value = get_var_value(var_name, envp);
-	free(var_name);
-	return (var_value);
+	if (c == '\'' && !(*in_single_quote))
+		*in_single_quote = 1;
+	else if (c == '\'' && *in_single_quote)
+		*in_single_quote = 0;
 }
 
 // allocate empty string res
@@ -104,10 +46,7 @@ char	*lexer_expand_var(char *token, char **envp)
 		return (NULL);
 	while (token && token[i])
 	{
-		if (token[i] == '\'' && !in_single_quote)
-			in_single_quote = 1;
-		else if (token[i] == '\'' && in_single_quote)
-			in_single_quote = 0;
+		handle_quote(token[i], &in_single_quote);
 		if (token[i] == '$' && !in_single_quote)
 		{
 			expanded_var = expand_var(token, &i, envp);

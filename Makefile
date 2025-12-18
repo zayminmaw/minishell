@@ -18,7 +18,7 @@ PROMPT_DIR	=	prompt/
 PROMPT		=	prompt prompt_sig prompt_utils
 
 LEXER_DIR	=	lexer/
-LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote
+LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote lexer_expand_utils
 
 VALIDATION_DIR	=	validation/
 VALIDATION		=	validate_inout validate_parens
