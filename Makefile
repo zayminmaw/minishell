@@ -18,7 +18,10 @@ PROMPT_DIR	=	prompt/
 PROMPT		=	prompt prompt_sig prompt_utils
 
 LEXER_DIR	=	lexer/
-LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote lexer_expand_utils
+LEXER		=	lexer lexer_pad_str lexer_tokenize lexer_expand_var lexer_check_quote \
+				lexer_expand_utils lexer_expand_wildcards lexer_wildcard_utils \
+				lexer_wildcard_match lexer_wildcard_expand lexer_wildcard_split \
+				lexer_wildcard_components lexer_wildcard_process
 
 VALIDATION_DIR	=	validation/
 VALIDATION		=	validate_inout validate_parens validate_utils validate_checks
@@ -27,8 +30,6 @@ PARSER_DIR	=	parser/
 PARSER		=	parser parser_count_nodes parser_init_nodes parser_build_nodes \
 				parser_set_inout parser_resolve_nodes parser_build_path \
 				parser_count_args parser_set_fullcmd parser_count_cmd \
-				parser_expand_wildcards parser_wildcard_utils parser_wildcard_match \
-				parser_wildcard_expand parser_wildcard_split parser_wildcard_components \
 				parser_inout_utils
 
 EXIT_DIR	=	exit_status/

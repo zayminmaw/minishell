@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_wildcard_split.c                            :+:      :+:    :+:   */
+/*   lexer_wildcard_split.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 21:45:00 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 21:31:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 21:58:42 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "lexer.h"
 #include "utils.h"
 
 // count number of path components (separated by /)
@@ -60,11 +60,18 @@ char	**split_path_components(char *token)
 	char	**result;
 	int		count;
 	int		comp_count;
+	int		i;
 
 	count = count_components(token);
 	result = malloc(sizeof(char *) * (count + 1));
 	if (!result)
 		return (NULL);
+	i = 0;
+	while (i <= count)
+	{
+		result[i] = NULL;
+		i++;
+	}
 	fill_components(result, token, &comp_count);
 	return (result);
 }

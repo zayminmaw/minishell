@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_expand_wildcards.c                          :+:      :+:    :+:   */
+/*   lexer_expand_wildcards.c                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 00:00:00 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 21:31:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 21:54:31 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "lexer.h"
 #include "utils.h"
 
 // copy matches to result at index position

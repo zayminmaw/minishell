@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_wildcard_components.c                       :+:      :+:    :+:   */
+/*   lexer_wildcard_components.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 22:00:00 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 21:31:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 21:54:34 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
+#include "lexer.h"
 #include "utils.h"
 
 // handle case when no more components left
