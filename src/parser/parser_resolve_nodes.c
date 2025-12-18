@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser_resolve_nodes.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/26 20:12:11 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 02:11:08 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 21:31:15 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
 
+// check if token is surrounded by quotes
 static int	is_quoted(char *token)
 {
 	int	len;
@@ -25,6 +26,25 @@ static int	is_quoted(char *token)
 		if (token[len - 1] == token[0])
 			return (1);
 	}
+	return (0);
+}
+
+// check if token is an operator and set node type
+// return 1 if operator found, 0 otherwise
+static int	check_operators(char *token, t_node *node)
+{
+	if (!ft_strcmp(token, "&&"))
+		node->type = DOUBLE_AND;
+	else if (!ft_strcmp(token, "||"))
+		node->type = DOUBLE_OR;
+	else if (!ft_strcmp(token, "|"))
+		node->type = PIPE;
+	else if (!ft_strcmp(token, "("))
+		node->type = L_PAR;
+	else if (!ft_strcmp(token, ")"))
+		node->type = R_PAR;
+	if (node->type != ALIEN)
+		return (1);
 	return (0);
 }
 
@@ -46,17 +66,7 @@ int	parser_resolve_nodes(char *token, t_node *node)
 		node->type = CMD;
 		return (0);
 	}
-	if (!ft_strcmp(token, "&&"))
-		node->type = DOUBLE_AND;
-	else if (!ft_strcmp(token, "||"))
-		node->type = DOUBLE_OR;
-	else if (!ft_strcmp(token, "|"))
-		node->type = PIPE;
-	else if (!ft_strcmp(token, "("))
-		node->type = L_PAR;
-	else if (!ft_strcmp(token, ")"))
-		node->type = R_PAR;
-	if (node->type != ALIEN)
+	if (check_operators(token, node))
 		return (2);
 	node->type = CMD;
 	return (0);
