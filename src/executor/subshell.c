@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:33 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 19:33:06 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 20:14:35 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,41 @@ static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_id
 	t_node	*sub_nodes;
 	int		len;
 	int		i;
+	int		**fd;
 
 	if (end <= start + 1)
 		exit(0);
-	if (end <= start + 1)
-		exit(0);
 	if (cmd_idx >= 0)
-		setup_pipe_fds(&nodes[start], cmd_idx);
+	{
+		fd = nodes[start].env->fd;
+		if (fd)
+		{
+			if (cmd_idx == 0 && nodes[start].out_flag == 0)
+			{
+				if (dup2(fd[0][1], STDOUT_FILENO) < 0)
+					ft_process_error(DUP_ERR, 1);
+			}
+			else if (cmd_idx == nodes[start].cmd_count - 1 && nodes[start].in_flag == 0)
+			{
+				if (dup2(fd[cmd_idx - 1][0], STDIN_FILENO) < 0)
+					ft_process_error(DUP_ERR, 1);
+			}
+			else if (cmd_idx > 0 && cmd_idx < nodes[start].cmd_count - 1)
+			{
+				if (nodes[start].in_flag == 0)
+				{
+					if (dup2(fd[cmd_idx - 1][0], STDIN_FILENO) < 0)
+						ft_process_error(DUP_ERR, 1);
+				}
+				if (nodes[start].out_flag == 0)
+				{
+					if (dup2(fd[cmd_idx][1], STDOUT_FILENO) < 0)
+						ft_process_error(DUP_ERR, 1);
+				}
+			}
+		}
+		close_all_pipes(&nodes[start]);
+	}
 	len = end - start - 1;
 	sub_nodes = malloc(sizeof(t_node) * len);
 	if (!sub_nodes)
@@ -70,8 +98,6 @@ static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_id
 		}
 		i++;
 	}
-	if (cmd_idx >= 0)
-		close_all_pipes(&nodes[start]);
 	executor(sub_nodes);
 	exit(get_exit_status());
 }

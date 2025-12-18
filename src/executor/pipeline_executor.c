@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 18:13:56 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 22:01:46 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,30 @@ static int	wait_for_n_children(int n)
 		i++;
 	}
 	return (0);
+}
+
+static void	close_pipe_fd(int fd)
+{
+	if (fd >= 0)
+		close(fd);
+}
+
+static void	close_pipes_after_fork(t_node *node, int cmd_index)
+{
+	int	**fd;
+
+	fd = node->env->fd;
+	if (!fd)
+		return ;
+	if (cmd_index == 0)
+		close_pipe_fd(fd[0][1]);
+	else if (cmd_index == node->cmd_count - 1)
+		close_pipe_fd(fd[cmd_index - 1][0]);
+	else if (cmd_index > 0 && cmd_index < node->cmd_count - 1)
+	{
+		close_pipe_fd(fd[cmd_index - 1][0]);
+		close_pipe_fd(fd[cmd_index][1]);
+	}
 }
 
 static int	pipeline_abort(t_node *nodes, int start, int forked_children,
@@ -90,6 +114,7 @@ static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 		next_i = execute_subshell_in_pipeline(nodes, *i, *cmd_index);
 		if (next_i < 0)
 			return (-1);
+		close_pipes_after_fork(&nodes[*i], *cmd_index);
 		(*cmd_index)++;
 		*i = next_i;
 		return (0);
@@ -104,6 +129,7 @@ static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 	}
 	if (pid == 0)
 		execute_pipeline_child(&nodes[*i], *cmd_index);
+	close_pipes_after_fork(&nodes[*i], *cmd_index);
 	(*cmd_index)++;
 	(*i)++;
 	return (0);
@@ -147,7 +173,6 @@ int	execute_pipeline(t_node *nodes, int start)
 			return (pipeline_abort(nodes, start, cmd_index, 0));
 		}
 	}
-	close_all_pipes(&nodes[start]);
 	wait_for_children(nodes[start].cmd_count);
 	free_pipes(&nodes[start]);
 	return (0);
