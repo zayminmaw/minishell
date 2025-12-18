@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:03:52 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/16 21:38:22 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 19:55:10 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,27 @@ static int	is_logical_op(char *token)
 	return (0);
 }
 
+static int	is_invalid_op(char *token)
+{
+	if (!token || is_quoted(token))
+		return (0);
+	if (!ft_strncmp(token, "&", 2) || !ft_strncmp(token, ";", 2))
+		return (1);
+	return (0);
+}
+
+static int	is_bang_only(char **tokens)
+{
+	if (!tokens || !tokens[0])
+		return (0);
+	if (!ft_strncmp(tokens[0], "!", 2) && !tokens[1])
+	{
+		set_exit_status(1);
+		return (1);
+	}
+	return (0);
+}
+
 static void	print_syntax_error(char *token)
 {
 	ft_putstr_fd("minishell: syntax error near unexpected token `", 2);
@@ -76,11 +97,15 @@ int	validate_inout(char **tokens)
 
 	if (!tokens || !tokens[0])
 		return (0);
+	if (is_bang_only(tokens))
+		return (1);
 	i = 0;
-	if (is_pipe(tokens[0]))
+	if (is_pipe(tokens[0]) || is_logical_op(tokens[0]))
 		return (print_syntax_error(tokens[0]), 1);
 	while (tokens[i])
 	{
+		if (is_invalid_op(tokens[i]))
+			return (print_syntax_error(tokens[i]), 1);
 		if (is_redir(tokens[i]))
 		{
 			if (!tokens[i + 1] || is_pipe(tokens[i + 1])
@@ -93,9 +118,10 @@ int	validate_inout(char **tokens)
 				return (1);
 			}
 		}
-		else if (is_pipe(tokens[i]))
+		else if (is_pipe(tokens[i]) || is_logical_op(tokens[i]))
 		{
-			if (!tokens[i + 1] || is_pipe(tokens[i + 1]))
+			if (!tokens[i + 1] || is_pipe(tokens[i + 1])
+				|| is_logical_op(tokens[i + 1]))
 			{
 				if (tokens[i + 1])
 					print_syntax_error(tokens[i + 1]);
