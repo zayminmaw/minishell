@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 19:33:06 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:20:14 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include "utils.h"
 #include <fcntl.h>
 #include <unistd.h>
+#include <errno.h>
 
 /*
 ** Get the last infile from the infiles array
@@ -60,10 +61,7 @@ static void	handle_input_redirect(t_node *node)
 
 	if (node->in_flag == 0)
 		return ;
-	if (node->in_flag == 1)
-		infile = get_last_infile(node);
-	else
-		infile = ".tmp";
+	infile = get_last_infile(node);
 	if (!infile)
 		return ;
 	fd = open(infile, O_RDONLY);
@@ -76,7 +74,7 @@ static void	handle_input_redirect(t_node *node)
 		ft_process_error(DUP_ERR, 1);
 	close(fd);
 	if (node->in_flag == 2)
-		unlink(".tmp");
+		unlink(infile);
 }
 
 /*
@@ -163,7 +161,16 @@ int	validate_outfile(t_node *node)
 			flags |= O_APPEND;
 		fd = open(node->outfiles[i], flags, 0644);
 		if (fd < 0)
-			return (ft_file_error(PERM_ERR, node->outfiles[i], 1), 1);
+		{
+			if (errno == ENOENT)
+				return (ft_file_error(DIR_ERR, node->outfiles[i], 1), 1);
+			else if (errno == EACCES)
+				return (ft_file_error(PERM_ERR, node->outfiles[i], 1), 1);
+			else if (errno == EISDIR)
+				return (ft_file_error(ISDIR_ERR, node->outfiles[i], 1), 1);
+			else
+				return (ft_file_error(PERM_ERR, node->outfiles[i], 1), 1);
+		}
 		close(fd);
 		i++;
 	}

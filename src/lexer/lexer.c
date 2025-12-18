@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 18:47:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/17 20:17:39 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 18:01:30 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 #include "utils.h"
+#include "parser.h"
 
 // main lexer: pad input, split into tokens, check quotes and expand vars
 // returns 0 on success
@@ -40,5 +41,8 @@ int	lexer(char *input, t_env *env, char ***tokens)
 		(*tokens)[i] = lexer_expand_var((*tokens)[i], env->envp);
 		i++;
 	}
+	*tokens = expand_wildcards(*tokens);
+	if (!(*tokens))
+		return (2);
 	return (0);
 }

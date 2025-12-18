@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/16 20:56:23 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:20:14 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,11 @@ void	ft_perror(char *prefix, char *arg)
 		ft_putstr_fd(prefix, 2);
 		ft_putstr_fd(": ", 2);
 	}
-	write(2, strerror(errno), ft_strlen(strerror(errno)));
 	if (arg)
 	{
-		ft_putstr_fd(": ", 2);
 		ft_putstr_fd(arg, 2);
-		ft_putstr_fd("\n", 2);
+		ft_putstr_fd(": ", 2);
 	}
+	write(2, strerror(errno), ft_strlen(strerror(errno)));
+	ft_putstr_fd("\n", 2);
 }

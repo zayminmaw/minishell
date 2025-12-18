@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/25 19:19:50 by zmin              #+#    #+#             */
-/*   Updated: 2025/11/29 15:52:04 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/18 18:01:30 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,5 +25,6 @@ char	*parser_build_path(char **envp, char *path);
 int		parser_count_args(char **tokens);
 char	**parser_set_fullcmd(t_node *node, int args_count, char **tokens);
 void	parser_count_cmd(t_node *nodes);
+char	**expand_wildcards(char **tokens);
 
 #endif

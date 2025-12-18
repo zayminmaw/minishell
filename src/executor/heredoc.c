@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 17:11:42 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/18 18:01:30 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -168,6 +168,23 @@ int	write_heredoc(t_node *node, int idx)
 		set_exit_status(WEXITSTATUS(status));
 		return (1);
 	}
-	free(tmp);
+	if (node->infiles)
+	{
+		int i = 0;
+		while (node->infiles[i])
+		{
+			free(node->infiles[i]);
+			i++;
+		}
+		free(node->infiles);
+	}
+	node->infiles = malloc(sizeof(char *) * 2);
+	if (node->infiles)
+	{
+		node->infiles[0] = tmp;
+		node->infiles[1] = NULL;
+	}
+	else
+		free(tmp);
 	return (0);
 }

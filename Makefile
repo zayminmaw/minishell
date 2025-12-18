@@ -26,7 +26,8 @@ VALIDATION		=	validate_inout validate_parens
 PARSER_DIR	=	parser/
 PARSER		=	parser parser_count_nodes parser_init_nodes parser_build_nodes \
 				parser_set_inout parser_resolve_nodes parser_build_path \
-				parser_count_args parser_set_fullcmd parser_count_cmd
+				parser_count_args parser_set_fullcmd parser_count_cmd \
+				parser_expand_wildcards
 
 EXIT_DIR	=	exit_status/
 EXIT		=	exit_status
