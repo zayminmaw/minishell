@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 17:11:21 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/21 03:00:32 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,6 +156,8 @@ static int	handle_parentheses(t_node *nodes, int *i, t_node_type *pending_op)
 
 	if (nodes[*i].type != L_PAR)
 		return (0);
+	if (nodes[*i].cmd_count > 1)
+		return (0);
 	should_skip = should_skip_execution(*pending_op, get_exit_status());
 	if (should_skip)
 	{
@@ -187,7 +189,10 @@ static int	process_node(t_node *nodes, int *i, t_node_type *pending_op)
 		return (ret);
 	if (nodes[*i].type == R_PAR)
 		return ((*i)++, 0);
-	if (!is_executable_type(nodes[*i].type))
+	if (nodes[*i].type == L_PAR && nodes[*i].cmd_count > 1)
+	{
+	}
+	else if (!is_executable_type(nodes[*i].type))
 		return ((*i)++, 0);
 	status = get_exit_status();
 	if (should_skip_execution(*pending_op, status))

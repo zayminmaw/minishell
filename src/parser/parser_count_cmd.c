@@ -3,15 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   parser_count_cmd.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/29 15:51:10 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 21:31:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/21 03:00:32 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "parser.h"
 #include "executor.h"
+#include "parser.h"
 
 // count commands in pipeline, handling parentheses
 // skip pipes and right parentheses in count
@@ -41,13 +41,16 @@ static int	count_pipeline_cmds(t_node *nodes, int i, int *count)
 
 // set command count for all nodes in range
 // cmd_count: actual command count
-// real_cmd_count: node count including pipes
+// real_cmd_count: node count including pipes and parentheses
 static void	set_cmd_counts(t_node *nodes, int start, int end, int count)
 {
+	int	real_count;
+
+	real_count = end - start;
 	while (start < end)
 	{
 		nodes[start].cmd_count = count;
-		nodes[start].real_cmd_count = count * 2 - 1;
+		nodes[start].real_cmd_count = real_count;
 		start++;
 	}
 }

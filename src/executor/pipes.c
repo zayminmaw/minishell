@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:02 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 18:10:45 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/21 03:00:32 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	free_pipes(t_node *nodes)
 	int	i;
 	int	pipe_count;
 
-	if (!nodes || !nodes->env->fd)
+	if (!nodes || !nodes->env || !nodes->env->fd)
 		return ;
 	pipe_count = nodes->cmd_count - 1;
 	i = 0;
@@ -118,7 +118,7 @@ void	close_all_pipes(t_node *node)
 	int	i;
 	int	pipe_count;
 
-	if (!node || !node->env->fd)
+	if (!node || !node->env || !node->env->fd)
 		return ;
 	pipe_count = node->cmd_count - 1;
 	i = 0;

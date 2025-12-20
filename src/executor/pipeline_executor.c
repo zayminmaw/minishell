@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 22:01:46 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/21 02:59:50 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,7 @@ static int	pipeline_abort(t_node *nodes, int start, int forked_children,
 
 void	execute_pipeline_child(t_node *node, int cmd_index)
 {
-		struct stat path_stat;
+	struct stat	path_stat;
 
 	setup_pipe_fds(node, cmd_index);
 	handle_redirections(node);

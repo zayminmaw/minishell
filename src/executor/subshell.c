@@ -6,12 +6,14 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 18:59:33 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 20:14:35 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/21 03:21:30 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
+#include "parser.h"
+#include "prompt.h"
 #include "utils.h"
 #include <stdlib.h>
 #include <unistd.h>
@@ -36,7 +38,8 @@ int	find_matching_rpar(t_node *nodes, int start)
 	return (j - 1);
 }
 
-static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_idx)
+static void	execute_subshell_child(t_node *nodes, int start, int end,
+		int cmd_idx)
 {
 	t_env	sub_env;
 	t_node	*sub_nodes;
@@ -56,7 +59,8 @@ static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_id
 				if (dup2(fd[0][1], STDOUT_FILENO) < 0)
 					ft_process_error(DUP_ERR, 1);
 			}
-			else if (cmd_idx == nodes[start].cmd_count - 1 && nodes[start].in_flag == 0)
+			else if (cmd_idx == nodes[start].cmd_count - 1
+				&& nodes[start].in_flag == 0)
 			{
 				if (dup2(fd[cmd_idx - 1][0], STDIN_FILENO) < 0)
 					ft_process_error(DUP_ERR, 1);
@@ -74,8 +78,14 @@ static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_id
 						ft_process_error(DUP_ERR, 1);
 				}
 			}
+			i = 0;
+			while (i < nodes[start].cmd_count - 1)
+			{
+				close(fd[i][0]);
+				close(fd[i][1]);
+				i++;
+			}
 		}
-		close_all_pipes(&nodes[start]);
 	}
 	len = end - start - 1;
 	sub_nodes = malloc(sizeof(t_node) * len);
@@ -98,6 +108,8 @@ static void	execute_subshell_child(t_node *nodes, int start, int end, int cmd_id
 		}
 		i++;
 	}
+	parser_count_cmd(sub_nodes);
+	set_child_signals();
 	executor(sub_nodes);
 	exit(get_exit_status());
 }
