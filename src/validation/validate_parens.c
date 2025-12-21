@@ -71,6 +71,24 @@ static void	validate_parens_core(char **tokens, int *depth, char **prev, int i)
 	*prev = tokens[i];
 }
 
+static int	has_double_open_parens(char **tokens)
+{
+	int	i;
+
+	i = 0;
+	while (tokens[i])
+	{
+		if (tokens[i][0] == '(' && tokens[i][1] == '\0')
+		{
+			if (tokens[i + 1] && tokens[i + 1][0] == '('
+				&& tokens[i + 1][1] == '\0')
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	validate_parens(char **tokens)
 {
 	int		depth;
@@ -91,6 +109,13 @@ int	validate_parens(char **tokens)
 	{
 		ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
 		set_exit_status(2);
+		return (1);
+	}
+	if (has_double_open_parens(tokens))
+	{
+		ft_putstr_fd("minishell: syntax error near unexpected token `(('\n",
+			2);
+		set_exit_status(1);
 		return (1);
 	}
 	return (0);

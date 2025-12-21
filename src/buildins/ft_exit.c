@@ -94,14 +94,13 @@ int	ft_exit(t_node *node)
 	}
 	if (validate_arg(node->full_cmd[1], &n) < 0)
 	{
-		printf("minishell: exit: %s: numeric argument required\n",
-			node->full_cmd[1]);
+		print_error_withargs("exit :", node->full_cmd[1], ": numeric argument required");		
 		set_exit_status(2);
 		return (1);
 	}
 	if (node->full_cmd[2])
 	{
-		printf("minishell: exit: too many arguments\n");
+		print_error("exit :", " too many arguments");
 		set_exit_status(1);
 		return (0);
 	}

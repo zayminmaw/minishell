@@ -109,6 +109,7 @@ void	update_or_add(char ***env, char *arg)
 char	**ft_export(char **env, char **full_cmd)
 {
 	int	i;
+	int	has_error;
 
 	if (!full_cmd[1])
 	{
@@ -116,6 +117,7 @@ char	**ft_export(char **env, char **full_cmd)
 		return (env);
 	}
 	i = 1;
+	has_error = 0;
 	while (full_cmd[i])
 	{
 		if (!is_valid_varname(full_cmd[i]))
@@ -123,14 +125,15 @@ char	**ft_export(char **env, char **full_cmd)
 			ft_putstr_fd("minishell: export: `", 2);
 			ft_putstr_fd(full_cmd[i], 2);
 			ft_putendl_fd("': not a valid identifier", 2);
-			set_exit_status(1);
+			has_error = 1;
 		}
 		else
-		{
 			update_or_add(&env, full_cmd[i]);
-			set_exit_status(0);
-		}
 		i++;
 	}
+	if (has_error)
+		set_exit_status(1);
+	else
+		set_exit_status(0);
 	return (env);
 }

@@ -143,7 +143,7 @@ int	execute_subshell_group(t_node *nodes, int start)
 		if (sig == SIGINT)
 			write(1, "\n", 1);
 		else if (sig == SIGQUIT)
-			write(1, "Quit 3\n", 9);
+			write(1, "Quit 3\n", 8);
 		set_exit_status(128 + sig);
 	}
 	return (end + 1);

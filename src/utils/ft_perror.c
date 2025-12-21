@@ -28,3 +28,25 @@ void	ft_perror(char *prefix, char *arg)
 	write(2, strerror(errno), ft_strlen(strerror(errno)));
 	ft_putstr_fd("\n", 2);
 }
+
+void	print_error(char *prefix, char *arg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (prefix)
+		ft_putstr_fd(prefix, 2);
+	if (arg)
+		ft_putstr_fd(arg, 2);
+	ft_putstr_fd("\n", 2);
+}
+
+void	print_error_withargs(char *prefix,char *s, char *arg)
+{
+	ft_putstr_fd("minishell: ", 2);
+	if (prefix)
+		ft_putstr_fd(prefix, 2);
+	if (s)
+		ft_putstr_fd(s, 2);
+	if (arg)
+		ft_putstr_fd(arg, 2);
+	ft_putstr_fd("\n", 2);
+}

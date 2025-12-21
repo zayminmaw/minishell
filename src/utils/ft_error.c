@@ -13,16 +13,6 @@
 #include "exit_status.h"
 #include "utils.h"
 
-void	print_error(char *prefix, char *arg)
-{
-	ft_putstr_fd("minishell: ", 2);
-	if (prefix)
-		ft_putstr_fd(prefix, 2);
-	if (arg)
-		ft_putstr_fd(arg, 2);
-	ft_putstr_fd("\n", 2);
-}
-
 void	*ft_syntax_error(t_parse_error err_type, int exit_err_no)
 {
 	set_exit_status(exit_err_no);

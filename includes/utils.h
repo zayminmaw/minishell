@@ -28,6 +28,8 @@ void	*ft_process_error(t_process_error err_type, int exit_err_no);
 void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no);
 void	*ft_env_error(t_env_error err_type, char *msg, int exit_err_no);
 void	ft_perror(char *prefix, char *arg);
+void	print_error(char *prefix, char *arg);
+void	print_error_withargs(char *prefix,char *s, char *arg);
 
 // ft_envcpy.c
 char	**ft_envcpy(char **envp);

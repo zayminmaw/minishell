@@ -69,6 +69,33 @@ void	clean_node_quotes(t_node *nodes, int node_len)
 				j++;
 			}
 		}
+		if (nodes[i].infiles)
+		{
+			j = 0;
+			while (nodes[i].infiles[j])
+			{
+				nodes[i].infiles[j] = ft_cleanquotes(nodes[i].infiles[j]);
+				j++;
+			}
+		}
+		if (nodes[i].outfiles)
+		{
+			j = 0;
+			while (nodes[i].outfiles[j])
+			{
+				nodes[i].outfiles[j] = ft_cleanquotes(nodes[i].outfiles[j]);
+				j++;
+			}
+		}
+		if (nodes[i].delimiters)
+		{
+			j = 0;
+			while (nodes[i].delimiters[j])
+			{
+				nodes[i].delimiters[j] = ft_cleanquotes(nodes[i].delimiters[j]);
+				j++;
+			}
+		}
 		i++;
 	}
 }
