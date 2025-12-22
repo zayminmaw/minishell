@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:29:02 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 18:10:45 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/22 20:59:12 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,8 @@ void	wait_for_children(int cmd_count)
 		wait(&status);
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
+		else if (WIFSIGNALED(status))
+			last_status = 128 + WTERMSIG(status);
 		i++;
 	}
 	set_exit_status(last_status);
@@ -43,4 +45,6 @@ void	wait_and_set_status(pid_t pid)
 	waitpid(pid, &status, 0);
 	if (WIFEXITED(status))
 		set_exit_status(WEXITSTATUS(status));
+	else if (WIFSIGNALED(status))
+		set_exit_status(128 + WTERMSIG(status));
 }

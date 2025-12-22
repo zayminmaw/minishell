@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 18:20:14 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/22 21:32:43 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,19 @@ void	handle_redirections(t_node *node)
 }
 
 /*
+** Check if a string contains unquoted wildcards
+** Returns 1 if wildcards are found, 0 otherwise
+*/
+static int	has_wildcard(char *str)
+{
+	if (!str)
+		return (0);
+	if (ft_strchr(str, '*'))
+		return (1);
+	return (0);
+}
+
+/*
 ** Validate ALL input files (not just the last one)
 ** Bash checks all files even if only the last is used
 */
@@ -129,6 +142,8 @@ int	validate_infile(t_node *node)
 	i = 0;
 	while (node->infiles[i])
 	{
+		if (has_wildcard(node->infiles[i]))
+			return (ft_file_error(AMBIGUOUS_ERR, node->infiles[i], 1), 1);
 		if (access(node->infiles[i], F_OK) < 0)
 			return (ft_file_error(DIR_ERR, node->infiles[i], 1), 1);
 		if (access(node->infiles[i], R_OK) < 0)
@@ -154,6 +169,8 @@ int	validate_outfile(t_node *node)
 	i = 0;
 	while (node->outfiles[i])
 	{
+		if (has_wildcard(node->outfiles[i]))
+			return (ft_file_error(AMBIGUOUS_ERR, node->outfiles[i], 1), 1);
 		flags = O_CREAT | O_WRONLY;
 		if (node->out_flag == 1)
 			flags |= O_TRUNC;

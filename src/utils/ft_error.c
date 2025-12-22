@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_error.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/02 14:23:00 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 20:35:06 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/22 21:32:43 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,5 +60,7 @@ void	*ft_file_error(t_file_error err_type, char *msg, int exit_err_no)
 		print_error(msg, " is a directory");
 	else if (err_type == NOTDIR_ERR)
 		print_error(msg, " not a directory");
+	else if (err_type == AMBIGUOUS_ERR)
+		print_error(msg, " ambiguous redirect");
 	return (NULL);
 }
