@@ -42,6 +42,9 @@ char	**ft_export(char **env, char **full_cmd);
 // ft_cd.c
 char	**ft_cd(char **env, char **full_cmd);
 
+// ft_dot.c
+int		ft_dot(t_node *node);
+
 typedef enum e_cd_error
 {
 	HOME_NOT_SET,

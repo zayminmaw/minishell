@@ -56,7 +56,8 @@ int	parser_resolve_nodes(char *token, t_node *node)
 	if (!token)
 		return (1);
 	if (!ft_strcmp(token, "export") || !ft_strcmp(token, "cd")
-		|| !ft_strcmp(token, "unset") || !ft_strcmp(token, "exit"))
+		|| !ft_strcmp(token, "unset") || !ft_strcmp(token, "exit")
+		|| !ft_strcmp(token, "."))
 		return (node->type = BUILDIN_PARENT, 1);
 	else if (!ft_strcmp(token, "echo") || !ft_strcmp(token, "pwd")
 		|| !ft_strcmp(token, "env"))

@@ -38,6 +38,8 @@ int	is_parent_buildin(char *cmd)
 		return (1);
 	if (!ft_strcmp(cmd, "exit"))
 		return (1);
+	if (!ft_strcmp(cmd, "."))
+		return (1);
 	return (0);
 }
 
@@ -60,7 +62,11 @@ int	exec_buildin_parent(t_node *node)
 	else if (ft_strcmp(node->full_cmd[0], "export") == 0)
 		node->env->envp = ft_export(node->env->envp, node->full_cmd);
 	else if (ft_strcmp(node->full_cmd[0], "exit") == 0)
+	{
 		if (ft_exit(node))
 			return (1);
+	}
+	else if (ft_strcmp(node->full_cmd[0], ".") == 0)
+		ft_dot(node);
 	return (0);
 }
