@@ -14,6 +14,7 @@
 #include "minishell.h"
 #include "prompt.h"
 #include "utils.h"
+#include <errno.h>
 #include <fcntl.h>
 #include <lexer.h>
 #include <readline/readline.h>
@@ -76,7 +77,13 @@ static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 	{
 		line = readline("> ");
 		if (!line)
+		{
+			write(2, "minishell: warning: here-document delimited by ", 48);
+			write(2, "end-of-file (wanted `", 21);
+			write(2, delimiter, ft_strlen(delimiter));
+			write(2, "')\n", 3);
 			break ;
+		}
 		if (ft_strcmp(line, delimiter) == 0)
 		{
 			free(line);
@@ -144,13 +151,16 @@ int	write_heredoc(t_node *node, int idx)
 		exit(0);
 	}
 	set_parent_wait_signals(&old_int, &old_quit);
-	if (waitpid(pid, &status, 0) == -1)
+	while (waitpid(pid, &status, 0) == -1)
 	{
-		restore_parent_signals(&old_int, &old_quit);
-		unlink(tmp);
-		free(tmp);
-		set_exit_status(1);
-		return (1);
+		if (errno != EINTR)
+		{
+			restore_parent_signals(&old_int, &old_quit);
+			unlink(tmp);
+			free(tmp);
+			set_exit_status(1);
+			return (1);
+		}
 	}
 	restore_parent_signals(&old_int, &old_quit);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)

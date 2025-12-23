@@ -15,6 +15,8 @@
 #include "prompt.h"
 #include <sys/stat.h>
 
+static int	process_subshell_heredocs(t_node *nodes, int start, int end);
+
 static int	wait_for_n_children(int n)
 {
 	int	status;
@@ -104,6 +106,34 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 	}
 }
 
+static int	process_subshell_heredocs(t_node *nodes, int start, int end)
+{
+	int	i;
+
+	i = start + 1;
+	while (i < end)
+	{
+		if (nodes[i].type == L_PAR)
+		{
+			int	matching_rpar;
+
+			matching_rpar = find_matching_rpar(nodes, i);
+			if (matching_rpar < 0)
+				return (-1);
+			if (process_subshell_heredocs(nodes, i, matching_rpar) < 0)
+				return (-1);
+			i = matching_rpar + 1;
+			continue;
+		}
+		if (write_heredoc(&nodes[i], i))
+			return (-1);
+		if (nodes[i].in_flag == 2)
+			nodes[i].in_flag = 1;
+		i++;
+	}
+	return (0);
+}
+
 static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 {
 	pid_t	pid;
@@ -111,6 +141,13 @@ static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 
 	if (nodes[*i].type == L_PAR)
 	{
+		int	end;
+
+		end = find_matching_rpar(nodes, *i);
+		if (end < 0)
+			return (-1);
+		if (process_subshell_heredocs(nodes, *i, end) < 0)
+			return (-1);
 		next_i = execute_subshell_in_pipeline(nodes, *i, *cmd_index);
 		if (next_i < 0)
 			return (-1);

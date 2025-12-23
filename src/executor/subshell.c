@@ -15,6 +15,7 @@
 #include "parser.h"
 #include "prompt.h"
 #include "utils.h"
+#include <errno.h>
 #include <stdlib.h>
 #include <unistd.h>
 
@@ -100,12 +101,6 @@ static void	execute_subshell_child(t_node *nodes, int start, int end,
 	{
 		sub_nodes[i] = nodes[start + 1 + i];
 		sub_nodes[i].env = &sub_env;
-		if (cmd_idx >= 0 && sub_nodes[i].in_flag == 2)
-		{
-			sub_nodes[i].in_flag = 0;
-			sub_nodes[i].infiles = NULL;
-			sub_nodes[i].delimiters = NULL;
-		}
 		i++;
 	}
 	parser_count_cmd(sub_nodes);
@@ -133,8 +128,11 @@ int	execute_subshell_group(t_node *nodes, int start)
 	}
 	if (pid == 0)
 		execute_subshell_child(nodes, start, end, -1);
-	if (waitpid(pid, &status, 0) == -1)
-		return (-1);
+	while (waitpid(pid, &status, 0) == -1)
+	{
+		if (errno != EINTR)
+			return (-1);
+	}
 	if (WIFEXITED(status))
 		set_exit_status(WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))

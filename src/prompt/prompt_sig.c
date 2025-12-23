@@ -29,9 +29,10 @@ static void	prompt_sigint_handler(int sig)
 {
 	if (sig == SIGINT)
 	{
-		ioctl(0, TIOCSTI, "\n");
-		rl_replace_line("", 0);
+		write(1, "\n", 1);
 		rl_on_new_line();
+		rl_replace_line("", 0);
+		rl_redisplay();
 		set_exit_status(1);
 	}
 }

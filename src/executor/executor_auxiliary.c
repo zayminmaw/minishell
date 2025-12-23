@@ -12,6 +12,7 @@
 
 #include "executor.h"
 #include "minishell.h"
+#include <errno.h>
 
 int	is_executable_type(t_node_type type)
 {
@@ -42,7 +43,11 @@ void	wait_and_set_status(pid_t pid)
 {
 	int	status;
 
-	waitpid(pid, &status, 0);
+	while (waitpid(pid, &status, 0) == -1)
+	{
+		if (errno != EINTR)
+			return ;
+	}
 	if (WIFEXITED(status))
 		set_exit_status(WEXITSTATUS(status));
 	else if (WIFSIGNALED(status))
