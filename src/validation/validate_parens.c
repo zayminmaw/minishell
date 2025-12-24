@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:58 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/21 03:07:13 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/24 21:05:17 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,10 @@
 #include "utils.h"
 #include <unistd.h>
 
-static int	is_lpar(char *t)
+static int	is_par(char *t, int check_left)
 {
-	return (t && t[0] == '(' && t[1] == '\0');
-}
-
-static int	is_rpar(char *t)
-{
+	if (check_left)
+		return (t && t[0] == '(' && t[1] == '\0');
 	return (t && t[0] == ')' && t[1] == '\0');
 }
 
@@ -44,7 +41,7 @@ static int	is_valid_prev_for_lpar(char *prev)
 
 static void	validate_parens_core(char **tokens, int *depth, char **prev, int i)
 {
-	if (is_lpar(tokens[i]))
+	if (is_par(tokens[i], 1))
 	{
 		if (!is_valid_prev_for_lpar(*prev))
 		{
@@ -56,7 +53,7 @@ static void	validate_parens_core(char **tokens, int *depth, char **prev, int i)
 		}
 		(*depth)++;
 	}
-	else if (is_rpar(tokens[i]))
+	else if (is_par(tokens[i], 0))
 	{
 		if (*depth == 0)
 		{
@@ -80,8 +77,8 @@ static int	has_double_open_parens(char **tokens)
 	{
 		if (tokens[i][0] == '(' && tokens[i][1] == '\0')
 		{
-			if (tokens[i + 1] && tokens[i + 1][0] == '('
-				&& tokens[i + 1][1] == '\0')
+			if (tokens[i + 1] && tokens[i + 1][0] == '(' && tokens[i
+				+ 1][1] == '\0')
 				return (1);
 		}
 		i++;
@@ -108,15 +105,12 @@ int	validate_parens(char **tokens)
 	if (depth != 0)
 	{
 		ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
-		set_exit_status(2);
-		return (1);
+		return (set_exit_status(2), 1);
 	}
 	if (has_double_open_parens(tokens))
 	{
-		ft_putstr_fd("minishell: syntax error near unexpected token `(('\n",
-			2);
-		set_exit_status(1);
-		return (1);
+		print_error(NULL, "syntax error near unexpected token `((");
+		return (set_exit_status(1), 1);
 	}
 	return (0);
 }

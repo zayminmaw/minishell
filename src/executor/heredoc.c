@@ -6,11 +6,12 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:45:57 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/18 18:01:30 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/24 21:27:17 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exit_status.h"
+#include "executor.h"
 #include "minishell.h"
 #include "prompt.h"
 #include "utils.h"
@@ -21,19 +22,6 @@
 #include <signal.h>
 #include <sys/wait.h>
 #include <unistd.h>
-
-static char	*heredoc_tmpname(int idx)
-{
-	char	*num;
-	char	*name;
-
-	num = ft_itoa(idx);
-	if (!num)
-		return (NULL);
-	name = ft_strjoin("/tmp/heredoc_", num);
-	free(num);
-	return (name);
-}
 
 static void	set_heredoc_child_signals(void)
 {
@@ -46,26 +34,6 @@ static void	set_heredoc_child_signals(void)
 	sigaction(SIGQUIT, &sa, NULL);
 }
 
-static void	set_parent_wait_signals(struct sigaction *old_int,
-		struct sigaction *old_quit)
-{
-	struct sigaction	sa;
-
-	ft_bzero(&sa, sizeof(sa));
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = 0;
-	sa.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa, old_int);
-	sigaction(SIGQUIT, &sa, old_quit);
-}
-
-static void	restore_parent_signals(struct sigaction *old_int,
-		struct sigaction *old_quit)
-{
-	sigaction(SIGINT, old_int, NULL);
-	sigaction(SIGQUIT, old_quit, NULL);
-}
-
 static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 {
 	char	*line;
@@ -76,17 +44,12 @@ static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 	while (1)
 	{
 		line = readline("> ");
-		if (!line)
+		if (!line || ft_strcmp(line, delimiter) == 0)
 		{
-			write(2, "minishell: warning: here-document delimited by ", 48);
-			write(2, "end-of-file (wanted `", 21);
-			write(2, delimiter, ft_strlen(delimiter));
-			write(2, "')\n", 3);
-			break ;
-		}
-		if (ft_strcmp(line, delimiter) == 0)
-		{
-			free(line);
+			if (!line)
+				write_eof_warning(delimiter);
+			else
+				free(line);
 			break ;
 		}
 		expanded = lexer_expand_var(line, envp);
@@ -99,102 +62,70 @@ static void	read_heredoc_lines(int fd, char *delimiter, char **envp)
 	}
 }
 
-static char	*get_last_delimiter(t_node *node)
+static pid_t	fork_heredoc_child(char *tmp, char *delimiter, char **envp)
 {
-	int	i;
+	pid_t	pid;
+	int		fd;
 
-	if (!node->delimiters)
-		return (NULL);
-	i = 0;
-	while (node->delimiters[i])
-		i++;
-	if (i == 0)
-		return (NULL);
-	return (node->delimiters[i - 1]);
-}
-
-int	write_heredoc(t_node *node, int idx)
-{
-	pid_t				pid;
-	int					status;
-	int					fd;
-	struct sigaction	old_int;
-	struct sigaction	old_quit;
-	char				*tmp;
-	char				*delimiter;
-
-	if (node->in_flag != 2)
-		return (0);
-	delimiter = get_last_delimiter(node);
-	if (!delimiter)
-	{
-		node->in_flag = 0;
-		return (0);
-	}
-	tmp = heredoc_tmpname(idx);
-	if (!tmp)
-		return (set_exit_status(1), 1);
 	pid = fork();
 	if (pid < 0)
-	{
-		free(tmp);
-		return (ft_process_error(FORK_ERR, 1), 0);
-	}
+		return (-1);
 	if (pid == 0)
 	{
 		set_heredoc_child_signals();
 		fd = open(tmp, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 		if (fd < 0)
 			exit(1);
-		read_heredoc_lines(fd, delimiter, node->env->envp);
+		read_heredoc_lines(fd, delimiter, envp);
 		close(fd);
 		exit(0);
 	}
-	set_parent_wait_signals(&old_int, &old_quit);
-	while (waitpid(pid, &status, 0) == -1)
-	{
-		if (errno != EINTR)
-		{
-			restore_parent_signals(&old_int, &old_quit);
-			unlink(tmp);
-			free(tmp);
-			set_exit_status(1);
-			return (1);
-		}
-	}
-	restore_parent_signals(&old_int, &old_quit);
+	return (pid);
+}
+
+static int	wait_heredoc_child(pid_t pid, char *tmp)
+{
+	int					status;
+	struct sigaction	sa;
+	struct sigaction	old_int;
+	struct sigaction	old_quit;
+
+	ft_bzero(&sa, sizeof(sa));
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = 0;
+	sa.sa_handler = SIG_IGN;
+	sigaction(SIGINT, &sa, &old_int);
+	sigaction(SIGQUIT, &sa, &old_quit);
+	while (waitpid(pid, &status, 0) == -1 && errno == EINTR)
+		;
+	sigaction(SIGINT, &old_int, NULL);
+	sigaction(SIGQUIT, &old_quit, NULL);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		unlink(tmp);
-		free(tmp);
-		write(STDOUT_FILENO, "\n", 1);
-		set_exit_status(130);
-		return (1);
-	}
+		return (unlink(tmp), write(1, "\n", 1), set_exit_status(130), 1);
 	if (WIFEXITED(status) && WEXITSTATUS(status) != 0)
-	{
-		unlink(tmp);
-		free(tmp);
-		set_exit_status(WEXITSTATUS(status));
-		return (1);
-	}
-	if (node->infiles)
-	{
-		int i = 0;
-		while (node->infiles[i])
-		{
-			free(node->infiles[i]);
-			i++;
-		}
-		free(node->infiles);
-	}
-	node->infiles = malloc(sizeof(char *) * 2);
-	if (node->infiles)
-	{
-		node->infiles[0] = tmp;
-		node->infiles[1] = NULL;
-	}
-	else
-		free(tmp);
+		return (unlink(tmp), set_exit_status(WEXITSTATUS(status)), 1);
 	return (0);
+}
+
+int	write_heredoc(t_node *node, int idx)
+{
+	pid_t	pid;
+	char	*tmp;
+	char	*delimiter;
+
+	if (node->in_flag != 2)
+		return (0);
+	delimiter = get_last_delimiter(node);
+	if (!delimiter)
+		return (node->in_flag = 0, 0);
+	tmp = heredoc_tmpname(idx);
+	if (!tmp)
+		return (set_exit_status(1), 1);
+	pid = fork_heredoc_child(tmp, delimiter, node->env->envp);
+	if (pid < 0)
+		return (free(tmp), ft_process_error(FORK_ERR, 1), 0);
+	if (wait_heredoc_child(pid, tmp))
+		return (free(tmp), 1);
+	free_infiles(node);
+	return (set_heredoc_infile(node, tmp));
 }

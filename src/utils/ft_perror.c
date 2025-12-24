@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_perror.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:34:28 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 20:34:36 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/24 21:06:25 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	print_error(char *prefix, char *arg)
 	ft_putstr_fd("\n", 2);
 }
 
-void	print_error_withargs(char *prefix,char *s, char *arg)
+void	print_error_withargs(char *prefix, char *s, char *arg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (prefix)

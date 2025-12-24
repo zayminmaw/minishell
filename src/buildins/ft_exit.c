@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 18:36:13 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 20:05:28 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/24 21:14:01 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ int	ft_exit(t_node *node)
 	}
 	if (validate_arg(node->full_cmd[1], &n) < 0)
 	{
-		print_error_withargs("exit :", node->full_cmd[1], ": numeric argument required");		
+		print_error_withargs("exit: ", node->full_cmd[1],
+			": numeric argument required");
 		set_exit_status(2);
 		return (1);
 	}

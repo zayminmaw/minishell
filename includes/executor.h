@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:01:39 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/17 18:13:56 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/24 21:37:15 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include "exit_status.h"
 # include "minishell.h"
 # include "utils.h"
+# include <signal.h>
 # include <sys/types.h>
 # include <sys/wait.h>
 # include <unistd.h>
@@ -38,5 +39,19 @@ int		execute_pipeline(t_node *nodes, int start);
 int		find_matching_rpar(t_node *nodes, int start);
 int		execute_subshell_group(t_node *nodes, int start);
 int		execute_subshell_in_pipeline(t_node *nodes, int start, int cmd_idx);
+
+// heredoc_utils.c
+char	*heredoc_tmpname(int idx);
+char	*get_last_delimiter(t_node *node);
+void	free_infiles(t_node *node);
+int		set_heredoc_infile(t_node *node, char *tmp);
+void	write_eof_warning(char *delimiter);
+
+// subshell_aux.c
+
+void	handle_subshell_dups(t_node *node, int **fd, int idx);
+int		find_matching_rpar(t_node *nodes, int start);
+void	wait_subshell_status(pid_t pid);
+t_node	*get_sub_nodes(t_node *nodes, int start, int len, t_env *s_env);
 
 #endif

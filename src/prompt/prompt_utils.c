@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:17:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 20:26:27 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/24 21:10:34 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,52 +50,34 @@ char	**filter_empty_tokens(char **tokens)
 	return (filtered);
 }
 
+// clean quotes from a string array
+static void	clean_string_array(char **arr)
+{
+	int	i;
+
+	if (!arr)
+		return ;
+	i = 0;
+	while (arr[i])
+	{
+		arr[i] = ft_cleanquotes(arr[i]);
+		i++;
+	}
+}
+
 // clean quotes from all commands in all nodes
 // iterate through each node and clean quotes from each command
 void	clean_node_quotes(t_node *nodes, int node_len)
 {
 	int	i;
-	int	j;
 
 	i = 0;
 	while (i < node_len)
 	{
-		if (nodes[i].full_cmd)
-		{
-			j = 0;
-			while (nodes[i].full_cmd[j])
-			{
-				nodes[i].full_cmd[j] = ft_cleanquotes(nodes[i].full_cmd[j]);
-				j++;
-			}
-		}
-		if (nodes[i].infiles)
-		{
-			j = 0;
-			while (nodes[i].infiles[j])
-			{
-				nodes[i].infiles[j] = ft_cleanquotes(nodes[i].infiles[j]);
-				j++;
-			}
-		}
-		if (nodes[i].outfiles)
-		{
-			j = 0;
-			while (nodes[i].outfiles[j])
-			{
-				nodes[i].outfiles[j] = ft_cleanquotes(nodes[i].outfiles[j]);
-				j++;
-			}
-		}
-		if (nodes[i].delimiters)
-		{
-			j = 0;
-			while (nodes[i].delimiters[j])
-			{
-				nodes[i].delimiters[j] = ft_cleanquotes(nodes[i].delimiters[j]);
-				j++;
-			}
-		}
+		clean_string_array(nodes[i].full_cmd);
+		clean_string_array(nodes[i].infiles);
+		clean_string_array(nodes[i].outfiles);
+		clean_string_array(nodes[i].delimiters);
 		i++;
 	}
 }

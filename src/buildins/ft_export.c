@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_export.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 20:23:24 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/11 19:14:59 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/24 21:18:12 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -131,9 +131,6 @@ char	**ft_export(char **env, char **full_cmd)
 			update_or_add(&env, full_cmd[i]);
 		i++;
 	}
-	if (has_error)
-		set_exit_status(1);
-	else
-		set_exit_status(0);
+	set_exit_status(has_error);
 	return (env);
 }

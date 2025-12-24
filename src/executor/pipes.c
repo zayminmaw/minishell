@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:02 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/21 03:00:32 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/24 21:44:37 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,35 +21,40 @@ static void	clean_pipes_on_error(int i, t_node *nodes)
 	nodes->env->fd = NULL;
 }
 
+static int	init_pipe_pair(t_node *nodes, int i)
+{
+	nodes->env->fd[i] = malloc(sizeof(int) * 2);
+	if (!nodes->env->fd[i])
+		return (MEM_ERR);
+	if (pipe(nodes->env->fd[i]) < 0)
+	{
+		free(nodes->env->fd[i]);
+		return (PIPE_ERR);
+	}
+	return (0);
+}
+
 void	alloc_pipes(t_node *nodes)
 {
 	int	i;
-	int	pipe_count;
+	int	ret;
 
 	if (!nodes || nodes->cmd_count <= 1)
 		return ;
-	pipe_count = nodes->cmd_count - 1;
-	nodes->env->fd = malloc(sizeof(int *) * pipe_count);
+	nodes->env->fd = malloc(sizeof(int *) * (nodes->cmd_count - 1));
 	if (!nodes->env->fd)
 	{
 		ft_process_error(MEM_ERR, 1);
 		return ;
 	}
 	i = -1;
-	while (++i < pipe_count)
+	while (++i < nodes->cmd_count - 1)
 	{
-		nodes->env->fd[i] = malloc(sizeof(int) * 2);
-		if (!nodes->env->fd[i])
+		ret = init_pipe_pair(nodes, i);
+		if (ret != 0)
 		{
 			clean_pipes_on_error(i, nodes);
-			ft_process_error(MEM_ERR, 1);
-			return ;
-		}
-		if (pipe(nodes->env->fd[i]) < 0)
-		{
-			free(nodes->env->fd[i]);
-			clean_pipes_on_error(i, nodes);
-			ft_process_error(PIPE_ERR, 1);
+			ft_process_error(ret, 1);
 			return ;
 		}
 	}
@@ -87,11 +92,6 @@ void	redirect_middile_command(int **fd, t_node *node, int cmd_index)
 	}
 }
 
-/*
-** First command: only redirect stdout to pipe
-** Last command : only redirect stdin from pipe
-** Middle commands : redirect both stdin and out
-*/
 void	setup_pipe_fds(t_node *node, int cmd_index)
 {
 	int	**fd;
