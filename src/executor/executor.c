@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 18:47:15 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,10 @@
 #include "prompt.h"
 #include <sys/stat.h>
 
+// execute child process for single command
+// handles redirections, signals, and command execution
 static void	execute_child_process(t_node *node)
 {
-	struct stat	path_stat;
-
 	handle_redirections(node);
 	set_child_signals();
 	if (node->type == BUILDIN_CHILD)
@@ -28,26 +28,12 @@ static void	execute_child_process(t_node *node)
 	else
 	{
 		execve(node->exec_path, node->full_cmd, node->env->envp);
-		if (ft_strchr(node->full_cmd[0], '/'))
-		{
-			if (stat(node->full_cmd[0], &path_stat) == 0)
-			{
-				if (S_ISDIR(path_stat.st_mode))
-				{
-					ft_file_error(ISDIR_ERR, node->full_cmd[0], 126);
-					exit(126);
-				}
-				ft_file_error(PERM_ERR, node->full_cmd[0], 126);
-				exit(126);
-			}
-			ft_file_error(DIR_ERR, node->full_cmd[0], 127);
-		}
-		else
-			ft_file_error(CMD_ERR, node->full_cmd[0], 127);
-		exit(127);
+		handle_execve_failure(node);
 	}
 }
 
+// execute single command (non-pipeline)
+// handles builtins, validation, heredoc, and fork
 static int	execute_single_cmd(t_node *nodes, int start)
 {
 	pid_t	pid;
@@ -70,25 +56,15 @@ static int	execute_single_cmd(t_node *nodes, int start)
 		return (0);
 	pid = fork();
 	if (pid < 0)
-	{
-		ft_process_error(FORK_ERR, 1);
-		return (0);
-	}
+		return (ft_process_error(FORK_ERR, 1), 0);
 	if (pid == 0)
 		execute_child_process(node);
 	wait_and_set_status(pid);
 	return (0);
 }
 
-// void	list_arr(char **data)
-// {
-// 	int	i;
-
-// 	i = 0;
-// 	while (data[i])
-// 		printf("%s\n", data[i++]);
-// }
-
+// execute command group (pipeline or single command)
+// routes to appropriate executor based on command count
 int	execute_group(t_node *nodes, int start)
 {
 	if (nodes[start].cmd_count > 1)
@@ -104,84 +80,8 @@ int	execute_group(t_node *nodes, int start)
 	return (0);
 }
 
-static int	handle_logical_op(t_node *nodes, int *i, t_node_type *pending_op)
-{
-	if (nodes[*i].type == DOUBLE_AND || nodes[*i].type == DOUBLE_OR)
-	{
-		*pending_op = nodes[*i].type;
-		(*i)++;
-		return (1);
-	}
-	return (0);
-}
-
-static int	execute_and_advance(t_node *nodes, int *i, t_node_type *pending_op)
-{
-	int	ret;
-
-	ret = execute_group(nodes, *i);
-	if (ret == 4)
-		return (4);
-	if (nodes[*i].cmd_count > 1)
-		*i += nodes[*i].real_cmd_count;
-	else
-		(*i)++;
-	*pending_op = ALIEN;
-	return (0);
-}
-
-static int	handle_parentheses(t_node *nodes, int *i, t_node_type *pending_op)
-{
-	int	should_skip;
-	int	next_i;
-	int	end;
-
-	if (nodes[*i].type != L_PAR)
-		return (0);
-	if (nodes[*i].cmd_count > 1)
-		return (0);
-	should_skip = should_skip_execution(*pending_op, get_exit_status());
-	if (should_skip)
-	{
-		end = find_matching_rpar(nodes, *i);
-		if (end < 0)
-			return (-1);
-		*i = end + 1;
-	}
-	else
-	{
-		next_i = execute_subshell_group(nodes, *i);
-		if (next_i < 0)
-			return (-1);
-		*i = next_i;
-	}
-	*pending_op = ALIEN;
-	return (1);
-}
-
-static int	process_node(t_node *nodes, int *i, t_node_type *pending_op)
-{
-	int	status;
-	int	ret;
-
-	if (handle_logical_op(nodes, i, pending_op))
-		return (0);
-	ret = handle_parentheses(nodes, i, pending_op);
-	if (ret != 0)
-		return (ret);
-	if (nodes[*i].type == R_PAR)
-		return ((*i)++, 0);
-	if (nodes[*i].type == L_PAR && nodes[*i].cmd_count > 1)
-	{
-	}
-	else if (!is_executable_type(nodes[*i].type))
-		return ((*i)++, 0);
-	status = get_exit_status();
-	if (should_skip_execution(*pending_op, status))
-		return (skip_command_group(nodes, i, pending_op), 0);
-	return (execute_and_advance(nodes, i, pending_op));
-}
-
+// main executor loop
+// processes all nodes with logical operators and subshells
 int	executor(t_node *nodes)
 {
 	int			i;

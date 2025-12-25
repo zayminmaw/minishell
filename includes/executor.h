@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:01:39 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 19:01:31 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ void		redirect_middile_command(int **fd, t_node *node, int cmd_index);
 int		execute_group(t_node *nodes, int start);
 int		should_skip_execution(t_node_type pending_op, int status);
 void		skip_command_group(t_node *nodes, int *i, t_node_type *pending_op);
-int		handle_child_cmd(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_t *last_pid);
+int		handle_child_cmd(t_node *nodes, int *i, int *cmd_index, pid_t *last_pid);
 void		set_pipeline_last_pid(pid_t pid);
 void		wait_for_children_with_last(int cmd_count, pid_t last_pid);
+int		process_node(t_node *nodes, int *i, t_node_type *pending_op);
 
 // heredoc_utils.c
 char	*heredoc_tmpname(int idx);

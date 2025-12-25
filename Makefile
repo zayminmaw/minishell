@@ -46,7 +46,7 @@ BUILDINS	=	buildins ft_unset ft_echo ft_pwd ft_env ft_exit ft_export ft_cd ft_do
 EXEC_DIR	=	executor/
 EXEC		=	executor heredoc heredoc_utils pipes redirections logical_operator executor_auxiliary \
 				pipeline_executor subshell subshell_auxiliary pipeline_helpers pipeline_more exec_child_utils \
-				redirections_helpers pipes_helpers executor_helpers executor_helpers2 executor_runs
+				redirections_helpers pipes_helpers executor_helpers executor_helpers2 executor_runs executor_wait
 
 ENTRY		=	main
 

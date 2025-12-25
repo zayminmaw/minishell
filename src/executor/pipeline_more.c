@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_more.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:45:38 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,13 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-static int	handle_par_child(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_t *last_pid)
+// handle subshell in pipeline
+// processes heredocs and executes subshell child
+static int	handle_par_child(t_node *nodes, int *i, int *cmd_index)
 {
 	int	env_end;
 	int	next_i;
-	(void)total_cmds;
-	(void)last_pid;
+
 	env_end = find_matching_rpar(nodes, *i);
 	if (env_end < 0)
 		return (-1);
@@ -35,12 +36,14 @@ static int	handle_par_child(t_node *nodes, int *i, int *cmd_index, int total_cmd
 	return (0);
 }
 
-int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_t *last_pid)
+// execute child command in pipeline
+// handles heredoc, fork, and pipe cleanup
+static int	exec_cmd_child(t_node *nodes, int *i, int *cmd_index, pid_t *last)
 {
 	pid_t	pid;
+	int		total_cmds;
 
-	if (nodes[*i].type == L_PAR)
-		return (handle_par_child(nodes, i, cmd_index, total_cmds, last_pid));
+	total_cmds = nodes[*i].cmd_count;
 	if (write_heredoc(&nodes[*i], *i))
 		return (1);
 	pid = fork();
@@ -51,10 +54,19 @@ int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_
 	}
 	if (pid == 0)
 		execute_pipeline_child(&nodes[*i], *cmd_index);
-	if (pid > 0 && last_pid && *cmd_index == total_cmds - 1)
-		*last_pid = pid;
+	if (pid > 0 && last && *cmd_index == total_cmds - 1)
+		*last = pid;
 	close_pipes_after_fork(&nodes[*i], *cmd_index);
 	(*cmd_index)++;
 	(*i)++;
 	return (0);
+}
+
+// handle child command or subshell in pipeline
+// routes to appropriate handler based on node type
+int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index, pid_t *last)
+{
+	if (nodes[*i].type == L_PAR)
+		return (handle_par_child(nodes, i, cmd_index));
+	return (exec_cmd_child(nodes, i, cmd_index, last));
 }

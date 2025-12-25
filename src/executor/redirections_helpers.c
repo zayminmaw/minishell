@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections_helpers.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:45:45 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 15:48:11 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,34 +16,8 @@
 #include <fcntl.h>
 #include <errno.h>
 
-char	*get_last_infile(t_node *node)
-{
-	int	i;
-
-	if (!node->infiles)
-		return (NULL);
-	i = 0;
-	while (node->infiles[i])
-		i++;
-	if (i == 0)
-		return (NULL);
-	return (node->infiles[i - 1]);
-}
-
-char	*get_last_outfile(t_node *node)
-{
-	int	i;
-
-	if (!node->outfiles)
-		return (NULL);
-	i = 0;
-	while (node->outfiles[i])
-		i++;
-	if (i == 0)
-		return (NULL);
-	return (node->outfiles[i - 1]);
-}
-
+// check if a string contains unquoted wildcards
+// returns 1 if wildcards are found, 0 otherwise
 static int	has_wildcard(char *str)
 {
 	if (!str)
@@ -53,17 +27,37 @@ static int	has_wildcard(char *str)
 	return (0);
 }
 
-int	exec_has_wildcard(char *str)
+// validate ALL input files (not just the last one)
+// bash checks all files even if only the last is used
+int	validate_infile(t_node *node)
 {
-	return (has_wildcard(str));
+	int	i;
+
+	if (node->in_flag != 1)
+		return (0);
+	if (!node->infiles)
+		return (0);
+	i = 0;
+	while (node->infiles[i])
+	{
+		if (has_wildcard(node->infiles[i]))
+			return (ft_file_error(AMBIGUOUS_ERR, node->infiles[i], 1), 1);
+		if (access(node->infiles[i], F_OK) < 0)
+			return (ft_file_error(DIR_ERR, node->infiles[i], 1), 1);
+		if (access(node->infiles[i], R_OK) < 0)
+			return (ft_file_error(PERM_ERR, node->infiles[i], 1), 1);
+		i++;
+	}
+	return (0);
 }
 
-int	validate_outfile_entry(t_node *node, char *outfile, int out_flag)
+// validate single outfile entry
+// opens file to check permissions and create/truncate
+static int	validate_outfile_entry(char *outfile, int out_flag)
 {
 	int	fd;
 	int	flags;
 
-	(void)node;
 	if (has_wildcard(outfile))
 		return (ft_file_error(AMBIGUOUS_ERR, outfile, 1), 1);
 	flags = O_CREAT | O_WRONLY;
@@ -84,5 +78,24 @@ int	validate_outfile_entry(t_node *node, char *outfile, int out_flag)
 			return (ft_file_error(PERM_ERR, outfile, 1), 1);
 	}
 	close(fd);
+	return (0);
+}
+
+// validate and open ALL output files (not just the last one)
+// bash opens all files to check permissions and create/truncate them
+// this matches bash behavior exactly
+int	validate_outfile(t_node *node)
+{
+	int	i;
+
+	if (node->out_flag == 0 || !node->outfiles)
+		return (0);
+	i = 0;
+	while (node->outfiles[i])
+	{
+		if (validate_outfile_entry(node->outfiles[i], node->out_flag))
+			return (1);
+		i++;
+	}
 	return (0);
 }

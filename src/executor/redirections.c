@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/22 21:32:43 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,8 @@
 #include <unistd.h>
 #include <errno.h>
 
-/*
-** Get the last infile from the infiles array
-*/
+// get the last infile from the infiles array
+// returns NULL if no infiles or empty array
 static char	*get_last_infile(t_node *node)
 {
 	int	i;
@@ -33,9 +32,8 @@ static char	*get_last_infile(t_node *node)
 	return (node->infiles[i - 1]);
 }
 
-/*
-** Get the last outfile from the outfiles array
-*/
+// get the last outfile from the outfiles array
+// returns NULL if no outfiles or empty array
 static char	*get_last_outfile(t_node *node)
 {
 	int	i;
@@ -50,10 +48,8 @@ static char	*get_last_outfile(t_node *node)
 	return (node->outfiles[i - 1]);
 }
 
-/*
-** Handle input redirections: < filename or << delimiter
-** Only the last file is used for actual input
-*/
+// handle input redirections: < filename or << delimiter
+// only the last file is used for actual input
 static void	handle_input_redirect(t_node *node)
 {
 	int		fd;
@@ -77,10 +73,8 @@ static void	handle_input_redirect(t_node *node)
 		unlink(infile);
 }
 
-/*
-** Handle output redirections: > or >>
-** Only the last file is used for actual output
-*/
+// handle output redirections: > or >>
+// only the last file is used for actual output
 static void	handle_output_redirect(t_node *node)
 {
 	int		fd;
@@ -108,88 +102,10 @@ static void	handle_output_redirect(t_node *node)
 	close(fd);
 }
 
+// handle all redirections for a node
+// processes input and output redirections
 void	handle_redirections(t_node *node)
 {
 	handle_input_redirect(node);
 	handle_output_redirect(node);
-}
-
-/*
-** Check if a string contains unquoted wildcards
-** Returns 1 if wildcards are found, 0 otherwise
-*/
-static int	has_wildcard(char *str)
-{
-	if (!str)
-		return (0);
-	if (ft_strchr(str, '*'))
-		return (1);
-	return (0);
-}
-
-/*
-** Validate ALL input files (not just the last one)
-** Bash checks all files even if only the last is used
-*/
-int	validate_infile(t_node *node)
-{
-	int	i;
-
-	if (node->in_flag != 1)
-		return (0);
-	if (!node->infiles)
-		return (0);
-	i = 0;
-	while (node->infiles[i])
-	{
-		if (has_wildcard(node->infiles[i]))
-			return (ft_file_error(AMBIGUOUS_ERR, node->infiles[i], 1), 1);
-		if (access(node->infiles[i], F_OK) < 0)
-			return (ft_file_error(DIR_ERR, node->infiles[i], 1), 1);
-		if (access(node->infiles[i], R_OK) < 0)
-			return (ft_file_error(PERM_ERR, node->infiles[i], 1), 1);
-		i++;
-	}
-	return (0);
-}
-
-/*
-** Validate and open ALL output files (not just the last one)
-** Bash opens all files to check permissions and create/truncate them
-** This matches bash behavior exactly
-*/
-int	validate_outfile(t_node *node)
-{
-	int	i;
-	int	fd;
-	int	flags;
-
-	if (node->out_flag == 0 || !node->outfiles)
-		return (0);
-	i = 0;
-	while (node->outfiles[i])
-	{
-		if (has_wildcard(node->outfiles[i]))
-			return (ft_file_error(AMBIGUOUS_ERR, node->outfiles[i], 1), 1);
-		flags = O_CREAT | O_WRONLY;
-		if (node->out_flag == 1)
-			flags |= O_TRUNC;
-		else if (node->out_flag == 2)
-			flags |= O_APPEND;
-		fd = open(node->outfiles[i], flags, 0644);
-		if (fd < 0)
-		{
-			if (errno == ENOENT)
-				return (ft_file_error(DIR_ERR, node->outfiles[i], 1), 1);
-			else if (errno == EACCES)
-				return (ft_file_error(PERM_ERR, node->outfiles[i], 1), 1);
-			else if (errno == EISDIR)
-				return (ft_file_error(ISDIR_ERR, node->outfiles[i], 1), 1);
-			else
-				return (ft_file_error(PERM_ERR, node->outfiles[i], 1), 1);
-		}
-		close(fd);
-		i++;
-	}
-	return (0);
 }

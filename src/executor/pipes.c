@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipes.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:02 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 #include "utils.h"
 #include "executor.h"
 
+// clean up allocated pipes on error
+// frees all previously allocated pipe pairs
 static void	clean_pipes_on_error(int i, t_node *nodes)
 {
 	while (--i >= 0)
@@ -22,6 +24,8 @@ static void	clean_pipes_on_error(int i, t_node *nodes)
 	nodes->env->fd = NULL;
 }
 
+// initialize a single pipe pair
+// allocates memory and creates pipe file descriptors
 static int	init_pipe_pair(t_node *nodes, int i)
 {
 	nodes->env->fd[i] = malloc(sizeof(int) * 2);
@@ -35,6 +39,8 @@ static int	init_pipe_pair(t_node *nodes, int i)
 	return (0);
 }
 
+// allocate pipes for pipeline
+// creates cmd_count-1 pipes for command pipeline
 void	alloc_pipes(t_node *nodes)
 {
 	int	i;
@@ -61,6 +67,8 @@ void	alloc_pipes(t_node *nodes)
 	}
 }
 
+// free all allocated pipes
+// releases memory for pipe file descriptors
 void	free_pipes(t_node *nodes)
 {
 	int	i;
@@ -79,8 +87,8 @@ void	free_pipes(t_node *nodes)
 	nodes->env->fd = NULL;
 }
 
-/* redirect_middile_command moved to pipes_helpers.c */
-
+// setup pipe file descriptors for command
+// redirects stdin/stdout to appropriate pipe ends
 void	setup_pipe_fds(t_node *node, int cmd_index)
 {
 	int	**fd;
@@ -100,21 +108,4 @@ void	setup_pipe_fds(t_node *node, int cmd_index)
 	}
 	else if (cmd_index > 0 && cmd_index < (node->cmd_count - 1))
 		redirect_middile_command(fd, node, cmd_index);
-}
-
-void	close_all_pipes(t_node *node)
-{
-	int	i;
-	int	pipe_count;
-
-	if (!node || !node->env || !node->env->fd)
-		return ;
-	pipe_count = node->cmd_count - 1;
-	i = 0;
-	while (i < pipe_count)
-	{
-		close(node->env->fd[i][0]);
-		close(node->env->fd[i][1]);
-		i++;
-	}
 }

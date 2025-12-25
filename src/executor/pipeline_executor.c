@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 18:46:23 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,21 @@
 #include <errno.h>
 #include <sys/stat.h>
 
-static int	pipeline_abort(t_node *nodes, int start, int forked_children,
-		int ret)
+// clean up pipeline and wait for children on error
+// closes and frees all pipes, waits for forked children
+static int	pipeline_abort(t_node *nodes, int start, int forked, int ret)
 {
 	close_all_pipes(&nodes[start]);
-	if (forked_children > 0)
-		wait_for_n_children(forked_children);
+	if (forked > 0)
+		wait_for_n_children(forked);
 	free_pipes(&nodes[start]);
 	return (ret);
 }
 
+// execute pipeline child process
+// sets up pipes, redirections, and executes command
 void	execute_pipeline_child(t_node *node, int cmd_index)
 {
-	struct stat	path_stat;
-
 	setup_pipe_fds(node, cmd_index);
 	handle_redirections(node);
 	close_all_pipes(node);
@@ -47,44 +48,32 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 	else
 	{
 		execve(node->exec_path, node->full_cmd, node->env->envp);
-		if (ft_strchr(node->full_cmd[0], '/'))
-		{
-			if (stat(node->full_cmd[0], &path_stat) == 0)
-			{
-				if (S_ISDIR(path_stat.st_mode))
-				{
-					ft_file_error(ISDIR_ERR, node->full_cmd[0], 126);
-					exit(126);
-				}
-				ft_file_error(PERM_ERR, node->full_cmd[0], 126);
-				exit(126);
-			}
-			ft_file_error(DIR_ERR, node->full_cmd[0], 127);
-		}
-		else
-			ft_file_error(CMD_ERR, node->full_cmd[0], 127);
-		exit(127);
+		handle_execve_failure(node);
 	}
 }
 
+// handle single command in pipeline
+// skips pipe tokens and routes commands to handler
 static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
-		int start, pid_t *last_pid)
+		pid_t *last_pid)
 {
-	(void)start;
+	int	start;
+
+	start = *i;
+	while (nodes[start].cmd_count > 1 && start > 0)
+		start--;
 	if (nodes[*i].type == PIPE)
 	{
 		(*i)++;
 		return (0);
 	}
-	return (handle_child_cmd(nodes, i, cmd_index, nodes[start].cmd_count,
-			last_pid));
+	return (handle_child_cmd(nodes, i, cmd_index, last_pid));
 }
 
-/*
-** if start node has no fd in env and cmd count it more then one
-- it means pipe allocation failed
-** we'll skip pipe tokens here
-*/
+// execute pipeline of commands
+// allocates pipes, forks children, and waits for completion
+// if start node has no fd in env and cmd count > 1,
+// it means pipe allocation failed - skip pipe tokens
 int	execute_pipeline(t_node *nodes, int start)
 {
 	int		i;
@@ -100,7 +89,7 @@ int	execute_pipeline(t_node *nodes, int start)
 	last_pid = -1;
 	while (cmd_index < nodes[start].cmd_count)
 	{
-		ret = handle_pipeline_cmd(nodes, &i, &cmd_index, start, &last_pid);
+		ret = handle_pipeline_cmd(nodes, &i, &cmd_index, &last_pid);
 		if (ret != 0)
 		{
 			if (ret == 4)
