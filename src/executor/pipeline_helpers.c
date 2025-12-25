@@ -3,24 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_helpers.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:45:22 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 16:30:07 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 18:45:56 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
-#include <unistd.h>
-#include <stdlib.h>
 #include <errno.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 int	wait_for_n_children(int n)
 {
-	int	status;
-	int	i;
-
+	int		status;
+	int		i;
 	pid_t	ret;
 
 	i = 0;
@@ -30,8 +29,8 @@ int	wait_for_n_children(int n)
 		if (ret == -1)
 		{
 			if (errno == EINTR)
-				continue;
-			break;
+				continue ;
+			break ;
 		}
 		i++;
 	}
@@ -62,8 +61,7 @@ void	close_pipes_after_fork(t_node *node, int cmd_index)
 	}
 }
 
-int	pipeline_abort(t_node *nodes, int start, int forked_children,
-				int ret)
+int	pipeline_abort(t_node *nodes, int start, int forked_children, int ret)
 {
 	close_all_pipes(&nodes[start]);
 	if (forked_children > 0)

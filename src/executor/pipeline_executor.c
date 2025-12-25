@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_executor.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 18:46:23 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "minishell.h"
 #include "prompt.h"
-#include <sys/stat.h>
 #include <errno.h>
+#include <sys/stat.h>
 
 static int	pipeline_abort(t_node *nodes, int start, int forked_children,
 		int ret)
@@ -67,8 +67,6 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 	}
 }
 
-
-
 static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
 		int start, pid_t *last_pid)
 {
@@ -78,7 +76,8 @@ static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
 		(*i)++;
 		return (0);
 	}
-	return (handle_child_cmd(nodes, i, cmd_index, nodes[start].cmd_count, last_pid));
+	return (handle_child_cmd(nodes, i, cmd_index, nodes[start].cmd_count,
+			last_pid));
 }
 
 /*
@@ -88,9 +87,9 @@ static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
 */
 int	execute_pipeline(t_node *nodes, int start)
 {
-	int	i;
-	int	cmd_index;
-	int	ret;
+	int		i;
+	int		cmd_index;
+	int		ret;
 	pid_t	last_pid;
 
 	alloc_pipes(&nodes[start]);

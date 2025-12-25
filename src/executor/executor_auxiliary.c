@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor_auxiliary.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:29:02 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 18:46:08 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,12 @@ int	is_executable_type(t_node_type type)
 
 void	wait_for_children(int cmd_count)
 {
-	int	i;
-	int	status;
-	int	last_status;
+	int		i;
+	int		status;
+	int		last_status;
 	pid_t	ret;
-	int	sigint_seen;
+	int		sigint_seen;
+	int		sig;
 
 	i = 0;
 	last_status = 0;
@@ -36,14 +37,14 @@ void	wait_for_children(int cmd_count)
 		if (ret == -1)
 		{
 			if (errno == EINTR)
-				continue;
-			break;
+				continue ;
+			break ;
 		}
 		if (WIFEXITED(status))
 			last_status = WEXITSTATUS(status);
 		else if (WIFSIGNALED(status))
 		{
-			int sig = WTERMSIG(status);
+			sig = WTERMSIG(status);
 			if (sig == SIGINT)
 				sigint_seen = 1;
 			last_status = 128 + sig;
@@ -73,11 +74,12 @@ void	wait_and_set_status(pid_t pid)
 
 void	wait_for_children_with_last(int cmd_count, pid_t last_pid)
 {
-	int	count;
-	int	status;
-	int	last_status;
+	int		count;
+	int		status;
+	int		last_status;
 	pid_t	ret;
-	int	sigint_seen;
+	int		sigint_seen;
+	int		sig;
 
 	count = 0;
 	last_status = 0;
@@ -90,20 +92,20 @@ void	wait_for_children_with_last(int cmd_count, pid_t last_pid)
 			if (ret == -1)
 			{
 				if (errno == EINTR)
-					continue;
-				break;
+					continue ;
+				break ;
 			}
 			if (WIFEXITED(status))
 				last_status = WEXITSTATUS(status);
 			else if (WIFSIGNALED(status))
 			{
-				int sig = WTERMSIG(status);
+				sig = WTERMSIG(status);
 				if (sig == SIGINT)
 					sigint_seen = 1;
 				last_status = 128 + sig;
 			}
 			count = 1;
-			break;
+			break ;
 		}
 	}
 	while (count < cmd_count)
@@ -112,8 +114,8 @@ void	wait_for_children_with_last(int cmd_count, pid_t last_pid)
 		if (ret == -1)
 		{
 			if (errno == EINTR)
-				continue;
-			break;
+				continue ;
+			break ;
 		}
 		if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 			sigint_seen = 1;
