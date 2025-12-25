@@ -6,7 +6,7 @@
 /*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/05 22:11:28 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/08 19:12:42 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/25 20:54:43 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	*lexer_pad_str(char *input)
 
 	if (!input)
 		return (NULL);
-	padded_str = malloc(ft_strlen(input) * 3 + 1);
+	padded_str = ft_calloc(sizeof(char), ft_strlen(input) * 3 + 1);
 	if (!padded_str)
 		return (ft_process_error(MEM_ERR, 2));
 	i = 0;
