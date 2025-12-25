@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:45:22 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 15:47:36 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 16:30:07 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,16 +14,25 @@
 #include "minishell.h"
 #include <unistd.h>
 #include <stdlib.h>
+#include <errno.h>
 
 int	wait_for_n_children(int n)
 {
 	int	status;
 	int	i;
 
+	pid_t	ret;
+
 	i = 0;
 	while (i < n)
 	{
-		wait(&status);
+		ret = waitpid(-1, &status, 0);
+		if (ret == -1)
+		{
+			if (errno == EINTR)
+				continue;
+			break;
+		}
 		i++;
 	}
 	return (0);

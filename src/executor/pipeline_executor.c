@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/24 21:48:24 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,46 +14,7 @@
 #include "minishell.h"
 #include "prompt.h"
 #include <sys/stat.h>
-
-static int	process_subshell_heredocs(t_node *nodes, int start, int end);
-
-static int	wait_for_n_children(int n)
-{
-	int	status;
-	int	i;
-
-	i = 0;
-	while (i < n)
-	{
-		wait(&status);
-		i++;
-	}
-	return (0);
-}
-
-static void	close_pipe_fd(int fd)
-{
-	if (fd >= 0)
-		close(fd);
-}
-
-static void	close_pipes_after_fork(t_node *node, int cmd_index)
-{
-	int	**fd;
-
-	fd = node->env->fd;
-	if (!fd)
-		return ;
-	if (cmd_index == 0)
-		close_pipe_fd(fd[0][1]);
-	else if (cmd_index == node->cmd_count - 1)
-		close_pipe_fd(fd[cmd_index - 1][0]);
-	else if (cmd_index > 0 && cmd_index < node->cmd_count - 1)
-	{
-		close_pipe_fd(fd[cmd_index - 1][0]);
-		close_pipe_fd(fd[cmd_index][1]);
-	}
-}
+#include <errno.h>
 
 static int	pipeline_abort(t_node *nodes, int start, int forked_children,
 		int ret)
@@ -106,72 +67,10 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 	}
 }
 
-static int	process_subshell_heredocs(t_node *nodes, int start, int end)
-{
-	int	i;
-			int matching_rpar;
 
-	i = start + 1;
-	while (i < end)
-	{
-		if (nodes[i].type == L_PAR)
-		{
-			matching_rpar = find_matching_rpar(nodes, i);
-			if (matching_rpar < 0)
-				return (-1);
-			if (process_subshell_heredocs(nodes, i, matching_rpar) < 0)
-				return (-1);
-			i = matching_rpar + 1;
-			continue ;
-		}
-		if (write_heredoc(&nodes[i], i))
-			return (-1);
-		if (nodes[i].in_flag == 2)
-			nodes[i].in_flag = 1;
-		i++;
-	}
-	return (0);
-}
-
-static int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
-{
-	pid_t	pid;
-	int		next_i;
-		int end;
-
-	if (nodes[*i].type == L_PAR)
-	{
-		end = find_matching_rpar(nodes, *i);
-		if (end < 0)
-			return (-1);
-		if (process_subshell_heredocs(nodes, *i, end) < 0)
-			return (-1);
-		next_i = execute_subshell_in_pipeline(nodes, *i, *cmd_index);
-		if (next_i < 0)
-			return (-1);
-		close_pipes_after_fork(&nodes[*i], *cmd_index);
-		(*cmd_index)++;
-		*i = next_i;
-		return (0);
-	}
-	if (write_heredoc(&nodes[*i], *i))
-		return (1);
-	pid = fork();
-	if (pid < 0)
-	{
-		ft_process_error(FORK_ERR, 1);
-		return (-1);
-	}
-	if (pid == 0)
-		execute_pipeline_child(&nodes[*i], *cmd_index);
-	close_pipes_after_fork(&nodes[*i], *cmd_index);
-	(*cmd_index)++;
-	(*i)++;
-	return (0);
-}
 
 static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
-		int start)
+		int start, pid_t *last_pid)
 {
 	(void)start;
 	if (nodes[*i].type == PIPE)
@@ -179,7 +78,7 @@ static int	handle_pipeline_cmd(t_node *nodes, int *i, int *cmd_index,
 		(*i)++;
 		return (0);
 	}
-	return (handle_child_cmd(nodes, i, cmd_index));
+	return (handle_child_cmd(nodes, i, cmd_index, nodes[start].cmd_count, last_pid));
 }
 
 /*
@@ -192,15 +91,17 @@ int	execute_pipeline(t_node *nodes, int start)
 	int	i;
 	int	cmd_index;
 	int	ret;
+	pid_t	last_pid;
 
 	alloc_pipes(&nodes[start]);
 	if (!nodes[start].env->fd && nodes[start].cmd_count > 1)
 		return (0);
 	i = start;
 	cmd_index = 0;
+	last_pid = -1;
 	while (cmd_index < nodes[start].cmd_count)
 	{
-		ret = handle_pipeline_cmd(nodes, &i, &cmd_index, start);
+		ret = handle_pipeline_cmd(nodes, &i, &cmd_index, start, &last_pid);
 		if (ret != 0)
 		{
 			if (ret == 4)
@@ -208,7 +109,7 @@ int	execute_pipeline(t_node *nodes, int start)
 			return (pipeline_abort(nodes, start, cmd_index, 0));
 		}
 	}
-	wait_for_children(nodes[start].cmd_count);
+	wait_for_children_with_last(nodes[start].cmd_count, last_pid);
 	free_pipes(&nodes[start]);
 	return (0);
 }

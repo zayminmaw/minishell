@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 18:01:39 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/24 21:37:15 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,19 @@ void	wait_and_set_status(pid_t pid);
 void	execute_pipeline_child(t_node *node, int cmd_index);
 int		execute_pipeline(t_node *nodes, int start);
 int		find_matching_rpar(t_node *nodes, int start);
+void		handle_execve_failure(t_node *node);
 int		execute_subshell_group(t_node *nodes, int start);
 int		execute_subshell_in_pipeline(t_node *nodes, int start, int cmd_idx);
+int		wait_for_n_children(int n);
+int		process_subshell_heredocs(t_node *nodes, int start, int end);
+void		close_pipes_after_fork(t_node *node, int cmd_index);
+void		redirect_middile_command(int **fd, t_node *node, int cmd_index);
+int		execute_group(t_node *nodes, int start);
+int		should_skip_execution(t_node_type pending_op, int status);
+void		skip_command_group(t_node *nodes, int *i, t_node_type *pending_op);
+int		handle_child_cmd(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_t *last_pid);
+void		set_pipeline_last_pid(pid_t pid);
+void		wait_for_children_with_last(int cmd_count, pid_t last_pid);
 
 // heredoc_utils.c
 char	*heredoc_tmpname(int idx);

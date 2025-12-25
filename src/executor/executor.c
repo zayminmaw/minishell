@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/21 03:00:32 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int	execute_single_cmd(t_node *nodes, int start)
 // 		printf("%s\n", data[i++]);
 // }
 
-static int	execute_group(t_node *nodes, int start)
+int	execute_group(t_node *nodes, int start)
 {
 	if (nodes[start].cmd_count > 1)
 	{
@@ -115,23 +115,7 @@ static int	handle_logical_op(t_node *nodes, int *i, t_node_type *pending_op)
 	return (0);
 }
 
-static int	should_skip_execution(t_node_type pending_op, int status)
-{
-	if (pending_op == DOUBLE_AND && status != 0)
-		return (1);
-	if (pending_op == DOUBLE_OR && status == 0)
-		return (1);
-	return (0);
-}
 
-static void	skip_command_group(t_node *nodes, int *i, t_node_type *pending_op)
-{
-	if (nodes[*i].cmd_count > 1)
-		*i += nodes[*i].real_cmd_count;
-	else
-		(*i)++;
-	*pending_op = ALIEN;
-}
 
 static int	execute_and_advance(t_node *nodes, int *i, t_node_type *pending_op)
 {

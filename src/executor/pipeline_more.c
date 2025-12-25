@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:45:38 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 15:45:40 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 #include <sys/stat.h>
 #include <stdlib.h>
 
-static int	handle_par_child(t_node *nodes, int *i, int *cmd_index)
+static int	handle_par_child(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_t *last_pid)
 {
 	int	env_end;
 	int	next_i;
-
+	(void)total_cmds;
+	(void)last_pid;
 	env_end = find_matching_rpar(nodes, *i);
 	if (env_end < 0)
 		return (-1);
@@ -34,12 +35,12 @@ static int	handle_par_child(t_node *nodes, int *i, int *cmd_index)
 	return (0);
 }
 
-int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
+int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index, int total_cmds, pid_t *last_pid)
 {
 	pid_t	pid;
 
 	if (nodes[*i].type == L_PAR)
-		return (handle_par_child(nodes, i, cmd_index));
+		return (handle_par_child(nodes, i, cmd_index, total_cmds, last_pid));
 	if (write_heredoc(&nodes[*i], *i))
 		return (1);
 	pid = fork();
@@ -50,6 +51,8 @@ int	handle_child_cmd(t_node *nodes, int *i, int *cmd_index)
 	}
 	if (pid == 0)
 		execute_pipeline_child(&nodes[*i], *cmd_index);
+	if (pid > 0 && last_pid && *cmd_index == total_cmds - 1)
+		*last_pid = pid;
 	close_pipes_after_fork(&nodes[*i], *cmd_index);
 	(*cmd_index)++;
 	(*i)++;

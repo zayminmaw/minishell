@@ -6,12 +6,13 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:46:02 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/24 21:44:37 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 16:45:29 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include "utils.h"
+#include "executor.h"
 
 static void	clean_pipes_on_error(int i, t_node *nodes)
 {
@@ -78,19 +79,7 @@ void	free_pipes(t_node *nodes)
 	nodes->env->fd = NULL;
 }
 
-void	redirect_middile_command(int **fd, t_node *node, int cmd_index)
-{
-	if (node->in_flag == 0)
-	{
-		if (dup2(fd[cmd_index - 1][0], STDIN_FILENO) < 0)
-			ft_process_error(DUP_ERR, 1);
-	}
-	if (node->out_flag == 0)
-	{
-		if (dup2(fd[cmd_index][1], STDOUT_FILENO) < 0)
-			ft_process_error(DUP_ERR, 1);
-	}
-}
+/* redirect_middile_command moved to pipes_helpers.c */
 
 void	setup_pipe_fds(t_node *node, int cmd_index)
 {
