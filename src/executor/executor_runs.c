@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/25 15:44:49 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 15:48:28 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 20:07:56 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,8 @@ void	execute_child_process(t_node *node)
 	}
 	else
 	{
-		execve(node->exec_path, node->full_cmd, node->env->envp);
+		if (node->exec_path)
+			execve(node->exec_path, node->full_cmd, node->env->envp);
 		handle_execve_failure(node);
 	}
 }

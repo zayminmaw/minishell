@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipeline_executor.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/08 20:40:05 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/25 19:51:36 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ void	execute_pipeline_child(t_node *node, int cmd_index)
 	}
 	else
 	{
-		execve(node->exec_path, node->full_cmd, node->env->envp);
+		if (node->exec_path)
+			execve(node->exec_path, node->full_cmd, node->env->envp);
 		handle_execve_failure(node);
 	}
 }

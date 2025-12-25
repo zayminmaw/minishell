@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/18 20:34:28 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/24 21:06:25 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 20:38:53 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,9 +33,15 @@ void	print_error(char *prefix, char *arg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	if (prefix)
+	{
 		ft_putstr_fd(prefix, 2);
+	}
 	if (arg)
+	{
+		if (prefix)
+			ft_putstr_fd(": ", 2);
 		ft_putstr_fd(arg, 2);
+	}
 	ft_putstr_fd("\n", 2);
 }
 

@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/10 19:10:58 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/24 21:05:17 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 20:42:11 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,12 +104,12 @@ int	validate_parens(char **tokens)
 	}
 	if (depth != 0)
 	{
-		ft_putstr_fd("minishell: syntax error: unexpected end of file\n", 2);
+		print_error("syntax error", "unexpected end of file");
 		return (set_exit_status(2), 1);
 	}
 	if (has_double_open_parens(tokens))
 	{
-		print_error(NULL, "syntax error near unexpected token `((");
+		print_error("syntax error", "near unexpected token `((");
 		return (set_exit_status(1), 1);
 	}
 	return (0);

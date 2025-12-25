@@ -6,7 +6,7 @@
 /*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/02 18:36:13 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/24 21:14:01 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/25 20:39:18 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ int	ft_exit(t_node *node)
 	}
 	if (node->full_cmd[2])
 	{
-		print_error("exit :", " too many arguments");
+		print_error("exit", "too many arguments");
 		set_exit_status(1);
 		return (0);
 	}

@@ -3,34 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   executor.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/30 17:42:20 by wmin-kha          #+#    #+#             */
-/*   Updated: 2025/12/25 19:06:28 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/25 20:08:14 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "executor.h"
 #include "prompt.h"
+#include <fcntl.h>
+#include <stdio.h>
 #include <sys/stat.h>
-
-// execute child process for single command
-// handles redirections, signals, and command execution
-static void	execute_child_process(t_node *node)
-{
-	handle_redirections(node);
-	set_child_signals();
-	if (node->type == BUILDIN_CHILD)
-	{
-		exec_buildin_child(node);
-		exit(get_exit_status());
-	}
-	else
-	{
-		execve(node->exec_path, node->full_cmd, node->env->envp);
-		handle_execve_failure(node);
-	}
-}
 
 // execute single command (non-pipeline)
 // handles builtins, validation, heredoc, and fork

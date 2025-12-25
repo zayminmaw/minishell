@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   prompt.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
+/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 19:27:38 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 20:26:23 by zmin             ###   ########.fr       */
+/*   Updated: 2025/12/25 20:25:42 by wmin-kha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,27 @@
 #include "prompt.h"
 #include "utils.h"
 #include "validation.h"
+#include <fcntl.h>
+
+// static void	debug_print_fds(char *msg)
+// {
+// 	int	i;
+// 	int	fd_count;
+
+// 	i = 0;
+// 	fd_count = 0;
+// 	printf("--- Open FDs (%s) ---\n", msg);
+// 	while (i < 100) // Checking first 100 is usually enough
+// 	{
+// 		if (fcntl(i, F_GETFD) != -1)
+// 		{
+// 			printf("FD: %d\n", i);
+// 			fd_count++;
+// 		}
+// 		i++;
+// 	}
+// 	printf("Total: %d\n----------------------\n", fd_count);
+// }
 
 // get prompt when username is not avaliable
 // only minishell> will be displayed
@@ -124,6 +145,7 @@ void	prompt(t_env *env)
 			free(input);
 			break ;
 		}
+		// debug_print_fds("OPen PIPES");
 		free(input);
 	}
 	free(prompt);
