@@ -3,19 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   prompt_sig.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: wmin-kha <wmin-kha@student.42bangkok.co    +#+  +:+       +#+        */
+/*   By: zmin <zmin@student.42bangkok.com>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/03 21:05:17 by zmin              #+#    #+#             */
-/*   Updated: 2025/12/18 19:15:52 by wmin-kha         ###   ########.fr       */
+/*   Updated: 2025/12/26 19:23:16 by zmin             ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "exit_status.h"
 #include "prompt.h"
 #include "utils.h"
-
-/* Readline function declarations for compatibility */
-void		rl_replace_line(const char *text, int clear_undo);
 
 static void	execution_signal_handler(int sig)
 {
