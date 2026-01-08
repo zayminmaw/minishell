@@ -4,8 +4,8 @@ This project implements a foundational command-line interface (CLI) a "minishell
 
 ## Authors
 
-- [zmin](https://profile-v3.intra.42.fr/users/zmin)
-- [wmin-kha](https://profile-v3.intra.42.fr/users/wmin-kha)
+- [zmin](https://profile-v3.intra.42.fr/users/zmin) [(Github)](https://github.com/zayminmaw)
+- [wmin-kha](https://profile-v3.intra.42.fr/users/wmin-kha) [(Github)](https://github.com/wymk27)
 
 ## Run
 
